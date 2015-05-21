@@ -1,19 +1,21 @@
-# BackendL5
+# Mantenimiento APP
 
-BackendL5 for Laravel 5 based in <a href="http://almsaeedstudio.com/AdminLTE/" target="_blank">AdminLTE template</a>
+Mantenimiento App  based in Laravel 5
 
 ###Install
 
 Clone repository
 
 ```
-git clone https://github.com/raulduran/backendl5.git yourbackend
+git clone https://github.com/ArrozAlba/mantenimiento mantenimiento
+
+
 ```
 
 Change directory
 
 ```
-cd yourbackend
+cd mantenimiento
 ```
 
 Remove .git directory (optional)
@@ -47,7 +49,7 @@ APP_DEBUG=true
 APP_KEY=TNP6X0eATkfsgHzgrqlByxcPL7Hnfldc
 
 DB_HOST=127.0.0.1
-DB_DATABASE=backendl5
+DB_DATABASE=mantenimiento
 DB_USERNAME=root
 DB_PASSWORD=
 
@@ -56,7 +58,7 @@ SESSION_DRIVER=file
 
 MAIL_DRIVER=sendmail
 MAIL_ADDRESS=demo@demo.com
-MAIL_NAME=BackendL5
+MAIL_NAME=mantenimiento
 ```
 
 Regenerate APP_KEY
@@ -82,7 +84,7 @@ Run server
 php artisan serve
 ```
 
-Go to <a href="http://localhost:8000/" target="_blank">BackendL5 Local</a> and login with user demo:
+Go to <a href="http://localhost:8000/" target="_blank">Mantenimiento Local</a> and login with user demo:
 
 
 ```
@@ -98,11 +100,11 @@ Edit file config/custom.php
 ```
 return [
 	
-	'name' => 'BackendL5',
+	'name' => 'Mantenimiento APP',
 
-	'htmlname' => '<b>Backend</b>L5',
+	'htmlname' => '<b>Mantenimiento </b>App',
 
-	'url' => 'https://github.com/raulduran/backendl5/',
+	'url' => ' ',
 
 	'paginate' => '20'
 
@@ -114,28 +116,28 @@ return [
 Create controller, repository, model, migrate, request and form classes, all in one.
 
 ```
-php artisan bl5:all articles
+php artisan mantenimiento:all articles
 ```
 
 or for steps
 ```
 //Create controller
-php artisan bl5:controller ArticlesController
+php artisan mantenimiento:controller ArticlesController
 
 //Create repository
-php artisan bl5:repository ArticleRepository
+php artisan mantenimiento:repository ArticleRepository
 
 //Create Model
-php artisan bl5:model Article
+php artisan mantenimiento:model Article
 
 //Create request
-php artisan bl5:request ArticleRequest
+php artisan mantenimiento:request ArticleRequest
 
 //Create form
-php artisan bl5:form ArticleForm
+php artisan mantenimiento:form ArticleForm
 
 //Create views
-php artisan bl5:views articles
+php artisan mantenimiento:views articles
 
 //Create migrate
 php artisan make:migration:schema create_articles_table --schema="name:string"
@@ -182,7 +184,7 @@ php artisan migrate
 Create a controller only method index and show function
 
 ```
-php artisan bl5:apicontroller ArticlesController
+php artisan mantenimiento:apicontroller ArticlesController
 ```
 
 Add routes in app/Http/routes.php into api section
@@ -190,5 +192,6 @@ Add routes in app/Http/routes.php into api section
 Route::resource('articles', 'Api\ArticlesController', ['only' => ['index', 'show']]);
 ```
 
-
-
+###Based on:
+https://github.com/raulduran/backendl5/
+```
