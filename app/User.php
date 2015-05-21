@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace backend;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +22,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'email', 'password'];
+	protected $fillable = ['name', 'role', 'email', 'password'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -30,5 +30,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
+	public function getFromAttribute()
+	{
+		return \Date::parse($this->created_at)->format('M. Y');
+	}
+
+	public function getCreatedAttribute()
+	{
+		return \Date::parse($this->created_at)->format('d-m-Y');
+	}
+
+	public function getRoleNameAttribute()
+	{
+		return trans('messages.role.'.$this->role);
+	}
+
+	public function getAvatarAttribute()
+	{
+		return "http://www.gravatar.com/avatar/".md5($this->email); 
+	}
 
 }

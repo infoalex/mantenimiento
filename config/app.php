@@ -39,7 +39,7 @@ return [
 	|
 	*/
 
-	'timezone' => 'UTC',
+	'timezone' => 'America/Caracas',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
 	|
 	*/
 
-	'locale' => 'en',
+	'locale' => 'es',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -135,15 +135,24 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
+		'Collective\Html\HtmlServiceProvider',
+		'Laracasts\Generators\GeneratorsServiceProvider',
+		'Jenssegers\Date\DateServiceProvider',
+		'Kris\LaravelFormBuilder\FormBuilderServiceProvider',
 
 		/*
 		 * Application Service Providers...
 		 */
-		'App\Providers\AppServiceProvider',
-		'App\Providers\BusServiceProvider',
-		'App\Providers\ConfigServiceProvider',
-		'App\Providers\EventServiceProvider',
-		'App\Providers\RouteServiceProvider',
+		'backend\Providers\AppServiceProvider',
+		'backend\Providers\BusServiceProvider',
+		'backend\Providers\ConfigServiceProvider',
+		'backend\Providers\EventServiceProvider',
+		'backend\Providers\RouteServiceProvider',
+		'backend\Providers\ComposerServiceProvider',
+		/*
+		 * Manejo de Roles..
+		 */
+		'Zizaco\Entrust\EntrustServiceProvider',		
 
 	],
 
@@ -192,6 +201,11 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+		'Form'      => 'Collective\Html\FormFacade',
+		'Html'      => 'Collective\Html\HtmlFacade',
+		'Date'      => 'Jenssegers\Date\Date',
+		'FormBuilder' => 'Kris\LaravelFormBuilder\Facades\FormBuilder',
+		'Entrust' => 'Zizaco\Entrust\EntrustFacade',		
 
 	],
 
