@@ -1,6 +1,6 @@
-<?php namespace backend\Console\Commands;
+<?php namespace App\Console\Commands;
 
-use backend\Console\Commands\CustomGeneratorCommand;
+use App\Console\Commands\CustomGeneratorCommand;
 
 class RequestMakeCommand extends CustomGeneratorCommand {
 
@@ -9,7 +9,7 @@ class RequestMakeCommand extends CustomGeneratorCommand {
 	 *
 	 * @var string
 	 */
-	protected $name = 'bl5:request';
+	protected $name = 'mantenimiento:request';
 
 	/**
 	 * The console command description.

@@ -1,4 +1,4 @@
-<?php namespace backend\Composers;
+<?php namespace App\Composers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -17,10 +17,15 @@ class MenusComposer {
 				'visible' => true,
 				'icon' => 'fa-users',
 				'edit' => true,
-				'name' => trans('messages.users.index')
-			]
+				'name' => trans('messages.users.index')],
+			'roles' => [
+    			'visible' => true,
+    			'icon' => 'fa-file-o',
+    			'edit' => true,
+    			'name' => trans('messages.roles.index')]		
 		];
 	}
+
 
 	public function compose(View $view)
 	{

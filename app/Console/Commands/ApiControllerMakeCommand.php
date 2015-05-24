@@ -1,6 +1,6 @@
-<?php namespace backend\Console\Commands;
+<?php namespace App\Console\Commands;
 
-use backend\Console\Commands\CustomGeneratorCommand;
+use App\Console\Commands\CustomGeneratorCommand;
 
 class ApiControllerMakeCommand extends CustomGeneratorCommand {
 
@@ -9,7 +9,7 @@ class ApiControllerMakeCommand extends CustomGeneratorCommand {
 	 *
 	 * @var string
 	 */
-	protected $name = 'bl5:apicontroller';
+	protected $name = 'mantenimiento:apicontroller';
 
 	/**
 	 * The console command description.

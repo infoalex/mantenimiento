@@ -2,11 +2,11 @@
 
 return [
 	
-	'name' => 'App Mantenimiento',
+	'name' => 'Alba Mantenimiento',
 
-	'htmlname' => '<b>Mantenimiento</b>App',
+	'htmlname' => '<b>Alba Mantenimiento</b>',
 
-	'url' => 'https://github.com/jelitox/backendl5/',
+	'url' => 'https://github.com/ArrozAlba/Mantenimiento/',
 
 	'paginate' => '20'
 

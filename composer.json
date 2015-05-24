@@ -22,7 +22,7 @@
 			"database"
 		],
 		"psr-4": {
-			"backend\\": "app/"
+			"App\\": "app/"
 		},
         "files": [
             "app/Utils/helpers.php"

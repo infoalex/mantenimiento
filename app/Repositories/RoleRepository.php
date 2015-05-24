@@ -1,20 +1,19 @@
 <?php namespace App\Repositories;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Role;
 
-class UserRepository extends Repository {
+class RoleRepository extends Repository {
 
 	protected $order_fields = [
 		'id',
 		'name',
-		'role',
 		'created_at'
 	];
 
-	public function __construct(User $user)
+	public function __construct(Role $role, $paginate=true)
 	{
-		$this->model = $user;
+		$this->model = $role;
 	}
 
 	public function search(Request $request, $paginate=true)
@@ -25,18 +24,12 @@ class UserRepository extends Repository {
 		{
 			$search = $request->get('search');
 
-			$query->where('users.name', 'LIKE', '%' . $search . '%')
-				->orWhere('users.email', 'LIKE', '%' . $search . '%');
+			$query->where('roles.id', 'LIKE', '%' . $search . '%')
+				->orWhere('roles.name', 'LIKE', '%' . $search . '%')
+			;
 		}
 
 		return ($paginate) ? $query->paginate($request->get('limit', config('custom.paginate'))) : $query->get();
-	}
-
-	public function save($id, $data)
-	{
-		if (isset($data['password'])) $data['password'] = bcrypt($data['password']);
-
-		return parent::save($id, $data);
 	}
 
 }

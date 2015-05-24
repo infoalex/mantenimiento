@@ -1,4 +1,4 @@
-<?php namespace backend\Console\Commands;
+<?php namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -11,7 +11,7 @@ class ViewsControllerMakeCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'bl5:views';
+	protected $name = 'mantenimiento:views';
 
 	/**
 	 * The console command description.

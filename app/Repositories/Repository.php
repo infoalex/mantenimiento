@@ -1,4 +1,4 @@
-<?php namespace backend\Repositories;
+<?php namespace App\Repositories;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;

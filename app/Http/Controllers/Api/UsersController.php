@@ -1,9 +1,9 @@
-<?php namespace backend\Http\Controllers\Api;
+<?php namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
-use backend\Http\Controllers\Controller;
-use backend\Repositories\UserRepository as User;
+use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository as User;
 
 class UsersController extends Controller {
 

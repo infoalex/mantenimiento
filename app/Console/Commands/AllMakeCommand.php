@@ -1,4 +1,4 @@
-<?php namespace backend\Console\Commands;
+<?php namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,7 +10,7 @@ class AllMakeCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'bl5:all';
+	protected $name = 'mantenimiento:all';
 
 	/**
 	 * The console command description.
@@ -52,17 +52,17 @@ class AllMakeCommand extends Command {
 		$name = $this->getNameInput();
 
 		//Create controller
-		$this->call('bl5:controller', ['name' => ucfirst($name).'Controller']);
+		$this->call('mantenimiento:controller', ['name' => ucfirst($name).'Controller']);
 		//Create views
-		$this->call('bl5:views', ['name' => $name]);
+		$this->call('mantenimiento:views', ['name' => $name]);
 		//Create request
-		$this->call('bl5:request', ['name' => str_singular(ucfirst($name)).'Request']);
+		$this->call('mantenimiento:request', ['name' => str_singular(ucfirst($name)).'Request']);
 		//Create form
-		$this->call('bl5:form', ['name' => str_singular(ucfirst($name)).'Form']);
+		$this->call('mantenimiento:form', ['name' => str_singular(ucfirst($name)).'Form']);
 		//Create repositroy
-		$this->call('bl5:repository', ['name' => str_singular(ucfirst($name)).'Repository']);
+		$this->call('mantenimiento:repository', ['name' => str_singular(ucfirst($name)).'Repository']);
 		//Create model
-		$this->call('bl5:model', ['name' => str_singular(ucfirst($name))]);
+		$this->call('mantenimiento:model', ['name' => str_singular(ucfirst($name))]);
 		//Migration table
 		$this->call('make:migration:schema', ['name' => 'create_'.$name.'_table', '--schema' => 'name:string']);
 	}

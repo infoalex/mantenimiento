@@ -18,6 +18,9 @@ Route::group(array('prefix' => 'admin', 'middleware' => 'auth'), function(){
 	//Users
 	Route::resource('users', 'Admin\UsersController');
 	Route::post('users/delete', array('as' => 'admin.users.delete', 'uses' => 'Admin\UsersController@delete'));
+    //Roles
+    Route::resource('roles', 'Admin\RolesController');
+    Route::post('roles/delete', array('as' => 'admin.roles.delete', 'uses' => 'Admin\RolesController@delete'));
 
 });
 

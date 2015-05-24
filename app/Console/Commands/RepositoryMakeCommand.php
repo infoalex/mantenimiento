@@ -1,6 +1,6 @@
-<?php namespace backend\Console\Commands;
+<?php namespace App\Console\Commands;
 
-use backend\Console\Commands\CustomGeneratorCommand;
+use App\Console\Commands\CustomGeneratorCommand;
 
 class RepositoryMakeCommand extends CustomGeneratorCommand {
 
@@ -9,7 +9,7 @@ class RepositoryMakeCommand extends CustomGeneratorCommand {
 	 *
 	 * @var string
 	 */
-	protected $name = 'bl5:repository';
+	protected $name = 'mantenimiento:repository';
 
 	/**
 	 * The console command description.

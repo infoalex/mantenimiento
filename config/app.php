@@ -139,20 +139,20 @@ return [
 		'Laracasts\Generators\GeneratorsServiceProvider',
 		'Jenssegers\Date\DateServiceProvider',
 		'Kris\LaravelFormBuilder\FormBuilderServiceProvider',
-
-		/*
-		 * Application Service Providers...
-		 */
-		'backend\Providers\AppServiceProvider',
-		'backend\Providers\BusServiceProvider',
-		'backend\Providers\ConfigServiceProvider',
-		'backend\Providers\EventServiceProvider',
-		'backend\Providers\RouteServiceProvider',
-		'backend\Providers\ComposerServiceProvider',
 		/*
 		 * Manejo de Roles..
 		 */
-		'Zizaco\Entrust\EntrustServiceProvider',		
+		'Zizaco\Entrust\EntrustServiceProvider',	
+		/*
+		 * Application Service Providers...
+		 */
+		'App\Providers\AppServiceProvider',
+		'App\Providers\BusServiceProvider',
+		'App\Providers\ConfigServiceProvider',
+		'App\Providers\EventServiceProvider',
+		'App\Providers\RouteServiceProvider',
+		'App\Providers\ComposerServiceProvider',
+	
 
 	],
 

@@ -1,6 +1,6 @@
-<?php namespace backend\Console\Commands;
+<?php namespace App\Console\Commands;
 
-use backend\Console\Commands\CustomGeneratorCommand;
+use App\Console\Commands\CustomGeneratorCommand;
 
 class AdminControllerMakeCommand extends CustomGeneratorCommand {
 
@@ -9,7 +9,7 @@ class AdminControllerMakeCommand extends CustomGeneratorCommand {
 	 *
 	 * @var string
 	 */
-	protected $name = 'bl5:controller';
+	protected $name = 'mantenimiento:controller';
 
 	/**
 	 * The console command description.

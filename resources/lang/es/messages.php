@@ -180,4 +180,11 @@ return [
 	'month10' => 'Octubre',
 	'month11' => 'Noviembre',
 	'month12' => 'Diciembre',
+	'role' => 'Rol',
+	'roles.index' => 'Roles',
+	'roles.create' => 'Nuevo Rol',
+	'roles.edit' => 'Editar Rol',
+	'roles.show' => 'Ver Rol',
+	'roles.delete.title' => 'Eliminar Rol',
+	'roles.delete.message' => '¿Está seguro de que quiere continuar?',	
 ];

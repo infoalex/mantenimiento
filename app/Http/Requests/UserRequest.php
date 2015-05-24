@@ -1,7 +1,7 @@
-<?php namespace backend\Http\Requests;
+<?php namespace App\Http\Requests;
 
 use Illuminate\Auth\Guard;
-use backend\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class UserRequest extends Request {
 

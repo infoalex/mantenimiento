@@ -1,4 +1,4 @@
-<?php namespace backend\Providers;
+<?php namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -11,15 +11,15 @@ class ComposerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		view()->composer('layout.partials.content', 'backend\Composers\RouteComposer');
-		view()->composer('layout.partials.table', 'backend\Composers\RouteComposer');
-		view()->composer('layout.partials.form', 'backend\Composers\RouteComposer');
-		view()->composer('layout.partials.show', 'backend\Composers\RouteComposer');
+		view()->composer('layout.partials.content', 'App\Composers\RouteComposer');
+		view()->composer('layout.partials.table', 'App\Composers\RouteComposer');
+		view()->composer('layout.partials.form', 'App\Composers\RouteComposer');
+		view()->composer('layout.partials.show', 'App\Composers\RouteComposer');
 
-		view()->composer('layout.partials.nav.profile', 'backend\Composers\AuthComposer');
-		view()->composer('layout.partials.sidebar.user', 'backend\Composers\AuthComposer');
+		view()->composer('layout.partials.nav.profile', 'App\Composers\AuthComposer');
+		view()->composer('layout.partials.sidebar.user', 'App\Composers\AuthComposer');
 
-		view()->composer('layout.partials.sidebar.menu', 'backend\Composers\MenusComposer');
+		view()->composer('layout.partials.sidebar.menu', 'App\Composers\MenusComposer');
 	}
 
 	/**

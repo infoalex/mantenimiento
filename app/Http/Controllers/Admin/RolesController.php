@@ -4,26 +4,26 @@ use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\FormBuilder;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository as User;
-use App\Http\Requests\UserRequest;
+use App\Repositories\RoleRepository as Role;
+use App\Http\Requests\RoleRequest;
 
-class UsersController extends Controller {
+class RolesController extends Controller {
 
 	/**
-	 * Repostory user
+	 * Repostory role
 	 *
-	 * @var UserRepository
+	 * @var RoleRepository
 	 */
-	private $user;
+	private $role;
 
 	/**
 	 * Construc controller.
 	 *
-	 * @param  User $user
+	 * @param  Role $role
 	 */
-	public function __construct(User $user)
+	public function __construct(Role $role)
 	{
-		$this->user = $user;
+		$this->role = $role;
 	}
 
 	/**
@@ -34,9 +34,9 @@ class UsersController extends Controller {
 	 */
 	public function index(Request $request)
 	{
-		$results = $this->user->search($request);
+		$results = $this->role->search($request);
 
-		return view('users.index', compact('results', 'request'));
+		return view('roles.index', compact('results', 'request'));
 	}
 
 	/**
@@ -47,9 +47,9 @@ class UsersController extends Controller {
 	 */
 	public function create(FormBuilder $formBuilder)
 	{
-		$form = $formBuilder->create('App\Forms\UserForm', [
+		$form = $formBuilder->create('App\Forms\RoleForm', [
 			'method' => 'POST',
-			'url' => route('admin.users.store')
+			'url' => route('admin.roles.store')
 		]);
 
 		return view('layout.partials.form', compact('form'));
@@ -58,14 +58,14 @@ class UsersController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  UserRequest  $request
+	 * @param  RoleRequest  $request
 	 * @return Response
 	 */
-	public function store(UserRequest $request)
+	public function store(RoleRequest $request)
 	{
-		$user = $this->user->save(null, $request->all());
+		$role = $this->role->save(null, $request->all());
 
-		$route = ($request->get('task')=='apply') ? route('admin.users.edit', $user->id) : route('admin.users.index');
+		$route = ($request->get('task')=='apply') ? route('admin.roles.edit', $role->id) : route('admin.roles.index');
 
 		return redirect($route)->with([
 			'status' => trans('messages.saved'), 
@@ -81,9 +81,9 @@ class UsersController extends Controller {
 	 */
 	public function show($id)
 	{
-		$user = $this->user->getModel()->findOrFail($id);
+		$role = $this->role->getModel()->findOrFail($id);
 
-		return view('users.show', compact('user'));
+		return view('roles.show', compact('role'));
 	}
 
 	/**
@@ -95,12 +95,12 @@ class UsersController extends Controller {
 	 */
 	public function edit($id, FormBuilder $formBuilder)
 	{
-		$user = $this->user->getModel()->findOrFail($id);
+		$role = $this->role->getModel()->findOrFail($id);
 
-		$form = $formBuilder->create('App\Forms\UserForm', [
-			'model' => $user,
+		$form = $formBuilder->create('App\Forms\RoleForm', [
+			'model' => $role,
 			'method' => 'PATCH',
-			'url' => route('admin.users.update', $id)
+			'url' => route('admin.roles.update', $id)
 		]);
 
 		return view('layout.partials.form', compact('form'));
@@ -110,16 +110,14 @@ class UsersController extends Controller {
 	 * Update the specified resource in storage.
 	 *
 	 * @param  int  $id
-	 * @param  UserRequest  $request
+	 * @param  RoleRequest  $request
 	 * @return Response
 	 */
-	public function update($id, UserRequest $request)
+	public function update($id, RoleRequest $request)
 	{
-		$data = ($request->has('password')) ? $request->all() : $request->except('password');
+		$this->role->save($id, $request->all());
 
-		$this->user->save($id, $data);
-
-		$route = ($request->get('task')=='apply') ? route('admin.users.edit', $id) : route('admin.users.index');
+		$route = ($request->get('task')=='apply') ? route('admin.roles.edit', $id) : route('admin.roles.index');
 
 		return redirect($route)->with([
 			'status' => trans('messages.saved'), 
@@ -135,9 +133,9 @@ class UsersController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$this->user->getModel()->findOrFail($id)->delete();
+		$this->role->getModel()->findOrFail($id)->delete();
 
-		return redirect(route('admin.users.index'))->with([
+		return redirect(route('admin.roles.index'))->with([
 			'status' => trans('messages.deleted'), 
 			'type-status' => 'success'
 		]);
@@ -151,9 +149,9 @@ class UsersController extends Controller {
 	 */
 	public function delete(Request $request)
 	{
-		$this->user->deleteAll($request->get('ids'));
+		$this->role->deleteAll($request->get('ids'));		
 
-		return redirect(route('admin.users.index'))->with([
+		return redirect(route('admin.roles.index'))->with([
 			'status' => trans('messages.deleted'), 
 			'type-status' => 'success'
 		]);
