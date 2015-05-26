@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\FormBuilder;
-
 use App\Http\Controllers\Controller;
 use App\Repositories\RoleRepository as Role;
 use App\Http\Requests\RoleRequest;
@@ -23,6 +22,12 @@ class RolesController extends Controller {
 	 */
 	public function __construct(Role $role)
 	{
+		$this->beforeFilter('ver_roles', array('only' => 'index') );
+        $this->beforeFilter('crear_roles', array('only' => 'create') );
+        $this->beforeFilter('crear_roles', array('only' => 'store') );
+        $this->beforeFilter('editar_roles', array('only' => 'edit') );
+        $this->beforeFilter('editar_roles', array('only' => 'update') );
+        $this->beforeFilter('eliminar_roles', array('only' => 'delete') );
 		$this->role = $role;
 	}
 

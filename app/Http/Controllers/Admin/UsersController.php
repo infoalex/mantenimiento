@@ -23,6 +23,12 @@ class UsersController extends Controller {
 	 */
 	public function __construct(User $user)
 	{
+	    $this->beforeFilter('ver_usuarios', array('only' => 'index') );
+        $this->beforeFilter('crear_usuarios', array('only' => 'create') );
+        $this->beforeFilter('crear_usuarios', array('only' => 'store') );
+        $this->beforeFilter('editar_usuarios', array('only' => 'edit') );
+        $this->beforeFilter('editar_usuarios', array('only' => 'update') );
+        $this->beforeFilter('eliminar_usuarios', array('only' => 'delete') );
 		$this->user = $user;
 	}
 

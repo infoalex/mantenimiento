@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
-
+	use EntrustUserTrait;
 	use Authenticatable, CanResetPassword;
 
 	/**
@@ -50,5 +50,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	{
 		return "http://www.gravatar.com/avatar/".md5($this->email); 
 	}
+	public function roles()
+    {
+        return $this->belongsToMany('Role','assigned_roles');
+    }
 
 }
