@@ -1,0 +1,18 @@
+[Tue, 18 Nov 14 10:42:29 -0430][DEBUG] SELECT a.attname AS Field, t.typname AS Type,
+			 	CASE WHEN attnotnull=false THEN 'YES' ELSE 'NO' END AS Null,
+			 	CASE WHEN (select cc.contype FROM pg_catalog.pg_constraint cc WHERE
+			 	cc.conrelid = c.oid AND cc.conkey[1] = a.attnum limit 1)='p' THEN 'PRI' ELSE ''
+			 	END AS Key, CASE WHEN atthasdef=true THEN TRUE ELSE NULL END AS Default 
+                FROM pg_catalog.pg_class c, pg_catalog.pg_attribute a,
+			 	pg_catalog.pg_type t WHERE c.relname = 'empresa' AND c.oid = a.attrelid
+			 	AND a.attnum > 0 AND t.oid = a.atttypid order by a.attnum
+[Tue, 18 Nov 14 10:42:30 -0430][DEBUG] SELECT empresa.* FROM empresa  WHERE empresa.id IS NOT NULL ORDER BY empresa.fecha_registro DESC LIMIT 1
+[Tue, 18 Nov 14 10:42:30 -0430][DEBUG] SELECT a.attname AS Field, t.typname AS Type,
+			 	CASE WHEN attnotnull=false THEN 'YES' ELSE 'NO' END AS Null,
+			 	CASE WHEN (select cc.contype FROM pg_catalog.pg_constraint cc WHERE
+			 	cc.conrelid = c.oid AND cc.conkey[1] = a.attnum limit 1)='p' THEN 'PRI' ELSE ''
+			 	END AS Key, CASE WHEN atthasdef=true THEN TRUE ELSE NULL END AS Default 
+                FROM pg_catalog.pg_class c, pg_catalog.pg_attribute a,
+			 	pg_catalog.pg_type t WHERE c.relname = 'empresa' AND c.oid = a.attrelid
+			 	AND a.attnum > 0 AND t.oid = a.atttypid order by a.attnum
+[Tue, 18 Nov 14 10:42:30 -0430][DEBUG] SELECT empresa.* FROM empresa  WHERE empresa.id IS NOT NULL ORDER BY empresa.fecha_registro DESC LIMIT 1

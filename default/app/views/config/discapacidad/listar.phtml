@@ -1,0 +1,57 @@
+<?php View::notify(); ?>
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            form_search: true,
+            form_action: '<?php echo PUBLIC_PATH; ?>config/discapacidad/buscar/',
+            form_load_data : 'dw-shell-content',
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"config/discapacidad/listar/"
+        });
+    });
+</script>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("config/discapacidad/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th style="width: 50px;" >NUM</th>
+                    <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="observacion">OBSERVACION</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($discapacidades->items as $discapacidad): ?>
+                    <?php $key_upd = DwSecurity::getKey($discapacidad->iddiscapacidad, 'upd_discapacidad'); ?>
+                    <?php $key_del = DwSecurity::getKey($discapacidad->iddiscapacidad, 'del_discapacidad'); ?>
+                    <tr>
+                        <td><?php echo $discapacidades->counter; ?></td>
+                        <td><?php echo $discapacidad->discapacidad; ?></td>
+                        <td><?php echo $discapacidad->observacion; ?></td>
+                        <td>
+                            <?php echo DwHtml::buttonTable('Modificar Profeson', "config/discapacidad/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar Profesion', "config/discapacidad/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar discapacidad', 'confirm-body'=>'Está seguro de eliminar esta discapacidad? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                        </td>
+                    </tr>
+                    <?php $discapacidades->counter++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+    </div>
+
+    <?php View::partial('paginators/default', false, array('page'=>$discapacidades, 'url'=>"config/discapacidad/listar/$order/")); ?>
+
+</div>

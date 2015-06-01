@@ -1,0 +1,18 @@
+
+<?php
+    echo Form::dbSelect("titular.estado_id", 'nombre', array('estado', 'buscar',$pais_id),  '                   ----  Seleccione  ----              ');
+?>		
+ 
+<script type='text/javascript'>
+$("#titular_estado_id").change(function(){
+    var estado_id     =   $('#titular_estado_id').val();
+        $.ajax({
+          type: "POST",
+          url: "<?php echo PUBLIC_PATH . 'beneficiarios/titular/getMunicipioEstado/'; ?>",
+          data: "estado_id=" + estado_id,
+          success: function(html){
+            $("#div_municipio").html(html);
+          }
+        });
+});
+</script>

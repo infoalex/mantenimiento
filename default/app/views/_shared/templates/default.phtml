@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+    <head>
+        <title><?php echo $page_title; ?></title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta charset="<?php echo APP_CHARSET; ?>">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <?php Tag::css('bootstrap'); ?>
+        <?php Tag::css('animate'); ?>
+        <?php Tag::css('font-awesome.min'); ?>
+        <?php Tag::css('settings'); ?>
+        <?php Tag::css('freeze'); ?>
+        <?php echo Html::includeCss(); ?>
+        <?php if(!APP_LOCAL) { ?>
+            <link href="http://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet" type="text/css">
+        <?php } ?>
+        <style type="text/css">
+            .row-fluid .span4 { font-size: 14px;}
+        </style>
+        <?php echo Tag::js('modernizr.custom.32033').PHP_EOL; ?>
+        <?php echo Tag::js('jquery-1.11.1.min').PHP_EOL; ?>
+        <?php echo Tag::js('bootstrap.min').PHP_EOL; ?>
+        <?php echo Tag::js('slick.min').PHP_EOL; ?>
+        <?php echo Tag::js('placeholdem.min').PHP_EOL; ?>
+        <?php echo Tag::js('jquery.themepunch.plugins.min').PHP_EOL; ?>
+        <?php echo Tag::js('jquery.themepunch.revolution.min').PHP_EOL; ?>
+        <?php echo Tag::js('waypoints.min').PHP_EOL; ?>
+        <?php echo Tag::js('scripts').PHP_EOL; ?>        
+
+    <script>
+        $(document).ready(function() {
+            appMaster.preLoader();
+        });
+    </script>
+
+    </head>
+    <body>
+    <div class="pre-loader">
+        <div class="load-con">
+            <img src="img/freeze/logo.png" class="animated fadeInDown" alt="">
+            <div class="spinner">
+              <div class="bounce1"></div>
+              <div class="bounce2"></div>
+              <div class="bounce3"></div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="fa fa-bars fa-lg"></span>
+                        </button>
+                        <a class="navbar-brand" href="/mantenimiento">
+                          <img src="img/freeze/logo.png" alt="" class="logo"><h1>Alba<span>Mantenimiento</span></h1>
+                        </a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#acerca">Acerca</a>
+                            </li>
+                            <!--
+                            <li><a href="#features">features</a>
+                            </li>
+                            <li><a href="#reviews">reviews</a>
+                            </li>
+                            <li><a href="#screens">screens</a>
+                            </li>
+                            -->
+                            <li><a href="#ayuda">Ayuda</a>
+                            </li>
+                            <!--
+                            <li><a href="#descargar">Obtener Software</a>
+                            </li>
+                            -->
+                            <li><a href="#soporte">soporte</a>
+                            </li>
+                            <li><a href="http://www.arrozdelalba.gob.ve" target="_blank">Arroz Alba</a>
+                            </li>
+                            <li><?php echo DwHtml::button("sistema/login/entrar/", 'Iniciar Sesión', array('class'=>'getApp btn-success'), 'signin', FALSE); ?>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-->
+        </nav>
+
+
+        <div class="banner-container">
+            <div class="banner" >
+              <img src="img/freeze/header.png" alt="">
+            </div>
+        </div>
+
+
+    </header>
+
+
+    <div class="wrapper">
+
+
+
+        <section id="acerca">
+            <div class="container">
+
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Alba Mantenimiento</h1>
+                    <div class="divider"></div>
+                    <p>Aplicación Web para la Gestión de Incidencias y Mantenimiento Preventivo / Correctivo en la Gerencia de Mantenimiento Industrial de la Empresa Arroz del Alba.</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-6" >
+                      <div class="about-item scrollpoint sp-effect5">
+                        <i class="fa fa-ticket fa-2x"></i>
+                        <h3>Basado en Software Libre</h3>
+                        <p>Basado en software libre y disponible en github para su descarga.</p>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="about-item scrollpoint sp-effect2">
+                            <i class="fa fa-download fa-2x"></i>
+                            <h3>Descargar</h3>
+                            <p>Para descargar el software y probarlo hacer click <a href="https://github.com/ArrozAlba/mantenimiento/archive/master.zip"> Aquí</a>.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6" >
+                        <div class="about-item scrollpoint sp-effect5">
+                            <i class="fa fa-comments fa-2x"></i>
+                            <h3>Manejo de Alertas</h3>
+                            <p>el sistema Alba Mantenimiento esta integrado al envio de mensajes SMS para notificar incidencias de fallas.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6" >
+                        <div class="about-item scrollpoint sp-effect1">
+                            <i class="fa fa-line-chart fa-2x"></i>
+                            <h3>Gestión de Incidencias y Mantenimientos</h3>
+                            <p>Alba Mantenimiento incorpora la gestión de Incidencias Diarias así como tambien el registro de las Fichas de los Diferentes equipos y los Mantenimientos (Preventivos / Correctivos) asociados a dichos equipos .</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+        <section id="features">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Features</h1>
+                    <div class="divider"></div>
+                    <p>Learn more about this feature packed App</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect1">
+                        <div class="media media-left feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-cogs fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">User Settings</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media media-left feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-envelope fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Messages Inbox</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media media-left feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-users fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Friends List</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media media-left feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-comments fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Live Chat Messages</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media media-left feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-calendar fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Calendar / Planner</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4" >
+                        <img src="img/freeze/iphone-freeze.png" class="img-responsive scrollpoint sp-effect5" alt="">
+                    </div>
+                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect2">
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-map-marker fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">My Places</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-film fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Media Player™</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-compass fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Intuitive Statistics</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-picture-o fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Weather on-the-go</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media active feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-plus fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">And much more!</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews">
+            <div class="container">
+                <div class="section-heading inverse scrollpoint sp-effect3">
+                    <h1>Reviews</h1>
+                    <div class="divider"></div>
+                    <p>Read What's The People Are Saying About Us</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-push-1 scrollpoint sp-effect3">
+                        <div class="review-filtering">
+                            <div class="review">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="review-person">
+                                            <img src="http://api.randomuser.me/portraits/women/94.jpg" alt="" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="review-comment">
+                                            <h3>“I love Oleose, I highly recommend it, Everyone Try It Now”</h3>
+                                            <p>
+                                                - Krin Fox
+                                                <span>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star-o fa-lg"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review rollitin">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="review-person">
+                                            <img src="http://api.randomuser.me/portraits/men/70.jpg" alt="" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="review-comment">
+                                            <h3>“Oleaose Is The Best Stable, Fast App I Have Ever Experienced”</h3>
+                                            <p>
+                                                - Theodore Willis
+                                                <span>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star-half-o fa-lg"></i>
+                                                    <i class="fa fa-star-o fa-lg"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review rollitin">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="review-person">
+                                            <img src="http://api.randomuser.me/portraits/men/93.jpg" alt="" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="review-comment">
+                                            <h3>“Keep It Up Guys Your Work Rules, Cheers :)”</h3>
+                                            <p>
+                                                - Ricky Grant
+                                                <span>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star-half-o fa-lg"></i>
+                                                    <i class="fa fa-star-o fa-lg"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="screens">
+            <div class="container">
+
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Screens</h1>
+                    <div class="divider"></div>
+                    <p>See what’s included in the App</p>
+                </div>
+
+                <div class="filter scrollpoint sp-effect3">
+                    <a href="javascript:void(0)" class="button js-filter-all active">All Screens</a>
+                    <a href="javascript:void(0)" class="button js-filter-one">User Access</a>
+                    <a href="javascript:void(0)" class="button js-filter-two">Social Network</a>
+                    <a href="javascript:void(0)" class="button js-filter-three">Media Players</a>
+                </div>
+                <div class="slider filtering scrollpoint sp-effect5" >
+                    <div class="one">
+                        <img src="img/freeze/screens/profile.jpg" alt="">
+                        <h4>Profile Page</h4>
+                    </div>
+                    <div class="two">
+                        <img src="img/freeze/screens/menu.jpg" alt="">
+                        <h4>Toggel Menu</h4>
+                    </div>
+                    <div class="three">
+                        <img src="img/freeze/screens/weather.jpg" alt="">
+                        <h4>Weather Forcast</h4>
+                    </div>
+                    <div class="one">
+                        <img src="img/freeze/screens/signup.jpg" alt="">
+                        <h4>Sign Up</h4>
+                    </div>
+                    <div class="one">
+                        <img src="img/freeze/screens/calendar.jpg" alt="">
+                        <h4>Event Calendar</h4>
+                    </div>
+                    <div class="two">
+                        <img src="img/freeze/screens/options.jpg" alt="">
+                        <h4>Some Options</h4>
+                    </div>
+                    <div class="three">
+                        <img src="img/freeze/screens/sales.jpg" alt="">
+                        <h4>Sales Analysis</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+      -->
+
+        <section id="ayuda">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Ayuda</h1>
+                    <div class="divider"></div>
+                    <p>Video tutoriales para el manejo de la aplicación Alba Mantenimiento</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 scrollpoint sp-effect2">
+                        <div class="video-container" >
+                          <iframe width="420" height="315" src="https://www.youtube.com/embed/7gP3i4tHlRM?rel=0&amp;controls=0" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      <!--
+        <section id="descargar">
+            <div class="container-fluid">
+                <div class="section-heading inverse scrollpoint sp-effect3">
+                    <h1>Descargar</h1>
+                    <div class="divider"></div>
+                    <p>Fork the <strong>hubpress.io</strong> repository and get started!</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="platforms">
+                            <a href="https://github.com/HubPress/hubpress.io" target="_blank" class="btn btn-primary inverse scrollpoint sp-effect1">
+                                <i class="fa fa-github fa-3x pull-left"></i>
+                                <span>Fork on</span><br>
+                                <b>GitHub</b>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+      -->
+        <!--
+        <section id="support" class="doublediagonal">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Support</h1>
+                    <div class="divider"></div>
+                    <p>For more info and support, contact us!</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Your name">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Your email">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea cols="30" rows="10" class="form-control" placeholder="Your message"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+                                <div class="media">
+                                    <a class="pull-left" href="#" >
+                                        <i class="fa fa-map-marker fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">4, Some street, California, USA</h4>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <a class="pull-left" href="#" >
+                                        <i class="fa fa-envelope fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">
+                                            <a href="mailto:support@oleose.com">support@oleose.com</a>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <a class="pull-left" href="#" >
+                                        <i class="fa fa-phone fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">+1 234 567890</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+        <footer id="soporte">
+            <div class="container">
+                <a href="#" class="scrollpoint sp-effect3">
+                    <img src="img/freeze/logo.png" alt="" class="logo">
+                </a>
+                <div class="social">
+                    <a href="https://twitter.com/arrozalba" class="scrollpoint sp-effect3"><i class="fa fa-twitter fa-lg"></i></a>
+                    <a href="https://github.com/ArrozAlba/mantenimiento" class="scrollpoint sp-effect3"><i class="fa fa-github fa-lg"></i></a>
+                </div>
+
+                <div class="issues section-heading scrollpoint sp-effect3">
+                  <p>La mejor forma para gestionar el soporte es a través del <a href="https://github.com/ArrozAlba/mantenimiento/issues">Sistema de Gestión de Incidencias de Github</a>.</p>.
+                </div>
+                <div class="rights">
+                    <p>Copyright &copy; 2015</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    </body>
+</html>

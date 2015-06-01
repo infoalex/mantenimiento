@@ -1,0 +1,53 @@
+<?php View::notify(); ?>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+         <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+             <thead>
+              <tr>
+                    <th colspan="13"> 
+                    <?php echo Html::img('cintillo.png', 'cabecera')?>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="fecha_solicitud">FECHA SOLCITUD</th>
+                    <th class="col-collapse" data-search="fecha_recibido">FECHA RECIBIDO </th>
+                    <th class="col-collapse" data-search="tcedula">CEDULA TITULAR </th>
+                    <th class="col-collapse" data-search="titular">TITULAR</th>
+                    <th class="col-collapse" data-search="paciente">PACIENTE</th>
+                    <th class="col-collapse" data-search="parentesco">PARENTESCO</th>
+                    <th class="col-collapse" data-search="factura">FACTURA</th>
+                    <th class="col-collapse" data-search="sede">SEDE</th>
+                    <th class="col-collapse" data-search="tipo_nomina">TIPO NOMINA</th>
+                    <th class="col-collapse" data-search="tipo_gasto">TIPO GASTO</th>
+                    <th class="col-collapse" data-search="monto_solicitado">MONTO SOLICITADO</th>
+                    <th class="col-collapse" data-search="monto_pagado">MONTO PAGADO</th>
+                    <th class="col-collapse" data-search="total_cancelar">TOTAL CANCELADO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $i = 1; foreach($reembolsos as $reemboloso): ?>
+                    <tr>
+                        <td><?php echo $i; ?></td>
+                        <td><?php echo $reemboloso->fecha_solicitud; ?></td>
+                        <td><?php echo $reemboloso->fecha_recibido; ?></td>
+                        <td><?php echo $reemboloso->tcedula; ?></td>
+                        <td><?php echo $reemboloso->titular; ?></td>
+                        <td><?php echo $reemboloso->paciente; ?></td>
+                        <td><?php echo $reemboloso->parentesco; ?></td>
+                        <td><?php echo $reemboloso->factura; ?></td>
+                        <td><?php echo $reemboloso->sede; ?></td>
+                        <td><?php echo $reemboloso->tipo_nomina; ?></td>
+                        <td><?php echo $reemboloso->tipo_gasto; ?></td>
+                        <td><?php echo $reemboloso->monto_solicitado; ?></td>
+                        <td><?php echo $reemboloso->monto_pagado; ?></td>
+                        <td><?php echo $reemboloso->total_cancelar; ?></td>
+                    </tr>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+</div>
