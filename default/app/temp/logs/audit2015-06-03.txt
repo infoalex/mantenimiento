@@ -1,0 +1,6 @@
+[Wed, 03 Jun 15 16:10:49 -0430][DEBUG] [/sistema/usuario/agregar/][admin][127.0.0.1] Se activa el acceso al usuario prueba. Motivo: Activado por registro inicial.
+[Wed, 03 Jun 15 16:10:49 -0430][DEBUG] [/sistema/usuario/agregar/][admin][127.0.0.1] Se ha registrado el usuario prueba en el sistema.
+[Wed, 03 Jun 15 16:10:49 -0430][DEBUG] [/sistema/usuario/agregar/][admin][127.0.0.1] Se ha registrado el usuario 114 en el sistema.
+[Wed, 03 Jun 15 16:11:46 -0430][DEBUG] [/sistema/usuario/agregar/][admin][127.0.0.1] Se activa el acceso al usuario edgar. Motivo: Activado por registro inicial.
+[Wed, 03 Jun 15 16:11:46 -0430][DEBUG] [/sistema/usuario/agregar/][admin][127.0.0.1] Se ha registrado el usuario edgar en el sistema.
+[Wed, 03 Jun 15 16:11:46 -0430][DEBUG] [/sistema/usuario/agregar/][admin][127.0.0.1] Se ha registrado el usuario 115 en el sistema.

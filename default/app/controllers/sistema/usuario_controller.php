@@ -11,7 +11,7 @@
  * @copyright   Copyright (c) 2014 UPTP / E.M.S. Arroz del Alba S.A. (http://autogestion.arrozdelalba.gob.ve) 
  */
 
-Load::models('beneficiarios/titular', 'config/sucursal', 'sistema/usuario_clave');
+Load::models('config/sucursal', 'sistema/usuario_clave');
 
 class UsuarioController extends BackendController {
     
@@ -61,29 +61,7 @@ class UsuarioController extends BackendController {
         $this->page_title = 'Listado de usuarios del sistema';
     }
     
-    /**
-     * Método para agregar
-
-    public function agregar() {
-        if(Input::hasPost('titular') && Input::hasPost('usuario')) {
-            ActiveRecord::beginTrans();
-            //Guardo la titular
-            $titular = titular::settitular('create', Input::post('titular'));
-            if($titular) {
-                if(Usuario::setUsuario('create', Input::post('usuario'), array('titular_id'=>$titular->id, 'repassword'=>Input::post('repassword'), 'tema'=>'default'))) {
-                    ActiveRecord::commitTrans();
-                    DwMessage::valid('El usuario se ha creado correctamente.');
-                    return DwRedirect::toAction('listar');
-                }
-            }
-            else {
-                ActiveRecord::rollbackTrans();
-            }            
-        }
-        $this->page_title = 'Agregar usuario';
-    }
-    */
-        /**
+     /**
      * Método para agregar
      */
     public function agregar() {
@@ -124,14 +102,10 @@ class UsuarioController extends BackendController {
         if(Input::hasPost('usuario')) {
             if(DwSecurity::isValidKey(Input::post('usuario_id_key'), 'form_key')) {
                 ActiveRecord::beginTrans();
-                //Guardo la titular
-                $titular = titular::settitular('update', Input::post('titular'), array('id'=>$usuario->titular_id));
-                if($titular) {
-                    if(Usuario::setUsuario('update', Input::post('usuario'), array('titular_id'=>$titular->id, 'repassword'=>Input::post('repassword'), 'id'=>$usuario->id, 'login'=>$usuario->login))) {
+                    if(Usuario::setUsuario('update', Input::post('usuario'), array('repassword'=>Input::post('repassword'), 'id'=>$usuario->id, 'login'=>$usuario->login))) {
                         ActiveRecord::commitTrans();
                         DwMessage::valid('El usuario se ha actualizado correctamente.');
                         return DwRedirect::toAction('listar');
-                    }
                 } else {
                     ActiveRecord::rollbackTrans();
                 } 

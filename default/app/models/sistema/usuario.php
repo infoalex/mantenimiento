@@ -19,7 +19,7 @@ class Usuario extends ActiveRecord {
      * Método para definir las relaciones y validaciones
      */
     protected function initialize() {
-        $this->belongs_to('titular');
+        //$this->belongs_to('titular');
         $this->belongs_to('perfil');
         $this->belongs_to('usuario_clave');
         $this->has_many('usuario_pregunta');
@@ -120,8 +120,7 @@ class Usuario extends ActiveRecord {
      * @return object Usuario
      */
     public static function getUsuarioLogueado() {
-        $columnas = 'usuario.*, perfil.perfil, titular.nombre1, titular.apellido1, estado_usuario.estado_usuario';
-        $join = "INNER JOIN titular ON titular.id = usuario.titular_id ";
+        $columnas = 'usuario.*, perfil.perfil, nombres, apellidos, estado_usuario.estado_usuario';
         $join.= "INNER JOIN perfil ON perfil.id = usuario.perfil_id ";
         $join.= self::getInnerEstado();
         $condicion = "usuario.id = '".Session::get('id')."'";
@@ -138,40 +137,35 @@ class Usuario extends ActiveRecord {
         if(empty($perfil)) {
             return NULL;
         }
-        $columns = 'usuario.*, titular.cedula, titular.nombre1, titular.apellido1, perfil.perfil, sucursal.sucursal';
-        $join = 'INNER JOIN titular ON titular.id = usuario.titular_id ';
+        $columns = 'usuario.*, nombres, apellidos, perfil.perfil, sucursal.sucursal';
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $conditions = "perfil.id = $perfil";
         
-        $order = $this->get_order($order, 'nombre1', array(                        
+        $order = $this->get_order($order, 'nombres', array(                        
             'login' => array(
-                'ASC'=>'usuario.login ASC, titular.nombre1 ASC, titular.apellido1 DESC', 
-                'DESC'=>'usuario.login DESC, titular.nombre1 DESC, titular.apellido1 DESC'
+                'ASC'=>'usuario.login ASC, usuario.nombres ASC, usuario.apellidos DESC', 
+                'DESC'=>'usuario.login DESC, usuario.nombres DESC, usuario.apellidos DESC'
             ),
-            'nombre1' => array(
-                'ASC'=>'titular.nombre1 ASC, titular.apellido1 DESC', 
-                'DESC'=>'titular.nombre1 DESC, titular.apellido1 DESC'
+            'nombres' => array(
+                'ASC'=>'usuario.nombres ASC, usuario.apellidos DESC', 
+                'DESC'=>'titular.nombres DESC, usuario.apellidos DESC'
             ),
-            'apellido1' => array(
-                'ASC'=>'titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'titular.apellido1 DESC, titular.nombre1 DESC'
+            'apellidos' => array(
+                'ASC'=>'usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'usuario.apellidos DESC, usuario.nombres DESC'
             ),
-            'cedula' => array(
-                'ASC'=>'titular.cedula ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'titular.cedula DESC, titular.apellido1 DESC, titular.nombre1 DESC'
-            ),            
             'email' => array(
-                'ASC'=>'usuario.email ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'usuario.email DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'usuario.email ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'usuario.email DESC, titular.apellidos DESC, usuario.nombres DESC'
             ),
             'sucursal' => array(
-                'ASC'=>'sucursal.sucursal ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'sucursal.sucursal DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'sucursal.sucursal ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'sucursal.sucursal DESC, usuario.apellidos DESC, usuario.nombres DESC'
             ),
             'estado_usuario' => array(
-                'ASC'=>'estado_usuario.estado_usuario ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'estado_usuario.estado_usuario DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'estado_usuario.estado_usuario ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'estado_usuario.estado_usuario DESC, usuario.apellidos DESC, usuario.nombres DESC'
             )
         ));
         
@@ -189,48 +183,43 @@ class Usuario extends ActiveRecord {
         if( strlen($value) <= 2 OR ($value=='none') ) {
             return NULL;
         }
-        $columns = 'usuario.*, perfil.perfil, titular.cedula, titular.nombre1, titular.apellido1, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
+        $columns = 'usuario.*, perfil.perfil, usuario.nombres, usuario.apellidos, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
-        $join.= 'INNER JOIN titular ON titular.id = usuario.titular_id ';        
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $conditions = "usuario.id > '2'";//Por el super usuario
-        
-        $order = $this->get_order($order, 'nombre1', array(                        
+        $order = $this->get_order($order, 'nombres', array(                        
             'login' => array(
-                'ASC'=>'usuario.login ASC, titular.nombre1 ASC, titular.apellido1 DESC', 
-                'DESC'=>'usuario.login DESC, titular.nombre1 DESC, titular.apellido1 DESC'
+                'ASC'=>'usuario.login ASC, usuario.nombres ASC, usuario.apellidos DESC', 
+                'DESC'=>'usuario.login DESC, usuario.nombres DESC, usuario.apellidos DESC'
             ),
-            'nombre1' => array(
-                'ASC'=>'titular.nombre1 ASC, titular.apellido1 DESC', 
-                'DESC'=>'titular.nombre1 DESC, titular.apellido1 DESC'
+            'nombres' => array(
+                'ASC'=>'usuario.nombres ASC, usuario.apellidos DESC', 
+                'DESC'=>'titular.nombres DESC, usuario.apellidos DESC'
             ),
-            'apellido1' => array(
-                'ASC'=>'titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'titular.apellido1 DESC, titular.nombre1 DESC'
+            'apellidos' => array(
+                'ASC'=>'usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'usuario.apellidos DESC, usuario.nombres DESC'
             ),
-            'cedula' => array(
-                'ASC'=>'titular.cedula ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'titular.cedula DESC, titular.apellido1 DESC, titular.nombre1 DESC'
-            ),            
             'email' => array(
-                'ASC'=>'usuario.email ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'usuario.email DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'usuario.email ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'usuario.email DESC, titular.apellidos DESC, usuario.nombres DESC'
             ),
             'sucursal' => array(
-                'ASC'=>'sucursal.sucursal ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'sucursal.sucursal DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'sucursal.sucursal ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'sucursal.sucursal DESC, usuario.apellidos DESC, usuario.nombres DESC'
             ),
             'estado_usuario' => array(
-                'ASC'=>'estado_usuario.estado_usuario ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'estado_usuario.estado_usuario DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'estado_usuario.estado_usuario ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'estado_usuario.estado_usuario DESC, usuario.apellidos DESC, usuario.nombres DESC'
             )
         ));
+
         
         //Defino los campos habilitados para la búsqueda
-        $fields = array('login', 'nombre1', 'apellido1', 'cedula', 'email', 'perfil', 'sucursal', 'estado_usuario');
+        $fields = array('login', 'nombres', 'apellidos', 'email', 'perfil', 'sucursal', 'estado_usuario');
         if(!in_array($field, $fields)) {
-            $field = 'nombre1';
+            $field = 'nombres';
         }        
         if(! ($field=='sucursal' && $value=='todas') ) {
             $conditions.= " AND $field LIKE '%$value%'";
@@ -244,41 +233,36 @@ class Usuario extends ActiveRecord {
     
     
     public function getListadoUsuario($estado, $order='', $page=0) {
-        $columns = 'usuario.*, perfil.perfil, titular.cedula, titular.nombre1, titular.apellido1, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
+        $columns = 'usuario.*, perfil.perfil, usuario.nombres, usuario.apellidos, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
-        $join.= 'INNER JOIN titular ON titular.id = usuario.titular_id ';        
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $conditions = "usuario.id > '2'";//Por el super usuario
                 
-        $order = $this->get_order($order, 'nombre1', array(                        
+        $order = $this->get_order($order, 'nombres', array(                        
             'login' => array(
-                'ASC'=>'usuario.login ASC, titular.nombre1 ASC, titular.apellido1 DESC', 
-                'DESC'=>'usuario.login DESC, titular.nombre1 DESC, titular.apellido1 DESC'
+                'ASC'=>'usuario.login ASC, usuario.nombres ASC, usuario.apellidos DESC', 
+                'DESC'=>'usuario.login DESC, usuario.nombres DESC, usuario.apellidos DESC'
             ),
-            'nombre1' => array(
-                'ASC'=>'titular.nombre1 ASC, titular.apellido1 DESC', 
-                'DESC'=>'titular.nombre1 DESC, titular.apellido1 DESC'
+            'nombres' => array(
+                'ASC'=>'usuario.nombres ASC, usuario.apellidos DESC', 
+                'DESC'=>'titular.nombres DESC, usuario.apellidos DESC'
             ),
-            'apellido1' => array(
-                'ASC'=>'titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'titular.apellido1 DESC, titular.nombre1 DESC'
+            'apellidos' => array(
+                'ASC'=>'usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'usuario.apellidos DESC, usuario.nombres DESC'
             ),
-            'cedula' => array(
-                'ASC'=>'titular.cedula ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'titular.cedula DESC, titular.apellido1 DESC, titular.nombre1 DESC'
-            ),            
             'email' => array(
-                'ASC'=>'usuario.email ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'usuario.email DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'usuario.email ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'usuario.email DESC, titular.apellidos DESC, usuario.nombres DESC'
             ),
             'sucursal' => array(
-                'ASC'=>'sucursal.sucursal ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'sucursal.sucursal DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'sucursal.sucursal ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'sucursal.sucursal DESC, usuario.apellidos DESC, usuario.nombres DESC'
             ),
             'estado_usuario' => array(
-                'ASC'=>'estado_usuario.estado_usuario ASC, titular.apellido1 ASC, titular.nombre1 ASC', 
-                'DESC'=>'estado_usuario.estado_usuario DESC, titular.apellido1 DESC, titular.nombre1 DESC'
+                'ASC'=>'estado_usuario.estado_usuario ASC, usuario.apellidos ASC, usuario.nombres ASC', 
+                'DESC'=>'estado_usuario.estado_usuario DESC, usuario.apellidos DESC, usuario.nombres DESC'
             )
         ));
         
@@ -395,10 +379,9 @@ class Usuario extends ActiveRecord {
         if(!$usuario) {
             return NULL;
         }
-        $columnas = 'usuario.*, perfil.perfil, titular.cedula, titular.nombre1, titular.nombre2, titular.apellido1, titular.apellido2, titular.nacionalidad, titular.sexo, titular.fecha_nacimiento, titular.pais_id, titular.estado_id, titular.municipio_id, titular.parroquia_id, titular.direccion_habitacion, titular.estado_civil, titular.celular, titular.telefono, titular.correo_electronico, titular.grupo_sanguineo, titular.fotografia, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
+        $columnas = 'usuario.*, perfil.perfil, usuario.nombres, usuario.nombres, usuario.apellidos, usuario.apellidos, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
         $join = self::getInnerEstado();
         $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
-        $join.= 'INNER JOIN titular ON titular.id = usuario.titular_id ';               
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $condicion = "usuario.id = $usuario";        
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
