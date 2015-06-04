@@ -11,7 +11,7 @@
  * @copyright   Copyright (c) 2014 UPTP / E.M.S. Arroz del Alba S.A. (http://autogestion.arrozdelalba.gob.ve) 
  */
 
-Load::models('beneficiarios/titular', 'config/sucursal', 'sistema/usuario_clave', 'sistema/configuracion');
+Load::models('config/sucursal', 'sistema/usuario_clave', 'sistema/configuracion');
 
 class ResetearClaveController extends BackendController {
     protected function before_filter() {

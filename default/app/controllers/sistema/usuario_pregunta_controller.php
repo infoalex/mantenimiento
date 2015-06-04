@@ -10,7 +10,7 @@
  * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co)
  */
 
-Load::models('beneficiarios/titular', 'config/sucursal');
+Load::models('config/sucursal');
 
 class UsuarioController extends BackendController {
     
