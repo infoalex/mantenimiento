@@ -42,7 +42,7 @@ class AccesoController extends BackendController {
     /**
      * Método para buscar
      */
-    public function buscar($field='nombre', $value='none', $order='order.fecha.asc', $page=1) {        
+    public function buscar($field='nombres', $value='none', $order='order.fecha.asc', $page=1) {        
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
         $field = (Input::hasPost('field')) ? Input::post('field') : $field;
         $value = (Input::hasPost('field')) ? Input::post('value') : $value;

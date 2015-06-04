@@ -86,12 +86,12 @@ class Usuario extends ActiveRecord {
                            // DwAuth::logout();
                            Session::set('perfil_id', '8');
                            Session::set('tema', 'default');
-                        Session::set('nombre1', $usuario->nombre1);
-                        Session::set('apellido1', $usuario->apellido1);                           
+                        Session::set('nombres', $usuario->nombres);
+                        Session::set('apellidos', $usuario->apellidos);                           
                             return DwRedirect::to('sistema/usuario_clave/cambiar_clave');
                         }                         
-                        Session::set('nombre1', $usuario->nombre1);
-                        Session::set('apellido1', $usuario->apellido1);                        
+                        Session::set('nombres', $usuario->nombres);
+                        Session::set('apellidos', $usuario->apellidos);                        
                         Session::set('ip', DwUtils::getIp());
                         Session::set('perfil', $usuario->perfil);
                         Session::set('tema', $usuario->tema);
@@ -100,7 +100,7 @@ class Usuario extends ActiveRecord {
                         //Registro el acceso
                         Acceso::setAcceso(Acceso::ENTRADA, $usuario->id);
                         
-                        DwMessage::info("¡ Bienvenido <strong>$usuario->nombre1 $usuario->apellido1</strong> !.");     
+                        DwMessage::info("¡ Bienvenido <strong>$usuario->nombres $usuario->apellidos</strong> !.");     
                         return true;
                     } else {
                         DwMessage::error(DwAuth::getError());
@@ -132,7 +132,7 @@ class Usuario extends ActiveRecord {
     /**
      * Método para listar los usuarios por perfil
      */
-    public function getUsuarioPorPerfil($perfil, $order='order.nombre1.asc', $page=0) {
+    public function getUsuarioPorPerfil($perfil, $order='order.nombres.asc', $page=0) {
         $perfil = Filter::get($perfil, 'int');
         if(empty($perfil)) {
             return NULL;
