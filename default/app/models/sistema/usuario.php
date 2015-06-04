@@ -121,7 +121,7 @@ class Usuario extends ActiveRecord {
      */
     public static function getUsuarioLogueado() {
         $columnas = 'usuario.*, perfil.perfil, nombres, apellidos, estado_usuario.estado_usuario';
-        $join.= "INNER JOIN perfil ON perfil.id = usuario.perfil_id ";
+        $join= "INNER JOIN perfil ON perfil.id = usuario.perfil_id ";
         $join.= self::getInnerEstado();
         $condicion = "usuario.id = '".Session::get('id')."'";
         $obj = new Usuario();

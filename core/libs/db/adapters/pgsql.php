@@ -123,7 +123,7 @@ class DbPgSQL extends DbBase implements DbBaseInterface
         }
 
         if (!isset($config['port']) || !$config['port']) {
-            $config['port'] = 5433;
+            $config['port'] = 5432;
         }
 
         if ($this->id_connection = pg_connect("host={$config['host']} user={$config['username']} password={$config['password']} dbname={$config['name']} port={$config['port']}", PGSQL_CONNECT_FORCE_NEW)) {
