@@ -1,15 +1,18 @@
 <?php
 /**
- * S.A.S
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Descripcion: Modelo para el manejo de beneficiarioes
+ * Descripcion: Modelo para el manejo de Usuario
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Javier León (jel1284@gmail.com)
- * @copyright   Copyright (c) 2014 UPTP / E.M.S. Arroz del Alba S.A. (http://autogestion.arrozdelalba.gob.ve) 
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
+
+
+
 
 Load::models('sistema/estado_usuario', 'sistema/perfil','sistema/usuario_clave','sistema/usuario_pregunta', 'sistema/recurso', 'sistema/recurso_perfil', 'sistema/acceso');
 
@@ -31,7 +34,7 @@ class Usuario extends ActiveRecord {
      * @return string
      */
     public static function getInnerEstado() {
-        return "INNER JOIN (SELECT usuario_id, CASE estado_usuario WHEN ".EstadoUsuario::COD_ACTIVO." THEN '".EstadoUsuario::ACTIVO."' WHEN ".EstadoUsuario::COD_BLOQUEADO." THEN '".EstadoUsuario::BLOQUEADO."' ELSE 'INDEFINIDO' END AS estado_usuario, descripcion FROM (SELECT * FROM estado_usuario ORDER BY estado_usuario.id DESC ) AS estado_usuario GROUP BY estado_usuario.usuario_id,estado_usuario.estado_usuario, descripcion) AS estado_usuario ON estado_usuario.usuario_id = usuario.id ";        
+        return "INNER JOIN (SELECT usuario_id, CASE estado_usuario WHEN ".EstadoUsuario::COD_ACTIVO." THEN '".EstadoUsuario::ACTIVO."' WHEN ".EstadoUsuario::COD_BLOQUEADO." THEN '".EstadoUsuario::BLOQUEADO."' ELSE 'INDEFINIDO' END AS estado_usuario, descripcion FROM (SELECT * FROM estado_usuario ORDER BY estado_usuario.id DESC ) AS estado_usuario GROUP BY estado_usuario.usuario_id, estado_usuario.estado_usuario, descripcion) AS estado_usuario ON estado_usuario.usuario_id = usuario.id ";        
     }
     /**
      * Método para validar los intentos de la clave
@@ -320,6 +323,13 @@ class Usuario extends ActiveRecord {
      * Callback que se ejecuta antes de guardar/modificar
      */
     protected function before_save() {
+        //Coloco en mayusculas los datos que van a bd
+        $this->nombres = strtoupper($this->nombres);
+        $this->apellidos = strtoupper($this->apellidos);
+        $this->login = strtoupper($this->login);
+        $this->email = strtoupper($this->email);
+                
+
         //Verifico la sucursal al crear el usuario        
         if(APP_OFFICE) {                                
             $this->sucursal_id = ($this->sucursal_id=='todas') ? NULL : Filter::get($this->sucursal_id, 'int');                

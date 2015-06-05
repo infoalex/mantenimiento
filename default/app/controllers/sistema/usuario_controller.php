@@ -1,20 +1,20 @@
 <?php
 /**
- * S.A.S
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Descripcion: Modelo para el manejo de beneficiarioes
+ * Descripcion: Controlador del Modelo de Usuario
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Grupo SAS IuTEP (jel1284@gmail.com)
- * @copyright   Copyright (c) 2014 UPTP / E.M.S. Arroz del Alba S.A. (http://autogestion.arrozdelalba.gob.ve) 
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
 
 Load::models('config/sucursal', 'sistema/usuario_clave');
 
 class UsuarioController extends BackendController {
-    
+     
     /**
      * Método que se ejecuta antes de cualquier acción
      */
@@ -87,9 +87,8 @@ class UsuarioController extends BackendController {
      * Método para editar
      */
     public function editar($key) {       
-    exit($key) ;
+        
         if(!$id = DwSecurity::isValidKey($key, 'upd_usuario', 'int')) {
-           exit($id);
            return DwRedirect::toAction('listar');
         }
         

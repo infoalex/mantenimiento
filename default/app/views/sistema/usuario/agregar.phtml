@@ -30,10 +30,10 @@
 
                 <div class="row-fluid">
                     <div class="span6">
-                        <?php echo DwForm::text('usuario.login', array('class'=>'input-xxlarge input-required mask-alphanum show-error input-user'), NULL, 'Usuario'); ?>
+                        <?php echo DwForm::email('usuario.email', array('class'=>'input-xxlarge mask-email show-error'), NULL, 'Email'); ?>
                     </div>
                     <div class="span6">
-                        <?php echo DwForm::dbSelect('usuario.perfil_id', 'perfil', array('sistema/perfil', 'getListadoPerfil', Perfil::ACTIVO), NULL, array('class'=>'input-xxlarge input-required input-list show-errors'), NULL, 'Perfil'); ?>
+                        <?php echo DwForm::text('usuario.login', array('class'=>'input-xxlarge input-required mask-alphanum show-error input-user'), NULL, 'Usuario'); ?>
                     </div>
                 </div>
 
@@ -43,9 +43,10 @@
                         <?php echo DwForm::dbSelect('usuario.sucursal_id', array('sucursal', 'parroquia'), array('config/sucursal', 'getListadoSucursal'), array('todas'=>'Todas'), array('class'=>'input-xxlarge input-required mask-pint show-errors'), NULL, 'Sucursal / UPSA'); ?>
                     </div>
                     <?php } ?>
-                    <div class="span6">
-                        <?php echo DwForm::email('usuario.email', array('class'=>'input-xxlarge mask-email show-error'), NULL, 'Email'); ?>
+                                        <div class="span6">
+                        <?php echo DwForm::dbSelect('usuario.perfil_id', 'perfil', array('sistema/perfil', 'getListadoPerfil', Perfil::ACTIVO), NULL, array('class'=>'input-xxlarge input-required input-list show-errors'), NULL, 'Perfil'); ?>
                     </div>
+
                 </div>
                 <div class="row-fluid">
                     <div class="span6">
@@ -63,8 +64,7 @@
 
                 </div>
                 <div class="row-fluid">
-
-                    <?php //echo DwForm::hidden('usuario.titular_id', NULL, NULL); ?>
+                    <?php echo DwForm::hidden('usuario.tema', NULL, 'default'); ?>
 
                     <div class="form-actions">
                         <?php echo DwButton::save('Guardar usuario'); ?>
