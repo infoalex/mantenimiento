@@ -1,16 +1,15 @@
 <?php
 /**
- * Dailyscript - Web | App | Media
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Descripcion: Modelo para el manejo de las copias de seguridad
+ * Descripcion: Modelo para el respaldo de las bases de datos
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Iván D. Meléndez (ivan.melendez@dailyscript.com.co)
- * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co) 
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
-
 class Backup extends ActiveRecord {
     
     /**
