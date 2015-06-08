@@ -1,15 +1,16 @@
 <?php
 /**
- * S.A.S
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Descripcion: Modelo para el manejo de beneficiarioes
+ * Descripcion: Clase que gestiona lo relacionado con los usuarios sus y preguntas
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Javier León (jel1284@gmail.com)
- * @copyright   Copyright (c) 2014 UPTP / E.M.S. Arroz del Alba S.A. (http://autogestion.arrozdelalba.gob.ve) 
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
+
 class UsuarioPregunta extends ActiveRecord {
     
     /**

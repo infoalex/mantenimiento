@@ -10,10 +10,6 @@
  * @author      Grupo SGIMPC UPTP 
  * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
-
-
-
-
 Load::models('sistema/estado_usuario', 'sistema/perfil','sistema/usuario_clave','sistema/usuario_pregunta', 'sistema/recurso', 'sistema/recurso_perfil', 'sistema/acceso');
 
 class Usuario extends ActiveRecord {

@@ -1,17 +1,14 @@
 <?php
 /**
- * Dailyscript - Web | App | Media
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Clase que se encarga de todo lo relacionado con la información de la empresa
+ * Descripcion: Modelo para la configuracion
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Iván D. Meléndez (ivan.melendez@dailyscript.com.co)
- * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co) 
- * 
- * Ajustada Información para adaptarla a los requerimientos del S.A.S.
- * 
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
 
 class Configuracion extends ActiveRecord {

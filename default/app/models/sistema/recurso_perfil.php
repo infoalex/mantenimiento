@@ -1,17 +1,15 @@
 <?php
 /**
- * Dailyscript - Web | App | Media
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Clase que gestiona todo lo relacionado con los
- * recursos de los usuarios con su respectivo grupo
+ * Descripcion: Clase que gestiona todo lo relacionado con los recursos de los usuarios con su respectivo grupo
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Iván D. Meléndez (ivan.melendez@dailyscript.com.co)
- * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co)  
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
-
 class RecursoPerfil extends ActiveRecord {
     
     //Se desabilita el logger para no llenar el archivo de "basura"

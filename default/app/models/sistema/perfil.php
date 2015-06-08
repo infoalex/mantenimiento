@@ -1,16 +1,15 @@
 <?php
 /**
- * Dailyscript - Web | App | Media
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
- * Descripcion: Clase que gestiona los perfiles de usuarios
+ * Descripcion: Modelo para el manejo de los perfiles de  Usuario
  *
  * @category
  * @package     Models
  * @subpackage
- * @author      Iván D. Meléndez (ivan.melendez@dailyscript.com.co)
- * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co) 
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
-
 class Perfil extends ActiveRecord {
     
     /**
