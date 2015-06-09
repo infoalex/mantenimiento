@@ -30,7 +30,7 @@ class Usuario extends ActiveRecord {
      * @return string
      */
     public static function getInnerEstado() {
-        return "INNER JOIN (SELECT usuario_id, CASE estado_usuario WHEN ".EstadoUsuario::COD_ACTIVO." THEN '".EstadoUsuario::ACTIVO."' WHEN ".EstadoUsuario::COD_BLOQUEADO." THEN '".EstadoUsuario::BLOQUEADO."' ELSE 'INDEFINIDO' END AS estado_usuario, descripcion FROM (SELECT * FROM estado_usuario ORDER BY estado_usuario.id DESC ) AS estado_usuario GROUP BY estado_usuario.usuario_id, estado_usuario.estado_usuario, descripcion) AS estado_usuario ON estado_usuario.usuario_id = usuario.id ";        
+        return "INNER JOIN (SELECT usuario_id, CASE estado_usuario WHEN ".EstadoUsuario::COD_ACTIVO." THEN '".EstadoUsuario::ACTIVO."' WHEN ".EstadoUsuario::COD_BLOQUEADO." THEN '".EstadoUsuario::BLOQUEADO."' ELSE 'INDEFINIDO' END AS estado_usuario, descripcion FROM (SELECT * FROM estado_usuario ORDER BY estado_usuario.id DESC ) AS estado_usuario GROUP BY estado_usuario.usuario_id ) AS estado_usuario ON estado_usuario.usuario_id = usuario.id ";       
     }
     /**
      * Método para validar los intentos de la clave
@@ -67,7 +67,7 @@ class Usuario extends ActiveRecord {
                         $usuario = self::getUsuarioLogueado();  
                         $usuval = UsuarioClave::clave_valida($usuario->id);
                         $usuintentos = self::usuario_intentos($usuario->id);                      
-                        if( ($usuario->id!=2) &&  ($usuario->estado_usuario != EstadoUsuario::ACTIVO) ) { 
+                        if($usuario->estatus != 1 ) { 
                             DwAuth::logout();
                             DwMessage::error('Lo sentimos pero tu cuenta se encuentra inactiva. <br />Si esta información es incorrecta contacta al administrador del sistema.');
                             return false;
@@ -119,9 +119,9 @@ class Usuario extends ActiveRecord {
      * @return object Usuario
      */
     public static function getUsuarioLogueado() {
-        $columnas = 'usuario.*, perfil.perfil, nombres, apellidos, estado_usuario.estado_usuario';
+        $columnas = 'usuario.*, perfil.perfil, nombres, apellidos ';
         $join= "INNER JOIN perfil ON perfil.id = usuario.perfil_id ";
-        $join.= self::getInnerEstado();
+        //$join.= self::getInnerEstado();
         $condicion = "usuario.id = '".Session::get('id')."'";
         $obj = new Usuario();
         return $obj->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
@@ -232,9 +232,9 @@ class Usuario extends ActiveRecord {
     
     
     public function getListadoUsuario($estado, $order='', $page=0) {
-        $columns = 'usuario.*, perfil.perfil, usuario.nombres, usuario.apellidos, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
-        $join = self::getInnerEstado();
-        $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
+        $columns = 'usuario.*, perfil.perfil, sucursal.sucursal';
+        //$join = self::getInnerEstado();
+        $join = 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $conditions = "usuario.id > '2'";//Por el super usuario
                 
@@ -245,7 +245,7 @@ class Usuario extends ActiveRecord {
             ),
             'nombres' => array(
                 'ASC'=>'usuario.nombres ASC, usuario.apellidos DESC', 
-                'DESC'=>'titular.nombres DESC, usuario.apellidos DESC'
+                'DESC'=>'usuario.nombres DESC, usuario.apellidos DESC'
             ),
             'apellidos' => array(
                 'ASC'=>'usuario.apellidos ASC, usuario.nombres ASC', 
@@ -258,18 +258,8 @@ class Usuario extends ActiveRecord {
             'sucursal' => array(
                 'ASC'=>'sucursal.sucursal ASC, usuario.apellidos ASC, usuario.nombres ASC', 
                 'DESC'=>'sucursal.sucursal DESC, usuario.apellidos DESC, usuario.nombres DESC'
-            ),
-            'estado_usuario' => array(
-                'ASC'=>'estado_usuario.estado_usuario ASC, usuario.apellidos ASC, usuario.nombres ASC', 
-                'DESC'=>'estado_usuario.estado_usuario DESC, usuario.apellidos DESC, usuario.nombres DESC'
             )
-        ));
-        
-        if($estado == 'activos') {
-            $conditions.= " AND estado_usuario.estado_usuario = '".EstadoUsuario::USR_ACTIVO."'";
-        } else if($estado == 'bloqueados') {
-            $conditions.= " AND estado_usuario.estado_usuario = '".EstadoUsuario::USR_BLOQUEADO."'";
-        }          
+        )); 
         
         if($page) {
             return $this->paginated("columns: $columns", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
@@ -385,9 +375,8 @@ class Usuario extends ActiveRecord {
         if(!$usuario) {
             return NULL;
         }
-        $columnas = 'usuario.*, perfil.perfil, usuario.nombres, usuario.nombres, usuario.apellidos, usuario.apellidos, estado_usuario.estado_usuario, estado_usuario.descripcion, sucursal.sucursal';
-        $join = self::getInnerEstado();
-        $join.= 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
+        $columnas = 'usuario.*, perfil.perfil,sucursal.sucursal';
+        $join = 'INNER JOIN perfil ON perfil.id = usuario.perfil_id ';
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $condicion = "usuario.id = $usuario";        
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");

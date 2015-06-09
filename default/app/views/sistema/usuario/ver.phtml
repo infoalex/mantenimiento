@@ -16,7 +16,6 @@
         <?php } ?>
             <li class="active"><a href="#tab1" data-toggle="tab">Información personal</a></li>
             <li><a href="#tab2" data-toggle="tab">Información de la cuenta</a></li>
-            <li><a href="#tab3" data-toggle="tab">Seguimiento a estados</a></li>
             <li><a href="#tab4" data-toggle="tab">Seguimiento a accesos</a></li>
         </ul>
         <div class="tab-content">
@@ -102,38 +101,6 @@
                 </div>
 
             </div>
-
-            <div class="tab-pane" id="tab3">
-
-                <div class="dw-overflow">
-
-                    <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
-                        <thead>
-                            <tr>
-                                <th>NUM</th>
-                                <th class="col-collapse">FECHA</th>
-                                <th class="col-collapse">ESTADO</th>
-                                <th class="col-collapse">DESCRIPCION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $counter = 1; ?>
-                            <?php foreach($estados as $estado): ?>
-                            <tr>
-                                <td><?php echo $counter; ?></td>
-                                <td><?php echo $estado->fecha_estado_at; ?></td>
-                                <td><?php echo ($estado->estado_usuario == EstadoUsuario::ACTIVO) ? '<span class="label label-success" title="'.$usuario->descripcion.'" rel="tooltip">Activo</span>' : '<span class="label label-important" title="'.$usuario->descripcion.'" rel="tooltip">Bloqueado</span>'; ; ?></td>
-                                <td><?php echo $estado->descripcion; ?></td>
-                            </tr>
-                            <?php $counter++; ?>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-
-                </div>
-
-            </div>
-
             <div class="tab-pane" id="tab4">
 
                 <div class="dw-overflow">

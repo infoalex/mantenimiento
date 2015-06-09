@@ -129,25 +129,48 @@ class UsuarioController extends BackendController {
             DwMessage::get('id_no_found');    
             return DwRedirect::toAction('listar');
         }
-        if($tipo == 'reactivar' && $usuario->estado_usuario == EstadoUsuario::ACTIVO) {
+        if($tipo == 'reactivar' && $usuario->estatus == 1) {
             DwMessage::info('El usuario ya se encuentra activo.');
             return DwRedirect::toAction('listar');
-        } else if($tipo == 'bloquear' && $usuario->estado_usuario == EstadoUsuario::BLOQUEADO) {
+        }
+        else if($tipo == 'reactivar' && $usuario->estatus == 2) {
+            $usr = $usuario->getInformacionUsuario($id);
+            $usr->estatus=1;
+            $usr->save();
+            return DwRedirect::toAction('listar');
+        }
+        else if($tipo == 'bloquear' && $usuario->estatus == 2) {
             DwMessage::info('El usuario ya se encuentra bloqueado.');
             return DwRedirect::toAction('listar');
-        }  
-        
-        if(Input::hasPost('estado_usuario')) {            
-            if(EstadoUsuario::setEstadoUsuario($tipo, Input::post('estado_usuario'), array('usuario_id'=>$usuario->id))) { 
-                ($tipo=='reactivar') ? DwMessage::valid('El usuario se ha reactivado correctamente!') : DwMessage::valid('El usuario se ha bloqueado correctamente!');
-                return DwRedirect::toAction('listar');
-            }
-        }  
-        
-        $this->page_title = ($tipo=='reactivar') ? 'Reactivación de usuario' : 'Bloqueo de usuario';
-        $this->usuario = $usuario;
+        }
+        else if($tipo == 'bloquear' && $usuario->estatus == 1) {
+            $usr = $usuario->getInformacionUsuario($id);
+            $usr->estatus=2;
+            $usr->save();
+            return DwRedirect::toAction('listar');
+       }
     }
+
+    public function bloquear($key){
+        if(!$id = DwSecurity::isValidKey($key, 'upd_usuario', 'int')) {
+            return DwRedirect::toAction('aprobacion');
+        }
+        //Mejorar esta parte  implementando algodon de seguridad
     
+        $solicitud_servicio = new SolicitudServicio();
+        $sol = $solicitud_servicio->getInformacionSolicitudServicio($id);
+        $sol->estado_solicitud="A";
+        $sol->save();
+        $cod = $sol->codigo_solicitud;
+        $nro = $sol->celular;
+        $nombre = $sol->nombre;
+        $apellido = $sol->apellido;
+        $contenido= "Sr. ".$nombre." ".$apellido." Su solicitud ha sido aprobada Aprobada con el codigo: ".$cod;
+        $destinatario=$nro;
+        system( '/usr/bin/gammu -c /etc/gammu-smsdrc --sendsms EMS ' . escapeshellarg( $destinatario ) . ' -text ' . escapeshellarg( $contenido ) ); 
+        return DwRedirect::toAction('reporte_aprobacion/'.$id);
+    }
+   
     /**
      * Método para ver
      */
@@ -164,10 +187,8 @@ class UsuarioController extends BackendController {
         
         $estado = new EstadoUsuario();
         $this->estados = $estado->getListadoEstadoUsuario($usuario->id);
-        
         $acceso = new Acceso();
         $this->accesos = $acceso->getListadoAcceso($usuario->id, 'todos', 'order.fecha.desc');
-        
         $this->usuario = $usuario;
         $this->page_title = 'Información del usuario';
         

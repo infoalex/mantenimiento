@@ -56,14 +56,14 @@
                         <?if(APP_OFFICE) { //Si está activa la opción de oficinas ?>
                         <td><?php echo empty($usuario->sucursal) ? 'Todas' : $usuario->sucursal; ?></td>
                         <? } ?>
-                        <td><?php echo ($usuario->estado_usuario == EstadoUsuario::ACTIVO) ? '<span class="label label-success" title="'.$usuario->descripcion.'" rel="tooltip">Activo</span>' : '<span class="label label-important" title="'.$usuario->descripcion.'" rel="tooltip">Bloqueado</span>'; ; ?></td>
+                        <td><?php echo ($usuario->estatus == 1) ? '<span class="label label-success" title="'.$usuario->descripcion.'" rel="tooltip">Activo</span>' : '<span class="label label-important" title="'.$usuario->descripcion.'" rel="tooltip">Bloqueado</span>'; ; ?></td>
                         <td>
                             <?php echo DwHtml::buttonTable('Ver usuario', "sistema/usuario/ver/$key_shw/", NULL, 'warning', 'search'); ?>
                             <?php echo DwHtml::buttonTable('Modificar usuario', "sistema/usuario/editar/$key_upd/", NULL, 'info', 'edit'); ?>
-                            <?php if($usuario->estado_usuario == EstadoUsuario::ACTIVO) { ?>
-                                <?php echo DwHtml::buttonTable('Bloquear usuario', "sistema/usuario/estado/bloquear/$key_ina/", NULL, 'success', 'flag'); ?>
+                            <?php if($usuario->estatus == 1) { ?>
+                                <?php echo DwHtml::buttonTable('Bloquear usuario', "sistema/usuario/estado/bloquear/$key_ina/", array('class'=>'js-confirm', 'confirm-title'=>'Bloquear Usuario', 'confirm-body'=>'¿ Está seguro de Bloquear el usuario?.'), 'success', 'flag'); ?>
                             <?php } else { ?>
-                                <?php echo DwHtml::buttonTable('Reactivar usuario', "sistema/usuario/estado/reactivar/$key_rea/", NULL, 'danger', 'flag'); ?>
+                                <?php echo DwHtml::buttonTable('Reactivar usuario', "sistema/usuario/estado/reactivar/$key_rea/", array('class'=>'js-confirm', 'confirm-title'=>'Activar Usuario', 'confirm-body'=>'¿ Está seguro de Activar el usuario?.') , 'danger', 'flag'); ?>
                             <?php } ?>
                         </td>
                     </tr>
