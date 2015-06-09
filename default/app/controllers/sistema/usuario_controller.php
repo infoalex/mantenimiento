@@ -170,12 +170,7 @@ class UsuarioController extends BackendController {
         system( '/usr/bin/gammu -c /etc/gammu-smsdrc --sendsms EMS ' . escapeshellarg( $destinatario ) . ' -text ' . escapeshellarg( $contenido ) ); 
         return DwRedirect::toAction('reporte_aprobacion/'.$id);
     }
-
-
-
-
-
-    
+   
     /**
      * Método para ver
      */
@@ -192,10 +187,8 @@ class UsuarioController extends BackendController {
         
         $estado = new EstadoUsuario();
         $this->estados = $estado->getListadoEstadoUsuario($usuario->id);
-        
         $acceso = new Acceso();
         $this->accesos = $acceso->getListadoAcceso($usuario->id, 'todos', 'order.fecha.desc');
-        
         $this->usuario = $usuario;
         $this->page_title = 'Información del usuario';
         
