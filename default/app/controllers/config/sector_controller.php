@@ -60,11 +60,11 @@ class SectorController extends BackendController {
      * Método para agregar
      */
     public function agregar() {
-        //$empresa = Session::get('empresa', 'config');
-        $empresa = 1;
+        $sucursal = Session::get('empresa', 'config');
+        $sucursal = 1;
         if(Input::hasPost('Sector')){
-            if(Sector::setSector('create', Input::post('Sector'), array('empresa_id'=>$empresa))){
-                DwMessage::valid('La Sector se ha registrado correctamente!');
+            if(Sector::setSector('create', Input::post('Sector'), array('sucursal_id'=>$sucursal))){
+                DwMessage::valid('El Sector se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }  
         } 
