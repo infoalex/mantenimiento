@@ -1,4 +1,3 @@
-SASv2
-Implementación del S.A.S. bajo el Framework KumbiaPHP utilizando como Backend Postgresql
+Alba Mantenimiento
+Implementación del Sistema de Gestión de Incidencias y Mantenimiento Preventivo / Correctivo bajo el Framework KumbiaPHP utilizando como Backend Postgresql
 
-Incorporado el KumbiaPHP Backend
