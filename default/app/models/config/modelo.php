@@ -7,7 +7,7 @@
  * @author      alexis borges
  * @copyright    
  */
-class Fabricante extends ActiveRecord {
+class Modelo extends ActiveRecord {
     
     /**
      * Constante para definir el id de la oficina principal
@@ -28,18 +28,18 @@ class Fabricante extends ActiveRecord {
     */            
     }  
     /**
-     * Método para obtener fabricantes
+     * Método para obtener modelos
      * @return obj
      */
-   public function obtener_fabricantes($fabricante) {
-        if ($fabricante != '') {
-            $fabricante = stripcslashes($fabricante);
-            $res = $this->find('columns: nombre', "nombre like '%{$fabricante}%'");
+   public function obtener_modelos($modelo) {
+        if ($modelo != '') {
+            $modelo = stripcslashes($modelo);
+            $res = $this->find('columns: nombre', "nombre like '%{$modelo}%'");
             if ($res) {
-                foreach ($res as $fabricante) {
-                    $fabricantes[] = $fabricante->nombre;
+                foreach ($res as $modelo) {
+                    $modelos[] = $modelo->nombre;
                 }
-                return $fabricantes;
+                return $modelos;
             }
         }
         return array('no hubo coincidencias');
@@ -49,11 +49,11 @@ class Fabricante extends ActiveRecord {
      * @param int|string $id
      * @return Sucursal
      */
-    public function getInformacionFabricante($id, $isSlug=false) {
+    public function getInformacionModelo($id, $isSlug=false) {
         $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
-        $columnas = 'fabricante.*';
+        $columnas = 'modelo.*';
         $join = '';
-        $condicion ="fabricante.id = '$id'";
+        $condicion ="modelo.id = '$id'";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
     } 
     
@@ -63,10 +63,10 @@ class Fabricante extends ActiveRecord {
      * @param int $page 
      * @return ActiveRecord
      */
-    public function getListadoFabricante($order='order.nombre.asc', $page='') {
-       $columns = 'fabricante.*';
-        $order = $this->get_order($order, 'fabricante', array('fabricante'=>array('ASC'=>'fabricante.nombre ASC, fabricante.observacion ASC',
-                                                                              'DESC'=>'fabricante.nombre DESC, fabricante.observacion ASC'),
+    public function getListadoModelo($order='order.nombre.asc', $page='') {
+       $columns = 'modelo.*';
+        $order = $this->get_order($order, 'modelo', array('modelo'=>array('ASC'=>'modelo.nombre ASC, modelo.observacion ASC',
+                                                                              'DESC'=>'modelo.nombre DESC, modelo.observacion ASC'),
                                                             'observacion'));
         if($page) {                
             return $this->paginated("columns: $columns", "order: $order", "page: $page");
@@ -82,9 +82,9 @@ class Fabricante extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setFabricante($method, $data, $optData=null) {
+    public static function setModelo($method, $data, $optData=null) {
         //Se aplica la autocarga
-        $obj = new Fabricante($data);
+        $obj = new Modelo($data);
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
@@ -107,27 +107,27 @@ class Fabricante extends ActiveRecord {
         $conditions = "nombre = '$this->nombre'";
         $conditions.= (isset($this->id)) ? " AND id != $this->id" : '';
         if($this->count("conditions: $conditions")) {
-            DwMessage::error('Lo sentimos, pero ya existe un fabricante registrado con el mismo nombre.');
+            DwMessage::error('Lo sentimos, pero ya existe una sucursal registrada con el mismo nombre y ciudad.');
             return 'cancel';
         }
     }
      /**
      * Método para buscar sucursales
      */
-    public function getAjaxFabricantes($field, $value, $order='', $page=0) {
+    public function getAjaxModelos($field, $value, $order='', $page=0) {
         $value = Filter::get($value, 'string');
         if( strlen($value) < 1 OR ($value=='none') ) {
             return NULL;
         }
-        $columns = 'fabricante.* ';
+        $columns = 'modelo.* ';
         $order = $this->get_order($order, 'nombre', array(                        
             'nombre' => array(
-                'ASC'=>'fabricante.nombre ASC, fabricante.nombre ASC', 
-                'DESC'=>'fabricante.nombre DESC, fabricante.nombre DESC'
+                'ASC'=>'modelo.nombre ASC, modelo.nombre ASC', 
+                'DESC'=>'modelo.nombre DESC, modelo.nombre DESC'
             ),
             'observacion' => array(
-                'ASC'=>'fabricante.observacion ASC, fabricante.observacion ASC', 
-                'DESC'=>'fabricante.observacion DESC, fabricante.observacion DESC'
+                'ASC'=>'modelo.observacion ASC, modelo.observacion ASC', 
+                'DESC'=>'modelo.observacion DESC, modelo.observacion DESC'
             ),
         ));
         
