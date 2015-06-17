@@ -8539,6 +8539,7 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 7451	83243	jelitox	2015-06-15 23:17:23.687789-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='config/fabricante/listar'::character varying(55) WHERE id = '76'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{76,config/fabricante/,Fabricante,icon-home,1,15,877,73,NULL,1,"2015-06-15 22:53:13.67714-04:30","2015-06-15 22:53:13.67714-04:30"}	{76,config/fabricante/listar,Fabricante,icon-home,1,15,877,73,NULL,1,"2015-06-15 22:53:13.67714-04:30","2015-06-15 22:53:13.67714-04:30"}
 7452	83243	jelitox	2015-06-15 23:17:27.383848-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='config/marca/listar'::character varying(55) WHERE id = '77'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{77,config/marca/,marca,icon-home,1,15,878,75,NULL,1,"2015-06-15 22:54:58.865799-04:30","2015-06-15 22:54:58.865799-04:30"}	{77,config/marca/listar,marca,icon-home,1,15,878,75,NULL,1,"2015-06-15 22:54:58.865799-04:30","2015-06-15 22:54:58.865799-04:30"}
 7453	83243	jelitox	2015-06-15 23:17:34.985638-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='config/modelo/listar'::character varying(55) WHERE id = '78'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{78,config/modelo/,modelo,icon-home,1,15,879,74,NULL,1,"2015-06-15 22:55:35.560502-04:30","2015-06-15 22:55:35.560502-04:30"}	{78,config/modelo/listar,modelo,icon-home,1,15,879,74,NULL,1,"2015-06-15 22:55:35.560502-04:30","2015-06-15 22:55:35.560502-04:30"}
+7454	83189	arrozalba	2015-06-17 15:28:31.817397-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'192.168.2.18')	acceso	\N	\N	{68,192.168.2.18,NULL,1,1,NULL,"2015-06-17 15:28:31.817397-04:30","2015-06-17 15:28:31.817397-04:30",NULL,NULL}
 \.
 
 
@@ -8546,7 +8547,7 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 -- Name: audit_log_log_id_seq; Type: SEQUENCE SET; Schema: audit_log; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('audit_log_log_id_seq', 7453, true);
+SELECT pg_catalog.setval('audit_log_log_id_seq', 7454, true);
 
 
 SET search_path = public, pg_catalog;
@@ -8576,6 +8577,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 65	1	2015-06-08 15:05:20.972692-04:30	2015-06-08 15:05:20.972692-04:30	1	\N	\N	\N	\N	127.0.0.1
 66	1	2015-06-15 21:02:48.864319-04:30	2015-06-15 21:02:48.864319-04:30	1	\N	\N	\N	\N	127.0.0.1
 67	1	2015-06-15 22:47:48.014705-04:30	2015-06-15 22:47:48.014705-04:30	1	\N	\N	\N	\N	127.0.0.1
+68	1	2015-06-17 15:28:31.817397-04:30	2015-06-17 15:28:31.817397-04:30	1	\N	\N	\N	\N	192.168.2.18
 \.
 
 
@@ -8583,7 +8585,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 67, true);
+SELECT pg_catalog.setval('acceso_id_seq', 68, true);
 
 
 --
