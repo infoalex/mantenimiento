@@ -1523,6 +1523,43 @@ ALTER SEQUENCE profesion_id_seq OWNED BY profesion.id;
 
 
 --
+-- Name: proveedor; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE proveedor (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    direccion text,
+    telefono character varying(11) NOT NULL,
+    correo character varying(100) NOT NULL,
+    observacion text
+);
+
+
+ALTER TABLE public.proveedor OWNER TO arrozalba;
+
+--
+-- Name: proveedor_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE proveedor_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.proveedor_id_seq OWNER TO arrozalba;
+
+--
+-- Name: proveedor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE proveedor_id_seq OWNED BY proveedor.id;
+
+
+--
 -- Name: recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -2672,6 +2709,13 @@ ALTER TABLE ONLY perfil ALTER COLUMN id SET DEFAULT nextval('perfil_id_seq'::reg
 --
 
 ALTER TABLE ONLY profesion ALTER COLUMN id SET DEFAULT nextval('profesion_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY proveedor ALTER COLUMN id SET DEFAULT nextval('proveedor_id_seq'::regclass);
 
 
 --
@@ -8540,6 +8584,12 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 7452	83243	jelitox	2015-06-15 23:17:27.383848-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='config/marca/listar'::character varying(55) WHERE id = '77'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{77,config/marca/,marca,icon-home,1,15,878,75,NULL,1,"2015-06-15 22:54:58.865799-04:30","2015-06-15 22:54:58.865799-04:30"}	{77,config/marca/listar,marca,icon-home,1,15,878,75,NULL,1,"2015-06-15 22:54:58.865799-04:30","2015-06-15 22:54:58.865799-04:30"}
 7453	83243	jelitox	2015-06-15 23:17:34.985638-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='config/modelo/listar'::character varying(55) WHERE id = '78'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{78,config/modelo/,modelo,icon-home,1,15,879,74,NULL,1,"2015-06-15 22:55:35.560502-04:30","2015-06-15 22:55:35.560502-04:30"}	{78,config/modelo/listar,modelo,icon-home,1,15,879,74,NULL,1,"2015-06-15 22:55:35.560502-04:30","2015-06-15 22:55:35.560502-04:30"}
 7454	83189	arrozalba	2015-06-17 15:28:31.817397-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'192.168.2.18')	acceso	\N	\N	{68,192.168.2.18,NULL,1,1,NULL,"2015-06-17 15:28:31.817397-04:30","2015-06-17 15:28:31.817397-04:30",NULL,NULL}
+7455	83189	arrozalba	2015-06-18 21:27:52.324981-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{69,127.0.0.1,NULL,1,1,NULL,"2015-06-18 21:27:52.324981-04:30","2015-06-18 21:27:52.324981-04:30",NULL,NULL}
+7456	83284	arrozalba	2015-06-18 21:44:31.424366-04:30	127.0.0.1	INSERT	INSERT INTO recurso (usuario_id,fecha_registro,fecha_modificado,modulo,controlador,accion,recurso,descripcion,activo) VALUES (NULL,DEFAULT,DEFAULT,'config','sector','*','config/sector/*','Submódulo para la configuración de la información de los sectores','1')	recurso	\N	\N	{76,*,1,config,config/sector/*,NULL,sector,"Submódulo para la configuración de la información de los sectores","2015-06-18 21:44:31.424366-04:30","2015-06-18 21:44:31.424366-04:30"}
+7457	83243	arrozalba	2015-06-18 21:45:35.906812-04:30	127.0.0.1	INSERT	INSERT INTO menu (usuario_id,fecha_registro,fecha_modificado,menu_id,recurso_id,menu,url,posicion,icono,activo,visibilidad) VALUES (NULL,DEFAULT,DEFAULT,'15','76','sector','config/sector/','880','icon-home','1','1')	menu	\N	\N	{79,config/sector/,sector,icon-home,1,15,880,76,NULL,1,"2015-06-18 21:45:35.906812-04:30","2015-06-18 21:45:35.906812-04:30"}
+7458	83189	arrozalba	2015-06-20 13:18:58.442753-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{70,127.0.0.1,NULL,1,1,NULL,"2015-06-20 13:18:58.442753-04:30","2015-06-20 13:18:58.442753-04:30",NULL,NULL}
+7459	83284	arrozalba	2015-06-20 13:20:45.249168-04:30	127.0.0.1	INSERT	INSERT INTO recurso (usuario_id,fecha_registro,fecha_modificado,modulo,controlador,accion,recurso,descripcion,activo) VALUES (NULL,DEFAULT,DEFAULT,'config','proveedor','*','config/proveedor/*','sub-modulo para la gestion de proveedores','1')	recurso	\N	\N	{77,*,1,config,config/proveedor/*,NULL,proveedor,"sub-modulo para la gestion de proveedores","2015-06-20 13:20:45.249168-04:30","2015-06-20 13:20:45.249168-04:30"}
+7460	83243	arrozalba	2015-06-20 13:21:14.531687-04:30	127.0.0.1	INSERT	INSERT INTO menu (usuario_id,fecha_registro,fecha_modificado,menu_id,recurso_id,menu,url,posicion,icono,activo,visibilidad) VALUES (NULL,DEFAULT,DEFAULT,'15','77','proveedor','config/proveedor/','881','icon-home','1','1')	menu	\N	\N	{80,config/proveedor/,proveedor,icon-home,1,15,881,77,NULL,1,"2015-06-20 13:21:14.531687-04:30","2015-06-20 13:21:14.531687-04:30"}
 \.
 
 
@@ -8547,7 +8597,7 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 -- Name: audit_log_log_id_seq; Type: SEQUENCE SET; Schema: audit_log; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('audit_log_log_id_seq', 7454, true);
+SELECT pg_catalog.setval('audit_log_log_id_seq', 7460, true);
 
 
 SET search_path = public, pg_catalog;
@@ -8578,6 +8628,8 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 66	1	2015-06-15 21:02:48.864319-04:30	2015-06-15 21:02:48.864319-04:30	1	\N	\N	\N	\N	127.0.0.1
 67	1	2015-06-15 22:47:48.014705-04:30	2015-06-15 22:47:48.014705-04:30	1	\N	\N	\N	\N	127.0.0.1
 68	1	2015-06-17 15:28:31.817397-04:30	2015-06-17 15:28:31.817397-04:30	1	\N	\N	\N	\N	192.168.2.18
+69	1	2015-06-18 21:27:52.324981-04:30	2015-06-18 21:27:52.324981-04:30	1	\N	\N	\N	\N	127.0.0.1
+70	1	2015-06-20 13:18:58.442753-04:30	2015-06-20 13:18:58.442753-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -8585,7 +8637,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 68, true);
+SELECT pg_catalog.setval('acceso_id_seq', 70, true);
 
 
 --
@@ -8940,6 +8992,8 @@ COPY menu (id, usuario_id, fecha_registro, fecha_modificado, menu_id, recurso_id
 76	\N	2015-06-15 22:53:13.67714-04:30	2015-06-15 22:53:13.67714-04:30	15	73	Fabricante	config/fabricante/listar	877	icon-home	1	1
 77	\N	2015-06-15 22:54:58.865799-04:30	2015-06-15 22:54:58.865799-04:30	15	75	marca	config/marca/listar	878	icon-home	1	1
 78	\N	2015-06-15 22:55:35.560502-04:30	2015-06-15 22:55:35.560502-04:30	15	74	modelo	config/modelo/listar	879	icon-home	1	1
+79	\N	2015-06-18 21:45:35.906812-04:30	2015-06-18 21:45:35.906812-04:30	15	76	sector	config/sector/	880	icon-home	1	1
+80	\N	2015-06-20 13:21:14.531687-04:30	2015-06-20 13:21:14.531687-04:30	15	77	proveedor	config/proveedor/	881	icon-home	1	1
 \.
 
 
@@ -8947,7 +9001,7 @@ COPY menu (id, usuario_id, fecha_registro, fecha_modificado, menu_id, recurso_id
 -- Name: menu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('menu_id_seq', 78, true);
+SELECT pg_catalog.setval('menu_id_seq', 80, true);
 
 
 --
@@ -10908,6 +10962,22 @@ SELECT pg_catalog.setval('profesion_id_seq', 186, true);
 
 
 --
+-- Data for Name: proveedor; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY proveedor (id, nombre, direccion, telefono, correo, observacion) FROM stdin;
+1	Inagrinca c.a	zona industrial acargua 2	02556640000	inagrinca@gmail.com	repuestos tales como rodillos entre otros
+\.
+
+
+--
+-- Name: proveedor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('proveedor_id_seq', 1, true);
+
+
+--
 -- Data for Name: recurso; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
@@ -10933,6 +11003,8 @@ COPY recurso (id, usuario_id, fecha_registro, fecha_modificado, modulo, controla
 73	\N	2015-06-15 22:50:40.696229-04:30	2015-06-15 22:50:40.696229-04:30	config	fabricante	*	config/fabricante/*	Submódulo para la configuración de la información de los fabricantes	1
 74	\N	2015-06-15 22:51:03.347968-04:30	2015-06-15 22:51:03.347968-04:30	config	modelo	*	config/modelo/*	Submódulo para la configuración de la información de los modelos	1
 75	\N	2015-06-15 22:51:25.468183-04:30	2015-06-15 22:51:25.468183-04:30	config	marca	*	config/marca/*	Submódulo para la configuración de la información de las marcas	1
+76	\N	2015-06-18 21:44:31.424366-04:30	2015-06-18 21:44:31.424366-04:30	config	sector	*	config/sector/*	Submódulo para la configuración de la información de los sectores	1
+77	\N	2015-06-20 13:20:45.249168-04:30	2015-06-20 13:20:45.249168-04:30	config	proveedor	*	config/proveedor/*	sub-modulo para la gestion de proveedores	1
 \.
 
 
@@ -10940,7 +11012,7 @@ COPY recurso (id, usuario_id, fecha_registro, fecha_modificado, modulo, controla
 -- Name: recurso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('recurso_id_seq', 75, true);
+SELECT pg_catalog.setval('recurso_id_seq', 77, true);
 
 
 --
@@ -11439,6 +11511,14 @@ ALTER TABLE ONLY profesion
 
 ALTER TABLE ONLY profesion
     ADD CONSTRAINT profesion_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: proveedor_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY proveedor
+    ADD CONSTRAINT proveedor_pkey PRIMARY KEY (id);
 
 
 --

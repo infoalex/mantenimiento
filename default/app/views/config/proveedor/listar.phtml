@@ -3,10 +3,10 @@
     $(function() {
         $('table').dwGrid({
             form_search: true,
-            form_action: '<?php echo PUBLIC_PATH; ?>config/fabricante/buscar/',
+            form_action: '<?php echo PUBLIC_PATH; ?>config/proveedor/buscar/',
             form_load_data : 'dw-shell-content',
             order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
-            order_action: $.KumbiaPHP.publicPath+"config/fabricante/listar/"
+            order_action: $.KumbiaPHP.publicPath+"config/proveedor/listar/"
         });
     });
 </script>
@@ -15,7 +15,7 @@
 
     <div class="btn-toolbar btn-toolbar-top">
         <div class="btn-actions">
-            <?php echo DwHtml::button("config/fabricante/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+            <?php echo DwHtml::button("config/proveedor/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
         </div>
     </div>
 
@@ -26,30 +26,36 @@
                 <tr>
                     <th>NUM</th>
                     <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="direccion">DIRECCION</th>
+                    <th class="col-collapse" data-search="telefono">TELEFONO</th>
+                    <th class="col-collapse" data-search="correo">CORREO</th>
                     <th class="col-collapse" data-search="observacion">OBSERVACION</th>
                     <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($fabricantes->items as $fabricante): ?>
-                    <?php $key_upd = DwSecurity::getKey($fabricante->id, 'upd_fabricante'); ?>
-                    <?php $key_del = DwSecurity::getKey($fabricante->id, 'del_fabricante'); ?>
+                <?php foreach($proveedores->items as $proveedor): ?>
+                    <?php $key_upd = DwSecurity::getKey($proveedor->id, 'upd_proveedor'); ?>
+                    <?php $key_del = DwSecurity::getKey($proveedor->id, 'del_proveedor'); ?>
                     <tr>
-                        <td><?php echo $fabricantes->counter; ?></td>
-                        <td><?php echo $fabricante->nombre; ?></td>
-                        <td><?php echo $fabricante->observacion; ?></td>
+                        <td><?php echo $proveedores->counter; ?></td>
+                        <td><?php echo $proveedor->nombre; ?></td>
+                        <td><?php echo $proveedor->direccion; ?></td>
+                        <td><?php echo $proveedor->telefono; ?></td>
+                        <td><?php echo $proveedor->correo; ?></td>
+                        <td><?php echo $proveedor->observacion; ?></td>
                         <td>
-                            <?php echo DwHtml::buttonTable('Modificar Fabricante', "config/fabricante/editar/$key_upd/", null, 'info', 'edit'); ?>
-                            <?php echo DwHtml::buttonTable('Eliminar Fabricante', "config/fabricante/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar fabricante', 'confirm-body'=>'Está seguro de eliminar este fabricante? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                            <?php echo DwHtml::buttonTable('Modificar Proveedor', "config/proveedor/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar Proveedor', "config/proveedor/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar proveedor', 'confirm-body'=>'Está seguro de eliminar este proveedor? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
                         </td>
                     </tr>
-                    <?php $fabricantes->counter++; ?>
+                    <?php $proveedores->counter++; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
 
     </div>
 
-    <?php View::partial('paginators/default', false, array('page'=>$fabricantes, 'url'=>"config/fabricante/listar/$order/")); ?>
+    <?php View::partial('paginators/default', false, array('page'=>$proveedores, 'url'=>"config/proveedor/listar/$order/")); ?>
 
 </div>
