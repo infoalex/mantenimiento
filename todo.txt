@@ -84,3 +84,23 @@ modelo de seguridad con kumbia:
 
 
 			 
+//CAMBIOS PENDIENTES MANTENIMIENTO //
+
+* En Fichas, Colocar ventanas emergentes para registro de Fabricante, Modelo, Marca
+* Agregar Fotografia del equipo en la ficha
+* Dando problemas con Active Record 
+		** Fabricante
+		** Marca
+		** Modelo
+* Desaparece el submenu en algunos menus de la configuacion
+* Eliminar boton de reset  en el menu sistema DATABASES
+* Ver perfil de usuario --- MORTADELA
+* Pedir confirmacion al desactivar los perfiles
+* Ver informacion de usuario de usuario --- MORTADELA
+* Editar usuarios  --- Mortadela
+	-- Que no actualice el password junto a todo lo demas
+	-- Los datos de una cosa, aparte de lo demas
+* Revisar MI CUENTA ( NO FUNCIONA ) 
+
+
+AGREGAR MENUS esta todo en mayusculas, colocarlo en Primera letra mayuscula
