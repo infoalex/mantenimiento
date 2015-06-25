@@ -1002,10 +1002,10 @@ CREATE TABLE marca (
 ALTER TABLE public.marca OWNER TO arrozalba;
 
 --
--- Name: marcas_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+-- Name: marca_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
 --
 
-CREATE SEQUENCE marcas_id_seq
+CREATE SEQUENCE marca_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1013,13 +1013,13 @@ CREATE SEQUENCE marcas_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.marcas_id_seq OWNER TO arrozalba;
+ALTER TABLE public.marca_id_seq OWNER TO arrozalba;
 
 --
--- Name: marcas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+-- Name: marca_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
 --
 
-ALTER SEQUENCE marcas_id_seq OWNED BY marca.id;
+ALTER SEQUENCE marca_id_seq OWNED BY marca.id;
 
 
 --
@@ -2659,7 +2659,7 @@ ALTER TABLE ONLY fabricante ALTER COLUMN id SET DEFAULT nextval('fabricantes_id_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY marca ALTER COLUMN id SET DEFAULT nextval('marcas_id_seq'::regclass);
+ALTER TABLE ONLY marca ALTER COLUMN id SET DEFAULT nextval('marca_id_seq'::regclass);
 
 
 --
@@ -8590,6 +8590,20 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 7458	83189	arrozalba	2015-06-20 13:18:58.442753-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{70,127.0.0.1,NULL,1,1,NULL,"2015-06-20 13:18:58.442753-04:30","2015-06-20 13:18:58.442753-04:30",NULL,NULL}
 7459	83284	arrozalba	2015-06-20 13:20:45.249168-04:30	127.0.0.1	INSERT	INSERT INTO recurso (usuario_id,fecha_registro,fecha_modificado,modulo,controlador,accion,recurso,descripcion,activo) VALUES (NULL,DEFAULT,DEFAULT,'config','proveedor','*','config/proveedor/*','sub-modulo para la gestion de proveedores','1')	recurso	\N	\N	{77,*,1,config,config/proveedor/*,NULL,proveedor,"sub-modulo para la gestion de proveedores","2015-06-20 13:20:45.249168-04:30","2015-06-20 13:20:45.249168-04:30"}
 7460	83243	arrozalba	2015-06-20 13:21:14.531687-04:30	127.0.0.1	INSERT	INSERT INTO menu (usuario_id,fecha_registro,fecha_modificado,menu_id,recurso_id,menu,url,posicion,icono,activo,visibilidad) VALUES (NULL,DEFAULT,DEFAULT,'15','77','proveedor','config/proveedor/','881','icon-home','1','1')	menu	\N	\N	{80,config/proveedor/,proveedor,icon-home,1,15,881,77,NULL,1,"2015-06-20 13:21:14.531687-04:30","2015-06-20 13:21:14.531687-04:30"}
+7461	83189	arrozalba	2015-06-24 11:31:07.430738-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{71,127.0.0.1,NULL,1,1,NULL,"2015-06-24 11:31:07.430738-04:30","2015-06-24 11:31:07.430738-04:30",NULL,NULL}
+7462	83243	jelitox	2015-06-24 11:31:50.630565-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Marca'::character varying(45) WHERE id = '77'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{77,config/marca/listar,marca,icon-home,1,15,878,75,NULL,1,"2015-06-15 22:54:58.865799-04:30","2015-06-15 22:54:58.865799-04:30"}	{77,config/marca/listar,Marca,icon-home,1,15,878,75,NULL,1,"2015-06-15 22:54:58.865799-04:30","2015-06-15 22:54:58.865799-04:30"}
+7463	83243	jelitox	2015-06-24 11:31:56.198846-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Modelo'::character varying(45) WHERE id = '78'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{78,config/modelo/listar,modelo,icon-home,1,15,879,74,NULL,1,"2015-06-15 22:55:35.560502-04:30","2015-06-15 22:55:35.560502-04:30"}	{78,config/modelo/listar,Modelo,icon-home,1,15,879,74,NULL,1,"2015-06-15 22:55:35.560502-04:30","2015-06-15 22:55:35.560502-04:30"}
+7464	83243	jelitox	2015-06-24 11:32:01.971721-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Sector'::character varying(45) WHERE id = '79'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{79,config/sector/,sector,icon-home,1,15,880,76,NULL,1,"2015-06-18 21:45:35.906812-04:30","2015-06-18 21:45:35.906812-04:30"}	{79,config/sector/,Sector,icon-home,1,15,880,76,NULL,1,"2015-06-18 21:45:35.906812-04:30","2015-06-18 21:45:35.906812-04:30"}
+7465	83243	jelitox	2015-06-24 11:32:08.310661-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Proveedor'::character varying(45) WHERE id = '80'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{80,config/proveedor/,proveedor,icon-home,1,15,881,77,NULL,1,"2015-06-20 13:21:14.531687-04:30","2015-06-20 13:21:14.531687-04:30"}	{80,config/proveedor/,Proveedor,icon-home,1,15,881,77,NULL,1,"2015-06-20 13:21:14.531687-04:30","2015-06-20 13:21:14.531687-04:30"}
+7466	83243	jelitox	2015-06-24 11:57:53.706865-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Fichas de Equiposs'::character varying(45) WHERE id = '28'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{28,#,"Fichas de Equipos",icon-list,1,NULL,100,NULL,NULL,1,"2014-03-16 12:46:04.752491-04:30","2014-03-16 12:46:04.752491-04:30"}	{28,#,"Fichas de Equiposs",icon-list,1,NULL,100,NULL,NULL,1,"2014-03-16 12:46:04.752491-04:30","2014-03-16 12:46:04.752491-04:30"}
+7467	83243	jelitox	2015-06-24 11:58:11.949028-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Fichas de Equipos'::character varying(45) WHERE id = '28'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{28,#,"Fichas de Equiposs",icon-list,1,NULL,100,NULL,NULL,1,"2014-03-16 12:46:04.752491-04:30","2014-03-16 12:46:04.752491-04:30"}	{28,#,"Fichas de Equipos",icon-list,1,NULL,100,NULL,NULL,1,"2014-03-16 12:46:04.752491-04:30","2014-03-16 12:46:04.752491-04:30"}
+7468	83243	jelitox	2015-06-24 11:58:21.112565-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET menu='Fichas de Equipos / Maquinarias'::character varying(45) WHERE id = '26'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{26,#,"Fichas de Equipos",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}	{26,#,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}
+7469	83243	jelitox	2015-06-24 11:58:41.023121-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='equipos/listar'::character varying(55) WHERE id = '26'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{26,#,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}	{26,equipos/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}
+7470	83243	jelitox	2015-06-24 12:05:08.836172-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='equipo/listar'::character varying(55) WHERE id = '26'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{26,equipos/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}	{26,equipo/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}
+7471	83243	jelitox	2015-06-24 12:17:34.979526-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='equipo/ficha/listar'::character varying(55) WHERE id = '26'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{26,equipo/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}	{26,equipo/ficha/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}
+7472	91261	arrozalba	2015-06-24 14:25:09.708908-04:30	127.0.0.1	INSERT	INSERT INTO marca (nombre,observacion) VALUES ('3m',NULL)	marca	\N	\N	{1,3m,NULL}
+7473	91261	arrozalba	2015-06-24 14:26:57.424497-04:30	127.0.0.1	INSERT	INSERT INTO marca (nombre,observacion) VALUES ('Trupper','trupper')	marca	\N	\N	{2,Trupper,trupper}
+7474	83243	jelitox	2015-06-24 14:28:33.723666-04:30	127.0.0.1	UPDATE	UPDATE public.menu SET url='equipo/equipo/listar'::character varying(55) WHERE id = '26'::integer	menu	{id,url,menu,icono,activo,menu_id,posicion,recurso_id,usuario_id,visibilidad,fecha_registro,fecha_modificado}	{26,equipo/ficha/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}	{26,equipo/equipo/listar,"Fichas de Equipos / Maquinarias",icon-list,1,28,101,NULL,NULL,1,"2014-03-13 13:30:24.848631-04:30","2014-03-13 13:30:24.848631-04:30"}
 \.
 
 
@@ -8597,7 +8611,7 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 -- Name: audit_log_log_id_seq; Type: SEQUENCE SET; Schema: audit_log; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('audit_log_log_id_seq', 7460, true);
+SELECT pg_catalog.setval('audit_log_log_id_seq', 7474, true);
 
 
 SET search_path = public, pg_catalog;
@@ -8630,6 +8644,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 68	1	2015-06-17 15:28:31.817397-04:30	2015-06-17 15:28:31.817397-04:30	1	\N	\N	\N	\N	192.168.2.18
 69	1	2015-06-18 21:27:52.324981-04:30	2015-06-18 21:27:52.324981-04:30	1	\N	\N	\N	\N	127.0.0.1
 70	1	2015-06-20 13:18:58.442753-04:30	2015-06-20 13:18:58.442753-04:30	1	\N	\N	\N	\N	127.0.0.1
+71	1	2015-06-24 11:31:07.430738-04:30	2015-06-24 11:31:07.430738-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -8637,7 +8652,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 70, true);
+SELECT pg_catalog.setval('acceso_id_seq', 71, true);
 
 
 --
@@ -8949,14 +8964,16 @@ SELECT pg_catalog.setval('fabricantes_id_seq', 1, false);
 --
 
 COPY marca (id, nombre, observacion) FROM stdin;
+1	3m	\N
+2	Trupper	trupper
 \.
 
 
 --
--- Name: marcas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+-- Name: marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('marcas_id_seq', 1, false);
+SELECT pg_catalog.setval('marca_id_seq', 2, true);
 
 
 --
@@ -8987,13 +9004,13 @@ COPY menu (id, usuario_id, fecha_registro, fecha_modificado, menu_id, recurso_id
 37	\N	2014-04-22 09:57:03.54549-04:30	2014-04-22 09:57:03.54549-04:30	36	\N	Mantenimientos Correctivos	#	602	icon-briefcase	1	1
 5	\N	2014-03-13 13:30:24.848631-04:30	2014-03-13 13:30:24.848631-04:30	3	5	Auditorías	sistema/auditoria/	908	icon-eye-open	2	1
 4	\N	2014-03-13 13:30:24.848631-04:30	2014-03-13 13:30:24.848631-04:30	3	4	Accesos	sistema/acceso/listar/	908	icon-exchange	2	1
-26	\N	2014-03-13 13:30:24.848631-04:30	2014-03-13 13:30:24.848631-04:30	28	\N	Fichas de Equipos	#	101	icon-list	1	1
-28	\N	2014-03-16 12:46:04.752491-04:30	2014-03-16 12:46:04.752491-04:30	\N	\N	Fichas de Equipos	#	100	icon-list	1	1
 76	\N	2015-06-15 22:53:13.67714-04:30	2015-06-15 22:53:13.67714-04:30	15	73	Fabricante	config/fabricante/listar	877	icon-home	1	1
-77	\N	2015-06-15 22:54:58.865799-04:30	2015-06-15 22:54:58.865799-04:30	15	75	marca	config/marca/listar	878	icon-home	1	1
-78	\N	2015-06-15 22:55:35.560502-04:30	2015-06-15 22:55:35.560502-04:30	15	74	modelo	config/modelo/listar	879	icon-home	1	1
-79	\N	2015-06-18 21:45:35.906812-04:30	2015-06-18 21:45:35.906812-04:30	15	76	sector	config/sector/	880	icon-home	1	1
-80	\N	2015-06-20 13:21:14.531687-04:30	2015-06-20 13:21:14.531687-04:30	15	77	proveedor	config/proveedor/	881	icon-home	1	1
+77	\N	2015-06-15 22:54:58.865799-04:30	2015-06-15 22:54:58.865799-04:30	15	75	Marca	config/marca/listar	878	icon-home	1	1
+78	\N	2015-06-15 22:55:35.560502-04:30	2015-06-15 22:55:35.560502-04:30	15	74	Modelo	config/modelo/listar	879	icon-home	1	1
+79	\N	2015-06-18 21:45:35.906812-04:30	2015-06-18 21:45:35.906812-04:30	15	76	Sector	config/sector/	880	icon-home	1	1
+80	\N	2015-06-20 13:21:14.531687-04:30	2015-06-20 13:21:14.531687-04:30	15	77	Proveedor	config/proveedor/	881	icon-home	1	1
+28	\N	2014-03-16 12:46:04.752491-04:30	2014-03-16 12:46:04.752491-04:30	\N	\N	Fichas de Equipos	#	100	icon-list	1	1
+26	\N	2014-03-13 13:30:24.848631-04:30	2014-03-13 13:30:24.848631-04:30	28	\N	Fichas de Equipos / Maquinarias	equipo/equipo/listar	101	icon-list	1	1
 \.
 
 
