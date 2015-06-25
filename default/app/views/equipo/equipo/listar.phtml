@@ -1,0 +1,67 @@
+<?php View::notify(); ?>
+
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"equipo/equipo/listar/"
+        });
+    });
+</script>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("equipo/equipo/agregar", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+        </div>
+    </div>
+
+    <div class="dw-overflow">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="fecha_adquisicion">FECHA ADQUISICION</th>
+                    <th class="col-collapse" data-search="codigo">CODIGO</th>
+                    <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="fabricante">FABRICANTE</th>
+                    <th class="col-collapse" data-search="marca">MARCA</th>
+                    <th class="col-collapse" data-search="modelo">MODELO</th>
+                    <th class="col-collapse" data-search="proveedor">PROVEEDOR</th>
+                    <th class="col-collapse" data-search="estado">ESTADO</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php // foreach($equipos->items as $equipo): ?>
+                    <?php //$key_upd = DwSecurity::getKey($equipo->id, 'upd_equipo'); ?>
+                    <?php //$key_del = DwSecurity::getKey($equipo->id, 'del_equipo'); ?>
+                    <tr>
+                        <td><?php //echo $equipos->counter; ?></td>
+                        <td><?php //echo $equipo->fecha_solicitud; ?></td>
+                        <td><?php //echo $equipo->titular_id; ?></td>
+                        <td><?php //echo $equipo->beneficiario_id; ?></td>
+                        <td><?php //echo $equipo->proveedor_id; ?></td>
+                        <td><?php //echo $equipo->servicio_id; ?></td>
+                        <td><?php //echo $equipo->patologia_id; ?></td>
+                        <td><?php //echo $equipo->observacion; ?></td>
+                        <td><?php //echo $equipo->estado_solicitud; ?></td>
+                        
+                        <td>
+                            <?php echo DwHtml::buttonTable('Modificar Solicitud', "#", null, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar Solicitud', "#", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar solicitud_medicina', 'confirm-body'=>'Está seguro de eliminar este solicitud_medicina? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                        </td>
+                    </tr>
+                    <?php //$equipos->counter++; ?>
+                <?php //endforeach; ?>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
