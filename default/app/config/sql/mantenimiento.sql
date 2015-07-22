@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -967,10 +968,10 @@ CREATE TABLE fabricante (
 ALTER TABLE public.fabricante OWNER TO arrozalba;
 
 --
--- Name: fabricantes_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+-- Name: fabricante_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
 --
 
-CREATE SEQUENCE fabricantes_id_seq
+CREATE SEQUENCE fabricante_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -978,13 +979,13 @@ CREATE SEQUENCE fabricantes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.fabricantes_id_seq OWNER TO arrozalba;
+ALTER TABLE public.fabricante_id_seq OWNER TO arrozalba;
 
 --
--- Name: fabricantes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+-- Name: fabricante_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
 --
 
-ALTER SEQUENCE fabricantes_id_seq OWNED BY fabricante.id;
+ALTER SEQUENCE fabricante_id_seq OWNED BY fabricante.id;
 
 
 --
@@ -2651,7 +2652,7 @@ ALTER TABLE ONLY estado_usuario ALTER COLUMN id SET DEFAULT nextval('estado_usua
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY fabricante ALTER COLUMN id SET DEFAULT nextval('fabricantes_id_seq'::regclass);
+ALTER TABLE ONLY fabricante ALTER COLUMN id SET DEFAULT nextval('fabricante_id_seq'::regclass);
 
 
 --
@@ -8606,6 +8607,35 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 7475	17558	arrozalba	2015-07-04 12:26:16.929126-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{72,127.0.0.1,NULL,1,1,NULL,"2015-07-04 12:26:16.929126-04:30","2015-07-04 12:26:16.929126-04:30",NULL,NULL}
 7476	17714	arrozalba	2015-07-04 12:26:26.37014-04:30	127.0.0.1	UPDATE	UPDATE usuario SET usuario_id = NULL,fecha_registro = '2015-06-04 20:22:00.520448-04:30',fecha_modificado = '2015-06-04 20:22:00.520448-04:30',fecha_desactivacion = NULL,sucursal_id = NULL,login = 'USER',perfil_id = '2',email = 'USUERTUNNIG@GMAIL.COM',tema = 'default',app_ajax = '1',datagrid = '30',estatus = '1',intentos = NULL,nombres = 'USUARIO',apellidos = 'TUNNING' WHERE  id = '6'	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{6,default,USUERTUNNIG@GMAIL.COM,USER,2,USUARIO,1,30,NULL,TUNNING,2,NULL,NULL,"2015-06-04 20:22:00.520448-04:30","2015-06-04 20:22:00.520448-04:30",NULL}	{6,default,USUERTUNNIG@GMAIL.COM,USER,1,USUARIO,1,30,NULL,TUNNING,2,NULL,NULL,"2015-06-04 20:22:00.520448-04:30","2015-06-04 20:22:00.520448-04:30",NULL}
 7477	17714	arrozalba	2015-07-04 12:26:30.488079-04:30	127.0.0.1	UPDATE	UPDATE usuario SET usuario_id = NULL,fecha_registro = '2015-06-04 20:22:00.520448-04:30',fecha_modificado = '2015-06-04 20:22:00.520448-04:30',fecha_desactivacion = NULL,sucursal_id = NULL,login = 'USER',perfil_id = '2',email = 'USUERTUNNIG@GMAIL.COM',tema = 'default',app_ajax = '1',datagrid = '30',estatus = '2',intentos = NULL,nombres = 'USUARIO',apellidos = 'TUNNING' WHERE  id = '6'	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{6,default,USUERTUNNIG@GMAIL.COM,USER,1,USUARIO,1,30,NULL,TUNNING,2,NULL,NULL,"2015-06-04 20:22:00.520448-04:30","2015-06-04 20:22:00.520448-04:30",NULL}	{6,default,USUERTUNNIG@GMAIL.COM,USER,2,USUARIO,1,30,NULL,TUNNING,2,NULL,NULL,"2015-06-04 20:22:00.520448-04:30","2015-06-04 20:22:00.520448-04:30",NULL}
+7478	16557	postgres	2015-07-10 10:55:31.744876-04:30	127.0.0.1	UPDATE	UPDATE public.usuario SET login='ADMIN'::text WHERE id = '1'::integer	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{1,default,admin@admin.com,admin,1,Administrador,1,30,0,NULL,1,1,1,"2014-08-09 11:50:25.26152-04:30","2014-08-09 11:50:25.26152-04:30",NULL}	{1,default,admin@admin.com,ADMIN,1,Administrador,1,30,0,NULL,1,1,1,"2014-08-09 11:50:25.26152-04:30","2014-08-09 11:50:25.26152-04:30",NULL}
+7479	16557	postgres	2015-07-10 10:55:35.305187-04:30	127.0.0.1	UPDATE	UPDATE public.usuario SET login='ROAEDGAR'::text WHERE id = '3'::integer	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{3,default,edgarroa@gmail.com,roaedgar,1,edgar,1,30,NULL,roas,2,NULL,NULL,"2015-06-04 16:02:45.784156-04:30","2015-06-04 16:02:45.784156-04:30",NULL}	{3,default,edgarroa@gmail.com,ROAEDGAR,1,edgar,1,30,NULL,roas,2,NULL,NULL,"2015-06-04 16:02:45.784156-04:30","2015-06-04 16:02:45.784156-04:30",NULL}
+7480	16557	postgres	2015-07-10 10:55:41.332141-04:30	127.0.0.1	UPDATE	UPDATE public.usuario SET login='RICHI'::text WHERE id = '4'::integer	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{4,default,richardorta@gmail.com,richi,1,DORTA,1,30,NULL,dorta,2,NULL,NULL,"2015-06-04 16:11:44.377753-04:30","2015-06-04 16:11:44.377753-04:30",NULL}	{4,default,richardorta@gmail.com,RICHI,1,DORTA,1,30,NULL,dorta,2,NULL,NULL,"2015-06-04 16:11:44.377753-04:30","2015-06-04 16:11:44.377753-04:30",NULL}
+7481	16401	arrozalba	2015-07-10 10:55:55.979063-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{73,127.0.0.1,NULL,1,1,NULL,"2015-07-10 10:55:55.979063-04:30","2015-07-10 10:55:55.979063-04:30",NULL,NULL}
+7482	16557	arrozalba	2015-07-10 11:01:17.376406-04:30	127.0.0.1	INSERT	INSERT INTO usuario (usuario_id,fecha_registro,fecha_modificado,fecha_desactivacion,sucursal_id,login,perfil_id,email,tema,app_ajax,datagrid,estatus,intentos,nombres,apellidos) VALUES (NULL,DEFAULT,DEFAULT,NULL,NULL,'JUANA','5',NULL,'default',DEFAULT,'30',DEFAULT,NULL,'JUANA','PRETRONILA')	usuario	\N	\N	{7,default,NULL,JUANA,1,JUANA,1,30,NULL,PRETRONILA,5,NULL,NULL,"2015-07-10 11:01:17.376406-04:30","2015-07-10 11:01:17.376406-04:30",NULL}
+7483	16448	arrozalba	2015-07-10 11:01:17.376406-04:30	127.0.0.1	INSERT	INSERT INTO estado_usuario (usuario_id,fecha_registro,fecha_modificado,estado_usuario,descripcion) VALUES ('7',DEFAULT,DEFAULT,'1','Activado por registro inicial')	estado_usuario	\N	\N	{122,7,"Activado por registro inicial",1,"2015-07-10 11:01:17.376406-04:30","2015-07-10 11:01:17.376406-04:30"}
+7484	16557	arrozalba	2015-07-10 11:22:56.31744-04:30	127.0.0.1	UPDATE	UPDATE usuario SET login = 'JUANA',perfil_id = '5',email = 'PETROCHELI@GMAIL.COM',datagrid = NULL,nombres = 'JUANA',apellidos = 'PRETRONILA' WHERE  id = '7'	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{7,default,NULL,JUANA,1,JUANA,1,30,NULL,PRETRONILA,5,NULL,NULL,"2015-07-10 11:01:17.376406-04:30","2015-07-10 11:01:17.376406-04:30",NULL}	{7,default,PETROCHELI@GMAIL.COM,JUANA,1,JUANA,1,NULL,NULL,PRETRONILA,5,NULL,NULL,"2015-07-10 11:01:17.376406-04:30","2015-07-10 11:01:17.376406-04:30",NULL}
+7485	16401	arrozalba	2015-07-10 12:35:09.754558-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{74,127.0.0.1,NULL,1,1,NULL,"2015-07-10 12:35:09.754558-04:30","2015-07-10 12:35:09.754558-04:30",NULL,NULL}
+7486	16401	arrozalba	2015-07-10 12:35:28.133118-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'2',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{75,127.0.0.1,NULL,1,2,NULL,"2015-07-10 12:35:28.133118-04:30","2015-07-10 12:35:28.133118-04:30",NULL,NULL}
+7487	16401	arrozalba	2015-07-10 12:35:52.088533-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{76,127.0.0.1,NULL,1,1,NULL,"2015-07-10 12:35:52.088533-04:30","2015-07-10 12:35:52.088533-04:30",NULL,NULL}
+7488	16557	arrozalba	2015-07-10 12:50:12.499781-04:30	127.0.0.1	INSERT	INSERT INTO usuario (usuario_id,fecha_registro,fecha_modificado,fecha_desactivacion,sucursal_id,login,perfil_id,email,tema,app_ajax,datagrid,estatus,intentos,nombres,apellidos) VALUES (NULL,DEFAULT,DEFAULT,NULL,NULL,'PRUEBA','2',NULL,'default',DEFAULT,'30',DEFAULT,NULL,'PRUEBA2','PRUEBRA3')	usuario	\N	\N	{8,default,NULL,PRUEBA,1,PRUEBA2,1,30,NULL,PRUEBRA3,2,NULL,NULL,"2015-07-10 12:50:12.499781-04:30","2015-07-10 12:50:12.499781-04:30",NULL}
+7489	16448	arrozalba	2015-07-10 12:50:12.499781-04:30	127.0.0.1	INSERT	INSERT INTO estado_usuario (usuario_id,fecha_registro,fecha_modificado,estado_usuario,descripcion) VALUES ('8',DEFAULT,DEFAULT,'1','Activado por registro inicial')	estado_usuario	\N	\N	{123,8,"Activado por registro inicial",1,"2015-07-10 12:50:12.499781-04:30","2015-07-10 12:50:12.499781-04:30"}
+7490	16401	arrozalba	2015-07-10 12:50:19.617683-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'2',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{77,127.0.0.1,NULL,1,2,NULL,"2015-07-10 12:50:19.617683-04:30","2015-07-10 12:50:19.617683-04:30",NULL,NULL}
+7491	16401	arrozalba	2015-07-10 12:52:18.805402-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{78,127.0.0.1,NULL,1,1,NULL,"2015-07-10 12:52:18.805402-04:30","2015-07-10 12:52:18.805402-04:30",NULL,NULL}
+7492	16557	arrozalba	2015-07-10 12:53:28.264245-04:30	127.0.0.1	INSERT	INSERT INTO usuario (usuario_id,fecha_registro,fecha_modificado,fecha_desactivacion,sucursal_id,login,perfil_id,email,tema,app_ajax,datagrid,estatus,intentos,nombres,apellidos) VALUES (NULL,DEFAULT,DEFAULT,NULL,NULL,'RONDON','3',NULL,'default',DEFAULT,'30',DEFAULT,NULL,'ALEXANDER','RONDON')	usuario	\N	\N	{9,default,NULL,RONDON,1,ALEXANDER,1,30,NULL,RONDON,3,NULL,NULL,"2015-07-10 12:53:28.264245-04:30","2015-07-10 12:53:28.264245-04:30",NULL}
+7493	16448	arrozalba	2015-07-10 12:53:28.264245-04:30	127.0.0.1	INSERT	INSERT INTO estado_usuario (usuario_id,fecha_registro,fecha_modificado,estado_usuario,descripcion) VALUES ('9',DEFAULT,DEFAULT,'1','Activado por registro inicial')	estado_usuario	\N	\N	{124,9,"Activado por registro inicial",1,"2015-07-10 12:53:28.264245-04:30","2015-07-10 12:53:28.264245-04:30"}
+7494	16401	arrozalba	2015-07-10 12:53:32.623221-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'2',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{79,127.0.0.1,NULL,1,2,NULL,"2015-07-10 12:53:32.623221-04:30","2015-07-10 12:53:32.623221-04:30",NULL,NULL}
+7495	16401	arrozalba	2015-07-10 12:53:37.44269-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('9',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{80,127.0.0.1,NULL,9,1,NULL,"2015-07-10 12:53:37.44269-04:30","2015-07-10 12:53:37.44269-04:30",NULL,NULL}
+7496	16401	arrozalba	2015-07-10 12:53:42.221943-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('9',DEFAULT,DEFAULT,'2',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{81,127.0.0.1,NULL,9,2,NULL,"2015-07-10 12:53:42.221943-04:30","2015-07-10 12:53:42.221943-04:30",NULL,NULL}
+7497	16401	arrozalba	2015-07-10 12:53:48.110415-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{82,127.0.0.1,NULL,1,1,NULL,"2015-07-10 12:53:48.110415-04:30","2015-07-10 12:53:48.110415-04:30",NULL,NULL}
+7498	16557	arrozalba	2015-07-10 12:56:21.482723-04:30	127.0.0.1	UPDATE	UPDATE usuario SET login = 'RONDON',perfil_id = '3',email = 'RONADON@GMAI.COM',datagrid = NULL,nombres = 'ALEXANDER',apellidos = 'RONDON' WHERE  id = '9'	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{9,default,NULL,RONDON,1,ALEXANDER,1,30,NULL,RONDON,3,NULL,NULL,"2015-07-10 12:53:28.264245-04:30","2015-07-10 12:53:28.264245-04:30",NULL}	{9,default,RONADON@GMAI.COM,RONDON,1,ALEXANDER,1,NULL,NULL,RONDON,3,NULL,NULL,"2015-07-10 12:53:28.264245-04:30","2015-07-10 12:53:28.264245-04:30",NULL}
+7499	16401	arrozalba	2015-07-10 12:56:25.178227-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'2',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{83,127.0.0.1,NULL,1,2,NULL,"2015-07-10 12:56:25.178227-04:30","2015-07-10 12:56:25.178227-04:30",NULL,NULL}
+7500	16401	arrozalba	2015-07-10 12:56:29.699455-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('9',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{84,127.0.0.1,NULL,9,1,NULL,"2015-07-10 12:56:29.699455-04:30","2015-07-10 12:56:29.699455-04:30",NULL,NULL}
+7501	16557	postgres	2015-07-10 13:10:32.909766-04:30	127.0.0.1	UPDATE	UPDATE public.usuario SET estatus='10'::integer WHERE id = '3'::integer	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{3,default,edgarroa@gmail.com,ROAEDGAR,1,edgar,1,30,NULL,roas,2,NULL,NULL,"2015-06-04 16:02:45.784156-04:30","2015-06-04 16:02:45.784156-04:30",NULL}	{3,default,edgarroa@gmail.com,ROAEDGAR,10,edgar,1,30,NULL,roas,2,NULL,NULL,"2015-06-04 16:02:45.784156-04:30","2015-06-04 16:02:45.784156-04:30",NULL}
+7502	16557	postgres	2015-07-10 13:10:34.628804-04:30	127.0.0.1	UPDATE	UPDATE public.usuario SET estatus='0'::integer WHERE id = '3'::integer	usuario	{id,tema,email,login,estatus,nombres,app_ajax,datagrid,intentos,apellidos,perfil_id,usuario_id,sucursal_id,fecha_registro,fecha_modificado,fecha_desactivacion}	{3,default,edgarroa@gmail.com,ROAEDGAR,10,edgar,1,30,NULL,roas,2,NULL,NULL,"2015-06-04 16:02:45.784156-04:30","2015-06-04 16:02:45.784156-04:30",NULL}	{3,default,edgarroa@gmail.com,ROAEDGAR,0,edgar,1,30,NULL,roas,2,NULL,NULL,"2015-06-04 16:02:45.784156-04:30","2015-06-04 16:02:45.784156-04:30",NULL}
+7503	16401	arrozalba	2015-07-10 13:10:39.720217-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('9',DEFAULT,DEFAULT,'2',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{85,127.0.0.1,NULL,9,2,NULL,"2015-07-10 13:10:39.720217-04:30","2015-07-10 13:10:39.720217-04:30",NULL,NULL}
+7504	16401	arrozalba	2015-07-10 13:10:44.043119-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{86,127.0.0.1,NULL,1,1,NULL,"2015-07-10 13:10:44.043119-04:30","2015-07-10 13:10:44.043119-04:30",NULL,NULL}
+7505	16401	arrozalba	2015-07-21 20:28:10.493854-04:30	127.0.0.1	INSERT	INSERT INTO acceso (usuario_id,fecha_registro,fecha_modificado,tipo_acceso,navegador,version_navegador,sistema_operativo,nombre_equipo,ip) VALUES ('1',DEFAULT,DEFAULT,'1',NULL,NULL,NULL,NULL,'127.0.0.1')	acceso	\N	\N	{87,127.0.0.1,NULL,1,1,NULL,"2015-07-21 20:28:10.493854-04:30","2015-07-21 20:28:10.493854-04:30",NULL,NULL}
+7506	16455	arrozalba	2015-07-21 20:46:25.183045-04:30	127.0.0.1	INSERT	INSERT INTO fabricante (id,nombre,observacion) VALUES (DEFAULT,'trupper','everything al right')	fabricante	\N	\N	{1,trupper,"everything al right"}
 \.
 
 
@@ -8613,7 +8643,7 @@ COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, 
 -- Name: audit_log_log_id_seq; Type: SEQUENCE SET; Schema: audit_log; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('audit_log_log_id_seq', 7477, true);
+SELECT pg_catalog.setval('audit_log_log_id_seq', 7506, true);
 
 
 SET search_path = public, pg_catalog;
@@ -8648,6 +8678,21 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 70	1	2015-06-20 13:18:58.442753-04:30	2015-06-20 13:18:58.442753-04:30	1	\N	\N	\N	\N	127.0.0.1
 71	1	2015-06-24 11:31:07.430738-04:30	2015-06-24 11:31:07.430738-04:30	1	\N	\N	\N	\N	127.0.0.1
 72	1	2015-07-04 12:26:16.929126-04:30	2015-07-04 12:26:16.929126-04:30	1	\N	\N	\N	\N	127.0.0.1
+73	1	2015-07-10 10:55:55.979063-04:30	2015-07-10 10:55:55.979063-04:30	1	\N	\N	\N	\N	127.0.0.1
+74	1	2015-07-10 12:35:09.754558-04:30	2015-07-10 12:35:09.754558-04:30	1	\N	\N	\N	\N	127.0.0.1
+75	1	2015-07-10 12:35:28.133118-04:30	2015-07-10 12:35:28.133118-04:30	2	\N	\N	\N	\N	127.0.0.1
+76	1	2015-07-10 12:35:52.088533-04:30	2015-07-10 12:35:52.088533-04:30	1	\N	\N	\N	\N	127.0.0.1
+77	1	2015-07-10 12:50:19.617683-04:30	2015-07-10 12:50:19.617683-04:30	2	\N	\N	\N	\N	127.0.0.1
+78	1	2015-07-10 12:52:18.805402-04:30	2015-07-10 12:52:18.805402-04:30	1	\N	\N	\N	\N	127.0.0.1
+79	1	2015-07-10 12:53:32.623221-04:30	2015-07-10 12:53:32.623221-04:30	2	\N	\N	\N	\N	127.0.0.1
+80	9	2015-07-10 12:53:37.44269-04:30	2015-07-10 12:53:37.44269-04:30	1	\N	\N	\N	\N	127.0.0.1
+81	9	2015-07-10 12:53:42.221943-04:30	2015-07-10 12:53:42.221943-04:30	2	\N	\N	\N	\N	127.0.0.1
+82	1	2015-07-10 12:53:48.110415-04:30	2015-07-10 12:53:48.110415-04:30	1	\N	\N	\N	\N	127.0.0.1
+83	1	2015-07-10 12:56:25.178227-04:30	2015-07-10 12:56:25.178227-04:30	2	\N	\N	\N	\N	127.0.0.1
+84	9	2015-07-10 12:56:29.699455-04:30	2015-07-10 12:56:29.699455-04:30	1	\N	\N	\N	\N	127.0.0.1
+85	9	2015-07-10 13:10:39.720217-04:30	2015-07-10 13:10:39.720217-04:30	2	\N	\N	\N	\N	127.0.0.1
+86	1	2015-07-10 13:10:44.043119-04:30	2015-07-10 13:10:44.043119-04:30	1	\N	\N	\N	\N	127.0.0.1
+87	1	2015-07-21 20:28:10.493854-04:30	2015-07-21 20:28:10.493854-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -8655,7 +8700,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 72, true);
+SELECT pg_catalog.setval('acceso_id_seq', 87, true);
 
 
 --
@@ -8937,6 +8982,9 @@ COPY estado_usuario (id, usuario_id, fecha_registro, fecha_modificado, estado_us
 119	4	2015-06-05 13:31:38.035907-04:30	2015-06-05 13:31:38.035907-04:30	2	bloqeuado
 120	4	2015-06-05 13:32:17.526794-04:30	2015-06-05 13:32:17.526794-04:30	1	reactivar
 121	3	2015-06-05 13:35:09.301948-04:30	2015-06-05 13:35:09.301948-04:30	2	afs
+122	7	2015-07-10 11:01:17.376406-04:30	2015-07-10 11:01:17.376406-04:30	1	Activado por registro inicial
+123	8	2015-07-10 12:50:12.499781-04:30	2015-07-10 12:50:12.499781-04:30	1	Activado por registro inicial
+124	9	2015-07-10 12:53:28.264245-04:30	2015-07-10 12:53:28.264245-04:30	1	Activado por registro inicial
 \.
 
 
@@ -8944,7 +8992,7 @@ COPY estado_usuario (id, usuario_id, fecha_registro, fecha_modificado, estado_us
 -- Name: estado_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('estado_usuario_id_seq', 121, true);
+SELECT pg_catalog.setval('estado_usuario_id_seq', 124, true);
 
 
 --
@@ -8952,14 +9000,15 @@ SELECT pg_catalog.setval('estado_usuario_id_seq', 121, true);
 --
 
 COPY fabricante (id, nombre, observacion) FROM stdin;
+1	trupper	everything al right
 \.
 
 
 --
--- Name: fabricantes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+-- Name: fabricante_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('fabricantes_id_seq', 1, false);
+SELECT pg_catalog.setval('fabricante_id_seq', 1, true);
 
 
 --
@@ -11130,11 +11179,14 @@ SELECT pg_catalog.setval('sucursal_id_seq', 11, true);
 --
 
 COPY usuario (id, usuario_id, fecha_registro, fecha_modificado, fecha_desactivacion, sucursal_id, login, perfil_id, email, tema, app_ajax, datagrid, estatus, intentos, nombres, apellidos) FROM stdin;
-3	\N	2015-06-04 16:02:45.784156-04:30	2015-06-04 16:02:45.784156-04:30	\N	\N	roaedgar	2	edgarroa@gmail.com	default	1	30	1	\N	edgar	roas
-4	\N	2015-06-04 16:11:44.377753-04:30	2015-06-04 16:11:44.377753-04:30	\N	\N	richi	2	richardorta@gmail.com	default	1	30	1	\N	DORTA	dorta
-1	1	2014-08-09 11:50:25.26152-04:30	2014-08-09 11:50:25.26152-04:30	\N	1	admin	1	admin@admin.com	default	1	30	1	0	Administrador	\N
 5	\N	2015-06-04 20:16:56.068599-04:30	2015-06-04 20:16:56.068599-04:30	\N	\N	INFOALEX	2	TUAALEXIS@GMAIL.COM	default	1	30	1	\N	ALEXIS	BORGES
 6	\N	2015-06-04 20:22:00.520448-04:30	2015-06-04 20:22:00.520448-04:30	\N	\N	USER	2	USUERTUNNIG@GMAIL.COM	default	1	30	2	\N	USUARIO	TUNNING
+1	1	2014-08-09 11:50:25.26152-04:30	2014-08-09 11:50:25.26152-04:30	\N	1	ADMIN	1	admin@admin.com	default	1	30	1	0	Administrador	\N
+4	\N	2015-06-04 16:11:44.377753-04:30	2015-06-04 16:11:44.377753-04:30	\N	\N	RICHI	2	richardorta@gmail.com	default	1	30	1	\N	DORTA	dorta
+7	\N	2015-07-10 11:01:17.376406-04:30	2015-07-10 11:01:17.376406-04:30	\N	\N	JUANA	5	PETROCHELI@GMAIL.COM	default	1	\N	1	\N	JUANA	PRETRONILA
+8	\N	2015-07-10 12:50:12.499781-04:30	2015-07-10 12:50:12.499781-04:30	\N	\N	PRUEBA	2	\N	default	1	30	1	\N	PRUEBA2	PRUEBRA3
+9	\N	2015-07-10 12:53:28.264245-04:30	2015-07-10 12:53:28.264245-04:30	\N	\N	RONDON	3	RONADON@GMAI.COM	default	1	\N	1	\N	ALEXANDER	RONDON
+3	\N	2015-06-04 16:02:45.784156-04:30	2015-06-04 16:02:45.784156-04:30	\N	\N	ROAEDGAR	2	edgarroa@gmail.com	default	1	30	0	\N	edgar	roas
 \.
 
 
@@ -11148,6 +11200,9 @@ COPY usuario_clave (id, usuario_id, fecha_registro, fecha_modificado, password, 
 5	5	2015-06-04 20:16:56.068599-04:30	2015-06-04 20:16:56.068599-04:30	d93a5def7511da3d0f2d171d9c344e91	2015-06-04	2016-06-05
 6	6	2015-06-04 20:22:00.520448-04:30	2015-06-04 20:22:00.520448-04:30	d93a5def7511da3d0f2d171d9c344e91	2015-06-04	2016-06-05
 1	1	2015-06-03 16:10:49.340776-04:30	2015-06-03 16:10:49.340776-04:30	d93a5def7511da3d0f2d171d9c344e91	2015-06-03	2016-06-04
+7	7	2015-07-10 11:01:17.376406-04:30	2015-07-10 11:01:17.376406-04:30	6462e8c65ed86cd21fe9e79de19af430	2015-07-10	2015-07-11
+8	8	2015-07-10 12:50:12.499781-04:30	2015-07-10 12:50:12.499781-04:30	308cb2652c13417832c3b6f684628ba8	2015-07-10	2015-07-11
+9	9	2015-07-10 12:53:28.264245-04:30	2015-07-10 12:53:28.264245-04:30	a5ccfb4fa0929a050562fcbe8db19048	2015-07-10	2015-07-11
 \.
 
 
@@ -11155,14 +11210,14 @@ COPY usuario_clave (id, usuario_id, fecha_registro, fecha_modificado, password, 
 -- Name: usuario_clave_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('usuario_clave_id_seq', 6, true);
+SELECT pg_catalog.setval('usuario_clave_id_seq', 9, true);
 
 
 --
 -- Name: usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('usuario_id_seq', 6, true);
+SELECT pg_catalog.setval('usuario_id_seq', 9, true);
 
 
 --
@@ -11406,27 +11461,11 @@ ALTER TABLE ONLY estado_usuario
 
 
 --
--- Name: fabricante_id; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY fabricante
-    ADD CONSTRAINT fabricante_id UNIQUE (id);
-
-
---
 -- Name: fabricante_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY fabricante
     ADD CONSTRAINT fabricante_pkey PRIMARY KEY (id);
-
-
---
--- Name: marca_id; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY marca
-    ADD CONSTRAINT marca_id UNIQUE (id);
 
 
 --
@@ -11443,14 +11482,6 @@ ALTER TABLE ONLY marca
 
 ALTER TABLE ONLY menu
     ADD CONSTRAINT menu_pkey PRIMARY KEY (id);
-
-
---
--- Name: modelo_id; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY modelo
-    ADD CONSTRAINT modelo_id UNIQUE (id);
 
 
 --
