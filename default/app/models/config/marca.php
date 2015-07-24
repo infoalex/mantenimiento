@@ -103,11 +103,14 @@ class Marca extends ActiveRecord {
     public function before_save() {        
         $this->nombre = Filter::get($this->nombre, 'string');
         $this->observacion = Filter::get($this->observacion, 'string');
-           
+        //Nombre en mayusculas
+        $this->nombre = strtoupper($this->nombre);
+        $this->observacion = strtoupper($this->observacion);
+
         $conditions = "nombre = '$this->nombre'";
         $conditions.= (isset($this->id)) ? " AND id != $this->id" : '';
         if($this->count("conditions: $conditions")) {
-            DwMessage::error('Lo sentimos, pero ya existe una sucursal registrada con el mismo nombre y ciudad.');
+            DwMessage::error('Lo sentimos, pero ya existe una marca registrada con el mismo nombre.');
             return 'cancel';
         }
     }
@@ -122,7 +125,7 @@ class Marca extends ActiveRecord {
         $columns = 'marca.* ';
         $order = $this->get_order($order, 'nombre', array(                        
             'nombre' => array(
-                'ASC'=>'marca.nombre ASC, marca.nombre ASC', 
+                'ASC'=>'marca.nombre ASC, marca.nombre ASC',
                 'DESC'=>'marca.nombre DESC, marca.nombre DESC'
             ),
             'observacion' => array(
@@ -152,10 +155,7 @@ class Marca extends ActiveRecord {
      * Callback que se ejecuta antes de eliminar
      */
     public function before_delete() {
-        if($this->id == 1) { //Para no eliminar la información de sucursal
-            DwMessage::warning('Lo sentimos, pero esta sucursal no se puede eliminar.');
-            return 'cancel';
-        }
+
     }
     
 }

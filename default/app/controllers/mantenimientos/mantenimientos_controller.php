@@ -7,21 +7,13 @@
  * @author      Alexis Borges (jel1284@gmail.com)
  * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
  */
-Load::models('solicitudes/solicitud_servicio');
-Load::models('config/tiposolicitud');
-Load::models('proveedorsalud/proveedor');
-Load::models('proveedorsalud/servicio');
-Load::models('proveedorsalud/medico');
-Load::models('proveedorsalud/especialidad');
-Load::models('beneficiarios/titular');
-Load::models('beneficiarios/beneficiario');
-Load::models('config/patologia', 'solicitudes/solicitud_servicio_patologia');
+Load::models('solicitudes/solicitud_servicio', 'solicitudes/factura', 'solicitudes/factura_dt');
 
-class SolicitudServicioController extends BackendController {
+class MantenimientosController extends BackendController {
     /**
      * Constante para definir el tipo de solicitud
      */
-    const TPS = 2;
+    const TPS = 1;    
     /**
      * Método que se ejecuta antes de cualquier acción
      */
@@ -42,8 +34,8 @@ class SolicitudServicioController extends BackendController {
      */
     public function listar($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $solicitud_servicio = new SolicitudServicio();        
-        $this->solicitud_servicios = $solicitud_servicio->getListadoSolicitudServicio($order, $page);
+        $solicitud_servicio = new Mantenimientos();        
+        $this->solicitud_servicios = $solicitud_servicio->getListadoMantenimientos($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Solicitudes de Atención Primaria';
     }
@@ -52,8 +44,8 @@ class SolicitudServicioController extends BackendController {
      */
     public function registro($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $solicitud_servicio = new SolicitudServicio();        
-        $this->solicitud_servicios = $solicitud_servicio->getListadoRegistroSolicitudServicio($order, $page,$tps=self::TPS);
+        $solicitud_servicio = new Mantenimientos();        
+        $this->solicitud_servicios = $solicitud_servicio->getListadoRegistroMantenimientos($order, $page,$tps=self::TPS);
         $this->order = $order;        
         $this->page_title = 'Registro de Solicitudes de Atención Primaria';
     }
@@ -62,8 +54,8 @@ class SolicitudServicioController extends BackendController {
      */
     public function aprobacion($order='order.nombre.asc', $page='pag.1') { 
     		$page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        	$solicitud_servicio = new SolicitudServicio();        
-        	$this->solicitud_servicios = $solicitud_servicio->getListadoAprobacionSolicitudServicio($order, $page,$tps=self::TPS);
+        	$solicitud_servicio = new Mantenimientos();        
+        	$this->solicitud_servicios = $solicitud_servicio->getListadoAprobacionMantenimientos($order, $page,$tps=self::TPS);
         	$this->order = $order;        
         	$this->page_title = 'Aprobación de Solicitudes de Atención Primaria';
     }
@@ -72,8 +64,8 @@ class SolicitudServicioController extends BackendController {
      */
     public function facturacion($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $solicitud_servicio = new SolicitudServicio();        
-        $this->solicitud_servicios = $solicitud_servicio->getListadoSiniestrosSolicitudServicio($order, $page,$tps=self::TPS);
+        $solicitud_servicio = new Mantenimientos();        
+        $this->solicitud_servicios = $solicitud_servicio->getListadoSiniestrosMantenimientos($order, $page,$tps=self::TPS);
         $this->order = $order;        
         $this->page_title = 'Cargar Facturas a las solicitudes de Atención Primaria';
     }
@@ -83,8 +75,8 @@ class SolicitudServicioController extends BackendController {
      */
     public function aprobadas($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $solicitud_servicio = new SolicitudServicio();        
-        $this->solicitud_servicios = $solicitud_servicio->getListadoContabilizarSolicitudServicio($order, $page,$tps=self::TPS);
+        $solicitud_servicio = new Mantenimientos();        
+        $this->solicitud_servicios = $solicitud_servicio->getListadoContabilizarMantenimientos($order, $page,$tps=self::TPS);
         $this->order = $order;        
         $this->page_title = 'Contabilizar Solicitudes de Atención Primaria';
     }
@@ -95,16 +87,16 @@ class SolicitudServicioController extends BackendController {
         if(!$id = DwSecurity::isValidKey($key, 'upd_solicitud_servicio', 'int')) {
             return DwRedirect::toAction('registro');
         }        
-        $solicitud_servicio = new SolicitudServicio();
-        $solicitud_servicio_patologia = new SolicitudServicioPatologia();
-        if(!$solicitud_servicio->getInformacionSolicitudServicio($id)) {            
+        $solicitud_servicio = new Mantenimientos();
+        $solicitud_servicio_patologia = new MantenimientosPatologia();
+        if(!$solicitud_servicio->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
         if(Input::hasPost('solicitud_servicio')) {
             ActiveRecord::beginTrans();
-            if(SolicitudServicioPatologia::setSolServicioPatolgia(Input::post('patologia_id'), $id)) {
-                $sol = $solicitud_servicio->getInformacionSolicitudServicio($id);
+            if(MantenimientosPatologia::setSolServicioPatolgia(Input::post('patologia_id'), $id)) {
+                $sol = $solicitud_servicio->getInformacionMantenimientos($id);
                 //Input::post('diagnostico') cambie el nombre del campo para poder tomar el valor revisar en el view 
                 $sol->diagnostico = strtoupper(Input::post('diagnostico'));
                 $sol->motivo = strtoupper(Input::post('motivo'));
@@ -122,26 +114,64 @@ class SolicitudServicioController extends BackendController {
         $this->solicitud_servicio = $solicitud_servicio;
         $this->page_title = 'Cargar Siniestro';        
     }
-     /**
-     * Método para cargar las facturas
-     */
+    /**
+    * Método para cargar las facturas
+    */
     public function facturar($key){
         if(!$id = DwSecurity::isValidKey($key, 'upd_solicitud_servicio', 'int')) {
             return DwRedirect::toAction('registro');
         }
-        $solicitud_servicio = new SolicitudServicio();
-        $obj = new SolicitudServicioPatologia();
-        $this->sol =  $obj->getInformacionSolicitudServicioPatologia($id);
-        if(!$solicitud_servicio->getInformacionSolicitudServicio($id)) {            
+        $solicitud_servicio = new Mantenimientos();
+        $obj = new MantenimientosPatologia();
+        //$factura = new Factura();
+        $factura_dt = new FacturaDt();
+        $this->sol =  $obj->getInformacionMantenimientosPatologia($id);
+        if(!$solicitud_servicio->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
-      /*  if(Input::hasPost('solicitud_servicio') && DwSecurity::isValidKey(Input::post('solicitud_servicio_id_key'), 'form_key')) {
-            if(SolicitudServicio::setSolicitudServicio('update', Input::post('solicitud_servicio'), array('id'=>$id))){
-                DwMessage::valid('La solicitud se ha contabilizado correctamente!');
-                return DwRedirect::toAction('registro');
+        if(Input::hasPost('factura')) {
+            ActiveRecord::beginTrans();
+            $factu = Factura::setFactura('create', Input::post('factura'));
+            if($factu){
+                if(FacturaDt::setFacturaDt(Input::post('descripcion'), Input::post('cantidad'), Input::post('monto'), Input::post('exento'), $factu->id)) {
+                    $solfactura = MantenimientosFactura::setMantenimientosFactura($factu->id, $id);
+                    if($solfactura){
+                        if(Input::post('multifactura')){ //para saber si va a cargar multiples facturas sobre esa solicitud 
+                            $solser = $solicitud_servicio->getInformacionMantenimientos($id);
+                            $solser->estado_solicitud="G"; //estado G parcialmente facturada 
+                            $solser->save();
+                            ActiveRecord::commitTrans();
+                            DwMessage::valid('Se ha cargado la factura exitosamente!');
+                            $key_upd = DwSecurity::getKey($id, 'upd_solicitud_servicio'); 
+                            return DwRedirect::toAction('facturar/'.$key_upd);   //retorna a la misma visata de facturacion 
+                        }
+                        else{
+                            $solser = $solicitud_servicio->getInformacionMantenimientos($id);
+                            $solser->estado_solicitud="F";
+                            $solser->save();
+                            ActiveRecord::commitTrans();
+                            DwMessage::valid('Se ha cargado la factura exitosamente!');
+                          return DwRedirect::toAction('facturacion');     
+                        }
+
+                    }
+                    else{
+                        ActiveRecord::rollbackTrans();
+                        DwMessage::error('No se pudo enviar a cargar multiples facturas!');
+                    }
+
+                }
+                else{
+                    ActiveRecord::rollbackTrans();
+                    DwMessage::error('Los detalles de la Factura no se han cargado correctamente Intente de nuevo!');
+                }
             }
-        }*/ 
+            else{
+                ActiveRecord::rollbackTrans();
+                DwMessage::error('La Factura no se ha cargado con exito!');
+            }
+        }
         $this->solicitud_servicio = $solicitud_servicio;
         $this->page_title = 'Cargar Facturas a la solicitud';        
     }
@@ -151,11 +181,11 @@ class SolicitudServicioController extends BackendController {
      */
     public function agregar() {
         $empresa = Session::get('empresa', 'config');
-        $solicitud_servicio = new SolicitudServicio();
-        $nroids = $solicitud_servicio->count("tiposolicitud_id = '".self::TPS."'");
+        $solicitud_servicio = new Mantenimientos();
+        $nroids = $solicitud_servicio->count("tiposolicitud_id = ".self::TPS);
         $this->codigods=$nroids+1;
 		$correlativ= new Tiposolicitud();
-        $codigocorrelativo = $correlativ->find("columns: correlativo","conditions: id=".self::TPS."", "limit: 1 ");
+        $codigocorrelativo = $correlativ->find("columns: correlativo","conditions: id=".self::TPS." ", "limit: 1 ");
         foreach ($codigocorrelativo as $cargoa) {
                     $this->cargoas[] = $cargoa->correlativo;
                 }
@@ -163,7 +193,7 @@ class SolicitudServicioController extends BackendController {
         $beneficiario = new beneficiario(); 
         $this->beneficiario = $beneficiario->getListBeneficiario();              
         if(Input::hasPost('solicitud_servicio')) {
-            if(SolicitudServicio::setSolicitudServicio('create', Input::post('solicitud_servicio'))) {
+            if(Mantenimientos::setMantenimientos('create', Input::post('solicitud_servicio'))) {
                 DwMessage::valid('La solicitud se ha registrado correctamente!');
                 return DwRedirect::toAction('registro');
             }            
@@ -182,8 +212,8 @@ class SolicitudServicioController extends BackendController {
         }
         //Mejorar esta parte  implementando algodon de seguridad
     
-        $solicitud_servicio = new SolicitudServicio();
-        $sol = $solicitud_servicio->getInformacionSolicitudServicio($id);
+        $solicitud_servicio = new Mantenimientos();
+        $sol = $solicitud_servicio->getInformacionMantenimientos($id);
         $sol->estado_solicitud="A";
         $sol->save();
         $cod = $sol->codigo_solicitud;
@@ -201,8 +231,8 @@ class SolicitudServicioController extends BackendController {
         if(!$id = DwSecurity::isValidKey($key, 'upd_solicitud_servicio', 'int')) {
             return DwRedirect::toAction('aprobacion');
         }
-        $solicitud_servicio = new SolicitudServicio();
-        $sol = $solicitud_servicio->getInformacionSolicitudServicio($id);
+        $solicitud_servicio = new Mantenimientos();
+        $sol = $solicitud_servicio->getInformacionMantenimientos($id);
         if(!$sol) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
@@ -210,7 +240,7 @@ class SolicitudServicioController extends BackendController {
         if(Input::hasPost('solicitud_servicio')) {
             $es = "E";
             //$motivo = $_POST['solicitud_servicio'];
-            if(SolicitudServicio::setSolicitudServicio('update', Input::post('solicitud_servicio'), array('estado_solicitud'=>$es))){
+            if(Mantenimientos::setMantenimientos('update', Input::post('solicitud_servicio'), array('estado_solicitud'=>$es))){
                 DwMessage::valid('La solicitud se ha rechazado correctamente!');
                 return DwRedirect::toAction('registro');
             }       
@@ -227,8 +257,8 @@ class SolicitudServicioController extends BackendController {
             return DwRedirect::toAction('aprobacion');
         } 
         //Mejorar esta parte  implementando algodon de seguridad
-        $solicitud_servicio = new SolicitudServicio();
-        $sol = $solicitud_servicio->getInformacionSolicitudServicio($id);
+        $solicitud_servicio = new Mantenimientos();
+        $sol = $solicitud_servicio->getInformacionMantenimientos($id);
         $sol->estado_solicitud="R";
         $sol->save();
         return DwRedirect::toAction('aprobacion');
@@ -243,8 +273,8 @@ class SolicitudServicioController extends BackendController {
        // }
 
         //Mejorar esta parte  implementando algodon de seguridad
-        $solicitud_servicio = new SolicitudServicio();
-                if(!$sol = $solicitud_servicio->getReporteSolicitudServicio($id)) {
+        $solicitud_servicio = new Mantenimientos();
+                if(!$sol = $solicitud_servicio->getReporteMantenimientos($id)) {
             DwMessage::get('id_no_found');
         };
         $this->fecha_sol = $solicitud_servicio->fecha_solicitud;
@@ -292,14 +322,14 @@ class SolicitudServicioController extends BackendController {
             return DwRedirect::toAction('registro');
         }        
         
-        $solicitud_servicio = new SolicitudServicio();
-        if(!$solicitud_servicio->getInformacionSolicitudServicio($id)) {            
+        $solicitud_servicio = new Mantenimientos();
+        if(!$solicitud_servicio->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
         
         if(Input::hasPost('solicitud_servicio') && DwSecurity::isValidKey(Input::post('solicitud_servicio_id_key'), 'form_key')) {
-            if(SolicitudServicio::setSolicitudServicio('update', Input::post('solicitud_servicio'), array('id'=>$id))){
+            if(Mantenimientos::setMantenimientos('update', Input::post('solicitud_servicio'), array('id'=>$id))){
                 DwMessage::valid('La solicitud se ha actualizado correctamente!');
                 return DwRedirect::toAction('registro');
             }
@@ -315,14 +345,14 @@ class SolicitudServicioController extends BackendController {
             return DwRedirect::toAction('registro');
         }        
         
-        $solicitud_servicio = new SolicitudServicio();
-        if(!$solicitud_servicio->getInformacionSolicitudServicio($id)) {            
+        $solicitud_servicio = new Mantenimientos();
+        if(!$solicitud_servicio->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
         
         if(Input::hasPost('solicitud_servicio') && DwSecurity::isValidKey(Input::post('solicitud_servicio_id_key'), 'form_key')) {
-            if(SolicitudServicio::setSolicitudServicio('update', Input::post('solicitud_servicio'), array('id'=>$id))){
+            if(Mantenimientos::setMantenimientos('update', Input::post('solicitud_servicio'), array('id'=>$id))){
                 DwMessage::valid('La solicitud se ha actualizado correctamente!');
                 return DwRedirect::toAction('registro');
             }
@@ -339,13 +369,13 @@ class SolicitudServicioController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $solicitud_servicio = new SolicitudServicio();
-        if(!$solicitud_servicio->getInformacionSolicitudServicio($id)) {            
+        $solicitud_servicio = new Mantenimientos();
+        if(!$solicitud_servicio->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }                
         try {
-            if(SolicitudServicio::setSolicitudServicio('delete', array('id'=>$solicitud_servicio->id))) {
+            if(Mantenimientos::setMantenimientos('delete', array('id'=>$solicitud_servicio->id))) {
                 DwMessage::valid('La solicitud se ha eliminado correctamente!');
             }
         } catch(KumbiaException $e) {
