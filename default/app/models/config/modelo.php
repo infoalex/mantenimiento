@@ -103,7 +103,11 @@ class Modelo extends ActiveRecord {
     public function before_save() {        
         $this->nombre = Filter::get($this->nombre, 'string');
         $this->observacion = Filter::get($this->observacion, 'string');
-           
+        //Nombre en mayusculas
+        $this->nombre = strtoupper($this->nombre);
+        $this->observacion = strtoupper($this->observacion);
+
+
         $conditions = "nombre = '$this->nombre'";
         $conditions.= (isset($this->id)) ? " AND id != $this->id" : '';
         if($this->count("conditions: $conditions")) {
@@ -152,10 +156,7 @@ class Modelo extends ActiveRecord {
      * Callback que se ejecuta antes de eliminar
      */
     public function before_delete() {
-        if($this->id == 1) { //Para no eliminar la información de sucursal
-            DwMessage::warning('Lo sentimos, pero esta sucursal no se puede eliminar.');
-            return 'cancel';
-        }
+
     }
     
 }

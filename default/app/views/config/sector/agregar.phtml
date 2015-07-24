@@ -9,17 +9,13 @@
                 <?php echo DwForm::dbSelect('sector.sucursal_id', 'sucursal', array('params/sucursal', 'getListadoSucursal'), NULL, array('class'=>'input-xlarge input-required input-list show-errors data-toggle="tooltip" title="Seleccione la Sucursal"'), NULL, 'Sucursal','Ejemplo Piritu I'); ?>
             </div>       
             <div class="span4">
-                <?php echo DwForm::text('sector.sector', array('class'=>'input-xlarge input-required mask-alpha show-error data-toggle="tooltip" title="Sector"'), NULL, 'Sector'); ?>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                <?php echo DwForm::text('sector.sector_slug', array('class'=>'input-xlarge input-required mask-alpha show-error data-toggle="tooltip" title="Sector Slug"'), NULL, 'Sector Slug'); ?>
+                <?php echo DwForm::text('sector.sector', array('class'=>'input-xlarge input-required mask-alpha show-error data-toggle="tooltip" title="Sector"'), NULL, 'Nombre del Sector'); ?>
             </div>
             <div class="span4">
                 <?php echo DwForm::text('sector.observacion', array('class'=>'input-xlarge mask-alpha show-error data-toggle="tooltip" title="Observación"'), NULL, 'Observación'); ?>
             </div>
         </div>
+
         <div class="row-fluid">
             <div class="form-actions">
                 <?php echo DwButton::save('Guardar sector'); ?>
