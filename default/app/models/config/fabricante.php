@@ -8,7 +8,7 @@
  * @copyright    
  */
 class Fabricante extends ActiveRecord {
-    
+    //public $is_view = true;
     /**
      * Constante para definir el id de la oficina principal
      */
@@ -100,7 +100,10 @@ class Fabricante extends ActiveRecord {
     /**
      * Método que se ejecuta antes de guardar y/o modificar     
      */
-    public function before_save() {        
+    public function before_save() {
+        $this->nombre = strtoupper($this->nombre);
+        $this->observacion = strtoupper($this->observacion);
+	        
         $this->nombre = Filter::get($this->nombre, 'string');
         $this->observacion = Filter::get($this->observacion, 'string');
            

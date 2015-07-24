@@ -1,13 +1,14 @@
 <?php
 /**
- * Dailyscript - Web | App | Media
+ * SGIMPC (Sistema de Gestion de Incidencias de Mantenimientos Preventivos y Correctivos )
  *
  * Descripcion: Controlador que se encarga de la gestión de las cuentas de usuario
  *
  * @category
  * @package     Controllers
- * @author      Iván D. Meléndez (ivan.melendez@dailycript.com.co)
- * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co)
+ * @subpackage
+ * @author      Grupo SGIMPC UPTP 
+ * @copyright   Copyright (c) 2015 UPTP / E.M.S. Arroz del Alba S.A.
  */
 
 Load::models('config/sucursal');
@@ -39,8 +40,8 @@ class MiCuentaController extends BackendController {
             if(DwSecurity::isValidKey(Input::post('usuario_id_key'), 'form_key')) {
                 ActiveRecord::beginTrans();
                 //Guardo la persona
-                $persona = Persona::setPersona('update', Input::post('persona'), array('id'=>$usuario->persona_id));
-                if($persona) {
+                //$persona = Persona::setPersona('update', Input::post('persona'), array('id'=>$usuario->persona_id));
+                //if($persona) {
                     $usuario = Usuario::setUsuario('update', Input::post('usuario'), array('persona_id'=>$persona->id, 'repassword'=>Input::post('repassword'), 'oldpassword'=>Input::post('oldpassword'), 'id'=>$usuario->id, 'login'=>$usuario->login, 'sucursal_id'=>$usuario->sucursal_id, 'perfil_id'=>$usuario->perfil_id));
                     if($usuario) {
                         ActiveRecord::commitTrans();
@@ -56,7 +57,8 @@ class MiCuentaController extends BackendController {
                         $usuario->perfil = $perfil;
                         $usuario->fotografia = $persona->fotografia;
                     }
-                } else {
+                //}
+                 else {
                     ActiveRecord::rollbackTrans();
                 }
             }

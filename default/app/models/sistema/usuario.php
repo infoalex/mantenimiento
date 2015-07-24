@@ -63,7 +63,7 @@ class Usuario extends ActiveRecord {
                 return true;
             } else {                                
                 if(DwForm::isValidToken()) {
-                    if(DwAuth::login(array('login'=>$user), array('password'=>sha1($pass)), $mode)) {
+                    if(DwAuth::login(array('login'=>strtoupper($user)), array('password'=>sha1(strtoupper($pass))), $mode)) {
                         $usuario = self::getUsuarioLogueado();  
                         $usuval = UsuarioClave::clave_valida($usuario->id);
                         $usuintentos = self::usuario_intentos($usuario->id);                      
@@ -314,7 +314,7 @@ class Usuario extends ActiveRecord {
         $this->apellidos = strtoupper($this->apellidos);
         $this->login = strtoupper($this->login);
         $this->email = strtoupper($this->email);
-                
+                       
 
         //Verifico la sucursal al crear el usuario        
         if(APP_OFFICE) {                                

@@ -109,7 +109,7 @@ class UsuarioClave extends ActiveRecord {
                     DwMessage::error("Indica la nueva contraseña");
                     return false;
                 }
-                $obj->oldpassword = md5(sha1($obj->oldpassword));
+                $obj->oldpassword = md5(sha1(strtoupper($obj->oldpassword)));
                 if($obj->oldpassword !== $old->password) {
                     DwMessage::error("La contraseña anterior no coincide con la registrada. Verifica los datos e intente nuevamente");
                     return false;
@@ -122,7 +122,8 @@ class UsuarioClave extends ActiveRecord {
                 DwMessage::error("Indica la contraseña para el inicio de sesión");
                 return false;
             }
-            $obj->password = md5(sha1($obj->password));
+            $obj->password = md5(sha1(strtoupper($obj->password)));
+            
             //$obj->repassword = md5(sha1($obj->repassword)); mientras luego borrar lo de abajo 
             $obj->repassword = $obj->password;            
             if($obj->password !== $obj->repassword) {

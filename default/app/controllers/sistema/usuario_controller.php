@@ -99,7 +99,7 @@ class UsuarioController extends BackendController {
         }                
         
         if(Input::hasPost('usuario')) {
-            if(DwSecurity::isValidKey(Input::post('usuario_id_key'), 'form_key')) {
+           // if(DwSecurity::isValidKey(Input::post('usuario_id_key'), 'form_key')) {
                 ActiveRecord::beginTrans();
                     if(Usuario::setUsuario('update', Input::post('usuario'), array('repassword'=>Input::post('repassword'), 'id'=>$usuario->id, 'login'=>$usuario->login))) {
                         ActiveRecord::commitTrans();
@@ -108,7 +108,7 @@ class UsuarioController extends BackendController {
                 } else {
                     ActiveRecord::rollbackTrans();
                 } 
-            }
+            //}
         }        
         $this->temas = DwUtils::getFolders(dirname(APP_PATH).'/public/css/backend/themes/');
         $this->usuario = $usuario;
