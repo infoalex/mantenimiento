@@ -7,11 +7,14 @@
     <?php echo DwForm::open('', 'post', array('id'=>'form', 'class'=>'dw-validate')); ?>
 
         <div class="row-fluid">
-            <div class="span6">
-                <?php echo DwForm::text('modelo.nombre', array('class'=>'input-xxlarge input-required show-error data-toggle="tooltip" title="Nombre de la Modelo"'), NULL, 'Nombre'); ?>
+            <div class="span4">
+                <?php echo DwForm::dbSelect('modelo.marca_id', 'nombre', array('config/marca', 'getListadoMarca'), NULL, array('class'=>'input-xlarge input-required input-list show-errors'), NULL, 'Marca'); ?>
             </div>
-            <div class="span6">
-                <?php echo DwForm::text('modelo.observacion', array('class'=>'input-xxlarge input-alphanum mask-alphanum show-error data-toggle="tooltip" title="Observacion de la Modelo"',), NULL, 'Observación'); ?>
+            <div class="span4">
+                <?php echo DwForm::text('modelo.nombre', array('class'=>'input-xlarge input-required show-error data-toggle="tooltip" title="Nombre de la Modelo"'), NULL, 'Nombre'); ?>
+            </div>
+            <div class="span4">
+                <?php echo DwForm::text('modelo.observacion', array('class'=>'input-xlarge input-alphanum mask-alphanum show-error data-toggle="tooltip" title="Observacion de la Modelo"',), NULL, 'Observación'); ?>
             </div>
         </div>
 
