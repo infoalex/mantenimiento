@@ -92,7 +92,16 @@
                 <?php echo DwForm::textarea('equipo.diagnostico', array('class'=>'input-xxlarge mask-alphanum input-required show-error'), NULL, 'Funcionamiento y Manejo'); ?>
             </div>
         </div>
-      
+        <div class="row-fluid">
+            <div class="span3">
+            </div>        
+            <div class="span6">
+              <?php echo DwForm::textarea('factura.observacion', array('class'=>'input-xxlarge  mask-alpha'), NULL, 'Observaciones'); ?>
+            </div>
+            
+        </div>
+
+
         </div><!-- FIN DE LA TAB #02 -->
         <div class="tab-pane" id="tab3">
         <div id="page-wrap">
@@ -122,19 +131,16 @@
 
         </table>
         </div>
-          <div class="row-fluid">
-            <div class="span6">
-              <?php echo DwForm::textarea('factura.observacion', array('class'=>'input-xxlarge  mask-alpha'), NULL, 'Observaciones'); ?>
-            </div>
-           <div class="row-fluid">
-            <div class="form-actions">
+           
+     
+      </div><!-- Fin del TAB #03 FACTURAS-->
+             <div class="row-fluid">
+              <div class="form-actions">
                 <?php echo DwButton::save('Guardar Equipo'); ?>
                 <?php echo DwButton::reset('form'); ?>
                 <?php echo DwButton::cancel(); ?>
-            </div>
+              </div>
         </div>
-      </div><!-- Fin del TAB #03 FACTURAS-->
-       
     <?php echo DwForm::close(); ?>
 </div>
 <script type="text/javascript" >
