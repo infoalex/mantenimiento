@@ -1,0 +1,19 @@
+Sistema Alba Mantenimiento 
+
+1) Registro de Maquinas / Equipos
+   1.1) Registro de Categorias de Parte de Maquinas. 
+        (
+        "lubricantes(Grasa,Aceite)",
+        "Sistemas Rodajes(Rodamientos,Chumaceras)",
+        "Datos Técnicos Motor/Reductor",
+        "Poleas",
+        "Piñones",
+        "Sistemas de Transmisión(Correas,Engrane,Cadenas)",
+        "Elementos Desgastables",
+        "Cilindros",
+        "Otros Elementos"
+         )
+   1.2) Registro de Parte de Maquinas.
+
+2) Registro de Incidencias 
+3) Registro de Ordenes de Mantenimiento Correctivo
