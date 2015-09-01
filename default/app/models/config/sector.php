@@ -9,14 +9,6 @@
 
 class Sector extends ActiveRecord {
     
-    /**
-     * Constante para definir el id de la oficina principal
-     */
-    const OFICINA_PRINCIPAL = 1;
-
-    /**
-     * Método para definir las relaciones y validaciones
-     */
     protected function initialize() {
         $this->belongs_to('sucursal');
     }  
@@ -65,7 +57,7 @@ class Sector extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setsector($method, $data, $optData=null) {
+    public static function setSector($method, $data, $optData=null) {
         //Se aplica la autocarga
         $obj = new sector($data);
         //Se verifica si contiene una data adicional para autocargar
@@ -79,12 +71,6 @@ class Sector extends ActiveRecord {
      * Método que se ejecuta antes de guardar y/o modificar     
      */
     public function before_save() {        
-    /*    $conditions = "sector = '$this->sector' AND parroquia_id = $this->parroquia_id AND empresa_id = $this->empresa_id";
-        $conditions.= (isset($this->id)) ? " AND id != $this->id" : '';
-        if($this->count("conditions: $conditions")) {
-            DwMessage::error('Lo sentimos, pero ya existe una sector registrada con el mismo nombre y parroquia.');
-            return 'cancel';
-        }*/
         //MAYUSCULAS A LA BD
         $this->sector = strtoupper($this->sector);
         $this->direccion = strtoupper($this->direccion);

@@ -9,22 +9,21 @@
         <?php } ?>
             <li class="active"><a href="#tab1" data-toggle="tab">Información del Equipo / Maquinaria</a></li>
             <li><a href="#tab2" data-toggle="tab">Especificaciones y Funcionamiento</a></li>
-            <li><a href="#tab3" data-toggle="tab">Partes del Equipo / Maquinaria</a></li>
         </ul>
         <div class="tab-content">
         <div class="tab-pane active" id="tab1">
         <div class="row-fluid">
             <div class="span3">
-                <?php echo DwForm::text('equipo.codigo', array('class'=>'input-large mask-alpha'),NULL, 'Código:'); ?>
-            </div>
-            <div class="span3">
-                <?php echo DwForm::date('equipo.fecha_registro', array('class'=>'input-required mask-date readonly input-date show-errors'), date("d-m-Y"), 'Fecha Registro'); ?>
-            </div>
-            <div class="span3">
-                <?php echo DwForm::date('equipo.fecha_compra', array('class'=>'input-required mask-date input-date show-errors'), date("Y-m-d"), 'Fecha Adquisición'); ?>
+                <?php echo DwForm::text('equipo.codigo', array('class'=>'input-large mask-alphanum'),NULL, 'Código:'); ?>
             </div>
             <div class="span3">
                 <?php echo DwForm::text('equipo.activo_fijo', array('class'=>'input-large mask-pint show-error input-required '), NULL, 'Activo Fijo'); ?>
+            </div>
+            <div class="span3">
+                <?php echo DwForm::date('equipo.fecha_registro', array('class'=>'input-required mask-date disabled readonly input-date show-errors'), date("d-m-Y"), 'Fecha Registro'); ?>
+            </div>
+            <div class="span3">
+                <?php echo DwForm::date('equipo.fecha_compra', array('class'=>'input-required mask-date input-date show-errors'), date("Y-m-d"), 'Fecha Adquisición'); ?>
             </div>
         </div>
         <div class="row-fluid">
@@ -38,12 +37,19 @@
               <?php echo DwForm::dbSelect('equipo.proveedor_id', 'nombre', array('config/proveedor', 'getListadoProveedor'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Proveedor'); ?>
             </div>
             <div class="span3">
-                <?php echo DwForm::text('equipo.nombre', array('class'=>'input-large mask-pint show-error input-required '), NULL, 'Nombre del Equipo'); ?>
+                <?php echo DwForm::text('equipo.nombre', array('class'=>'input-large mask-alphanum input-required'), NULL, 'Nombre del Equipo'); ?>
             </div>
         </div>
         <div class="row-fluid">
+            <div class="span3">
+              <?php echo DwForm::dbSelect('equipo.sector_id', array('sector','sucursal'), array('config/sector', 'getListadoSector'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Sector'); ?>
+            </div>
+            <div class="span3">
+
+              <?php echo DwForm::dbSelect('equipo.fabricante_id', 'nombre', array('config/fabricante', 'getListadoFabricante'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Fabricante'); ?>
+            </div>
             <div class="span6">
-                <?php echo DwForm::textarea('equipo.observacion', array('class'=>'mask-text show-error input-xxlarge mask-alpha '), NULL, 'Observacion'); ?>
+                <?php echo DwForm::textarea('equipo.observacion', array('class'=>'mask-text show-error input-xxlarge mask-alpha '), NULL, 'Observación'); ?>
             </div>
         </div>
         </div><!-- FIN del tab 1 -->
@@ -51,53 +57,12 @@
         <div class="tab-pane" id="tab2">
         <div class="row-fluid">
             <div class="span6">
-                <?php echo DwForm::textarea('equipo.motivo', array('class'=>'input-xxlarge mask-alphanum input-required show-error'), NULL, 'Especificaciones y Caracteristicas principales'); ?>
+                <?php echo DwForm::textarea('equipo.caracteristicas', array('class'=>'input-xxlarge mask-alphanum input-required show-error'), NULL, 'Especificaciones y Caracteristicas principales'); ?>
             </div>
             <div class="span6"> 
-                <?php echo DwForm::textarea('equipo.diagnostico', array('class'=>'input-xxlarge mask-alphanum input-required show-error'), NULL, 'Funcionamiento y Manejo'); ?>
+                <?php echo DwForm::textarea('equipo.funcionamiento', array('class'=>'input-xxlarge mask-alphanum input-required show-error'), NULL, 'Funcionamiento y Manejo'); ?>
             </div>
         </div>
-        <div class="row-fluid">
-            <div class="span3">
-            </div>        
-            <div class="span6">
-              <?php echo DwForm::textarea('factura.observacion', array('class'=>'input-xxlarge  mask-alpha'), NULL, 'Observaciones'); ?>
-            </div>
-            
-        </div>
-
-
-        </div><!-- FIN DE LA TAB #02 -->
-        <div class="tab-pane" id="tab3">
-        <div id="page-wrap">
-     <div id="header">PARTES </div>
-        
-        
-        <table id="items" >
-          <tr>
-              <th>Descripcion</th>
-              <th>Codigo</th>
-              <th>Serial</th>
-              <th>Tipo</th>
-              <th>Cantidad</th>
-          </tr>
-          <tr class="item-row">
-              <td class="description"><div class="delete-wpr"> <input type="text" name="descripcion[]" class="input-xlarge"><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-              <td><input type="text" name="codigo[]" class="qty input-small mask-alpha"></td>
-              <td><input type="text" name="serial[]" class="cost input-small mask-alpha"></td>
-              <td><input type="text" name="tipo[]" class="qty input-small mask-alpha"></td>
-              <td><input type="text" name="cantidad[]" class="cost input-small mask-alpha"></td>
-
-          </tr>
-          <tr id="hiderow">
-            <td colspan="6"><a id="addrow" href="javascript:;" title="Add a row">Agregar Parte</a></td>
-          </tr>
-
-
-        </table>
-        </div>
-           
-     
       </div><!-- Fin del TAB #03 FACTURAS-->
              <div class="row-fluid">
               <div class="form-actions">
@@ -108,231 +73,3 @@
         </div>
     <?php echo DwForm::close(); ?>
 </div>
-<script type="text/javascript" >
-$(document).ready(function(){
-  select: function ll(event, ui) {
-                  $('input#equipo_codigo_solicitud').val(ui.item.codid);// Asignacion de Id en Campo
-                 // $('textarea#equipo_observacion').val(ui.item.id);// Asignacion de Id en Campo
-              }
-    
-    $('input#equipo_titular').autocomplete({
-            minLength : 3 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
-            source: function(request, response) {
-                $.ajax({
-                  url: "<?php echo PUBLIC_PATH ?>beneficiarios/titular/autocomplete",
-                  data: {'busqueda':request.term},
-                  dataType: "json",
-                  type: "POST",
-                  success: function(data){
-                      response(data);
-                  }
-                });
-              },
-              select: function(event, ui) {
-                  $('input#equipo_titular_id').val(ui.item.id);// Asignacion de Id en Campo
-                  $('input#equipo_titular_idnombre').val(ui.item.idnombre);// Asignacion de Id en Campo
-                 // $('textarea#equipo_observacion').val(ui.item.id);// Asignacion de Id en Campo
-              }
-    });
-    $('input#equipo_beneficiario').autocomplete({
-            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
-            source: function(request, response) {
-                $.ajax({
-                  url: "<?php echo PUBLIC_PATH ?>beneficiarios/beneficiario/autocomplete",
-                  data: {'busqueda':request.term},
-                  dataType: "json",
-                  type: "POST",
-                  success: function(data){
-                      response(data);
-                  }
-                });
-              },
-              select: function(event, ui) {
-                  $('input#equipo_beneficiario_id').val(ui.item.id);// Asignacion de Id en Campo
-                  $('input#equipo_beneficiario_idnombre').val(ui.item.idnombre);// Asignacion de Id en Campo
-              }
-    });
-    $( "input#equipo_proveedor" ).autocomplete({
-            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
-            source: function(request, response) {
-                $.ajax({
-                  url: "<?php echo PUBLIC_PATH ?>proveedorsalud/proveedor/autocomplete",
-                  data: {'busqueda':request.term},
-                  dataType: "json",
-                  type: "POST",
-                  success: function(data){
-                      response(data);
-                  }
-                });
-              },
-              select: function(event, ui) {
-                  $('input#equipo_proveedor_id').val(ui.item.id);// Asignacion de Id en Campo
-              }
-    });
-    $('input#equipo_medico').autocomplete({
-            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
-            source: function(request, response) {
-                $.ajax({
-                  url: "<?php echo PUBLIC_PATH ?>proveedorsalud/medico/autocomplete",
-                  data: {'busqueda':request.term},
-                  dataType: "json",
-                  type: "POST",
-                  success: function(data){
-                      response(data);
-                  }
-                });
-              },
-              select: function(event, ui) {
-                  $('input#equipo_medico_id').val(ui.item.id);// Asignacion de Id en Campo
-              }
-    });
-    $('input#equipo_servicio').autocomplete({
-            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
-            source: function(request, response) {
-                $.ajax({
-                  url: "<?php echo PUBLIC_PATH ?>proveedorsalud/servicio/autocomplete",
-                  data: {'busqueda':request.term},
-                  dataType: "json",
-                  type: "POST",
-                  success: function(data){
-                      response(data);
-                  }
-                });
-              },
-              select: function(event, ui) {
-                  $('input#equipo_servicio_id').val(ui.item.id);// Asignacion de Id en Campo
-                   //$('textarea#equipo_observacion').val(ui.item.id);// Asignacion de Id en Campo
-              }
-    }); 
-$("#equipo_titular").change(function(){
-    var titular_id     =   $('#equipo_titular_id').val();
-        $.ajax({
-          type: "POST",
-          url: "<?php echo PUBLIC_PATH . 'beneficiarios/beneficiario/getBeneficiarios/'; ?>",
-          data: "titular_id=" + titular_id,
-          success: function(html){
-            $("#div_beneficiario").html(html);
-          }
-        });
-});
-});
-</script>
-
-<script type="text/javascript" >
-$(document).ready(function(){
-  select: function ll(event, ui) {
-            $('input#equipo_codigo_solicitud').val(ui.item.codid);// Asignacion de Id en Campo
-            // $('textarea#equipo_observacion').val(ui.item.id);// Asignacion de Id en Campo
-              }
-    $('input#equipo_patologia').autocomplete({
-        minLength : 3 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
-            source: function(request, response) {
-                $.ajax({
-                    url: "<?php echo PUBLIC_PATH ?>config/patologia/autocomplete",
-                    data: {'busqueda':request.term},
-                    dataType: "json",
-                    type: "POST",
-                    success: function(data){
-                        response(data);
-                    }
-                });
-            },
-            select: function(event, ui) {
-            $('input#equipo_patologia_id').val(ui.item.id);// Asignacion de Id en Campo
-            //$('textarea#equipo_observacion').val(ui.item.id);// Asignacion de Id en Campo
-            }
-        }); 
-});
-</script>
-
-<script type="text/javascript" >
-//funcion para borrar los objetos creados.
-function borrar(obj) {  
-  field = document.getElementById('capa_datos'); 
-  field.removeChild(document.getElementById(obj));    
-  icremento--; 
-   if(icremento==1){
-      $("#ocultar").css("display", "none"); 
-  }
-  return true;
-}
-
-
-var icremento =1;
-function crear(obj) {
-    if(icremento>5){
-        $("#capa_datos").css({                     
-                "margin": "auto",
-                "text-align":"center",
-                "width": "auto",
-                "height": "124px",      
-                "padding": "2px",
-                "border-radius": "4px",
-                "overflow": "auto"
-            })
-    }
-    var patologia = document.getElementById('equipo_patologia').value;   
-    var patologia_id = document.getElementById('equipo_patologia_id').value;
-    //valida que no este vacio lo que se envia
-    if(patologia==""){
-      alert('No se puede agregar! \nCampo en blanco');
-      document.getElementById('equipo_patologia').focus();
-      return false;
-    }
-//para validar que no repita el patologia en el arreglo.
-   for(var i=0;i<document.getElementsByName('patologia_id[]').length;i++)
-    {                               
-        if (document.getElementsByName('patologia_id[]')[i].value==patologia_id){
-            alert('Estas intentando agregar una patologia con caracteristicas iguales.\nVerifica los datos!');
-            return false;
-        }
-        if(document.getElementsByName('patologia_id[]').length<=0){
-            alert('No puede dejar campo en blanco.\nVerifica los datos!');
-            return false; 
-        }
-
-    } 
-      field = document.getElementById('capa_datos'); 
-      contenedor = document.createElement('div'); 
-      contenedor.id = 'div'+icremento; 
-      field.appendChild(contenedor); 
-    //patologia id
-      boton = document.createElement('input'); 
-      boton.type = 'hidden'; 
-      boton.name = 'patologia_id[]';
-      boton.vAlign= "middle";
-      boton.id ='patologia_id'+'[]';
-      boton.value =  document.getElementById('equipo_patologia_id').value;    
-      
-      contenedor.appendChild(boton); 
-    //cantidad Campo de texto
-      boton = document.createElement('input'); 
-      boton.type = 'text'; 
-      boton.name = 'patologia'+'[]';
-      boton.id = 'cant';
-      boton.vAlign= "middle";
-      boton.value =  document.getElementById('equipo_patologia').value;
-      boton.readOnly = true;
-      boton.size='4';
-      boton.className ="input-xxlarge"
-      contenedor.appendChild(boton); 
-        //Boton de borrado 
-      boton = document.createElement('input');
-      boton.vAlign= "middle";
-
-      boton.type = 'button'; 
-      boton.width= '15';
-      boton.height= '15';
-      boton.src = "";
-      boton.name = 'div'+icremento;
-      boton.value = "Eliminar"
-      boton.onclick = function () {borrar(this.name)} 
-      contenedor.appendChild(boton); 
-      icremento++;    
-      document.getElementById('equipo_patologia').value = "";
-      document.getElementById('equipo_patologia').focus();
-    $("#ocultar").css("display", "block");
-    return true;
-}
-
-</script>

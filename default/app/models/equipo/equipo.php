@@ -49,6 +49,8 @@ class Equipo extends ActiveRecord {
     public static function setEquipo($method, $data, $optData=null) {
         //Se aplica la autocarga
         $obj = new Equipo($data);
+
+        $obj->fecha_registro = date("Y-m-d");
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
@@ -80,14 +82,16 @@ class Equipo extends ActiveRecord {
             return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
         }
     }
-
-
-
-
     /**
      * Método que se ejecuta antes de guardar y/o modificar     
      */
-    public function before_save() {        
+    public function before_save() {
+        //formatenado todo a mayusculas
+        $this->codigo = strtoupper($this->codigo);
+        $this->nombre = strtoupper($this->nombre);
+        $this->observacion = strtoupper($this->observacion);
+        $this->caracteristicas = strtoupper($this->caracteristicas);
+        $this->funcionamiento = strtoupper($this->funcionamiento);
     }
     
     /**

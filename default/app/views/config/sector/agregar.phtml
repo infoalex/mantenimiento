@@ -25,18 +25,3 @@
         </div>
     <?php echo DwForm::close(); ?>
 </div>
-
-<!-- Script para obtener por Ajax Los Estados en funcion de los paises  -->
-<script type='text/javascript'>
-$("#sector_pais_id").click(function(){
-    var pais_id     =   $('#sector_pais_id').val();
-        $.ajax({
-          type: "POST",
-          url: "<?php echo PUBLIC_PATH . 'config/sector/getEstadoPais/'; ?>",
-          data: "pais_id=" + pais_id,
-          success: function(html){
-            $("#div_estado").html(html);
-          }
-        });
-});
-</script>

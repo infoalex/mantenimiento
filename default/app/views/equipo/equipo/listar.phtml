@@ -38,27 +38,27 @@
                 </tr>
             </thead>
             <tbody>
-                <?php // foreach($equipos->items as $equipo): ?>
-                    <?php //$key_upd = DwSecurity::getKey($equipo->id, 'upd_equipo'); ?>
-                    <?php //$key_del = DwSecurity::getKey($equipo->id, 'del_equipo'); ?>
+                <?php  foreach($equipos->items as $equipo): ?>
+                    <?php $key_upd = DwSecurity::getKey($equipo->id, 'upd_equipo'); ?>
+                    <?php $key_del = DwSecurity::getKey($equipo->id, 'del_equipo'); ?>
                     <tr>
-                        <td><?php //echo $equipos->counter; ?></td>
-                        <td><?php //echo $equipo->fecha_solicitud; ?></td>
-                        <td><?php //echo $equipo->titular_id; ?></td>
-                        <td><?php //echo $equipo->beneficiario_id; ?></td>
-                        <td><?php //echo $equipo->proveedor_id; ?></td>
-                        <td><?php //echo $equipo->servicio_id; ?></td>
-                        <td><?php //echo $equipo->patologia_id; ?></td>
-                        <td><?php //echo $equipo->observacion; ?></td>
-                        <td><?php //echo $equipo->estado_solicitud; ?></td>
+                        <td><?php echo $equipos->counter; ?></td>
+                        <td><?php echo $equipo->fecha_compra; ?></td>
+                        <td><?php echo $equipo->codigo; ?></td>
+                        <td><?php echo $equipo->nombre; ?></td>
+                        <td><?php echo $equipo->proveedor_id; ?></td>
+                        <td><?php echo $equipo->servicio_id; ?></td>
+                        <td><?php echo $equipo->patologia_id; ?></td>
+                        <td><?php echo $equipo->observacion; ?></td>
+                        <td><?php echo $equipo->estado_solicitud; ?></td>
                         
                         <td>
                             <?php echo DwHtml::buttonTable('Modificar Solicitud', "#", null, 'info', 'edit'); ?>
                             <?php echo DwHtml::buttonTable('Eliminar Solicitud', "#", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar solicitud_medicina', 'confirm-body'=>'Está seguro de eliminar este solicitud_medicina? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
                         </td>
                     </tr>
-                    <?php //$equipos->counter++; ?>
-                <?php //endforeach; ?>
+                    <?php $equipos->counter++; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
 

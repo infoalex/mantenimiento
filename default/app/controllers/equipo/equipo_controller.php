@@ -5,16 +5,10 @@
  Load::models('equipo/equipo');
 
 class EquipoController extends BackendController {
-    /**
-     * Constante para definir el tipo de solicitud
-     */
-    const TPS = 7;
-    /**
-     * Método que se ejecuta antes de cualquier acción
-     */
+   
     protected function before_filter() {
         //Se cambia el nombre del módulo actual
-        $this->page_module = 'Solicitudes';
+        $this->page_module = 'Equipos/Maquinarias';
     }
     /**
      * Método principal
@@ -48,8 +42,8 @@ class EquipoController extends BackendController {
      */
     public function listar($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        #$solicitud_equipo = new SolicitudServicio();        
-        #$this->solicitud_equipos = $solicitud_equipo->getListadoSolicitudServicio($order, $page);
+        $equipo = new Equipo();        
+        $this->equipos = $equipo->getListadoEquipo($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Equipos y Maquinarias';
     }
@@ -95,79 +89,9 @@ class EquipoController extends BackendController {
             }            
         } 
         //cierre del condicional del Input(post)
-
-
-
         $this->page_title = 'Agregar Equipo Maquinaria';
-
-
-
-
-
     }//CIERRE DE la funcion agregar
 
-    /**
-    * Método para cargar las facturas en caso que de los reeembolso tengan mas de una
-    */
-    public function facturar($key){
-        if(!$id = DwSecurity::isValidKey($key, 'upd_solicitud_servicio', 'int')) {
-            return DwRedirect::toAction('registro');
-        }
-        $solicitud_servicio = new SolicitudServicio();
-        $obj = new SolicitudServicioPatologia();
-        //$factura = new Factura();
-        $factura_dt = new FacturaDt();
-        $this->sol =  $obj->getInformacionSolicitudServicioPatologia($id);
-        if(!$solicitud_servicio->getInformacionSolicitudServicio($id)) {            
-            DwMessage::get('id_no_found');
-            return DwRedirect::toAction('registro');
-        }
-        if(Input::hasPost('factura')) {
-            ActiveRecord::beginTrans();
-            $factu = Factura::setFactura('create', Input::post('factura'));
-            if($factu){
-                if(FacturaDt::setFacturaDt(Input::post('descripcion'), Input::post('cantidad'), Input::post('monto'), Input::post('exento'), $factu->id)) {
-                    $solfactura = SolicitudServicioFactura::setSolicitudServicioFactura($factu->id, $id);
-                    if($solfactura){
-                        if(Input::post('multifactura')){ //para saber si va a cargar multiples facturas sobre esa solicitud 
-                            $solser = $solicitud_servicio->getInformacionSolicitudServicio($id);
-                            $solser->estado_solicitud="G"; //estado G parcialmente facturada 
-                            $solser->save();
-                            ActiveRecord::commitTrans();
-                            DwMessage::valid('Se ha cargado la factura exitosamente!');
-                            $key_upd = DwSecurity::getKey($id, 'upd_solicitud_servicio'); 
-                            return DwRedirect::toAction('facturar/'.$key_upd);   //retorna a la misma visata de facturacion 
-                        }
-                        else{
-                            $solser = $solicitud_servicio->getInformacionSolicitudServicio($id);
-                            $solser->estado_solicitud="F";
-                            $solser->save();
-                            ActiveRecord::commitTrans();
-                            DwMessage::valid('Se ha cargado la factura exitosamente!');
-                          return DwRedirect::toAction('facturacion');     
-                        }
-
-                    }
-                    else{
-                        ActiveRecord::rollbackTrans();
-                        DwMessage::error('No se pudo enviar a cargar multiples facturas!');
-                    }
-
-                }
-                else{
-                    ActiveRecord::rollbackTrans();
-                    DwMessage::error('Los detalles de la Factura no se han cargado correctamente Intente de nuevo!');
-                }
-            }
-            else{
-                ActiveRecord::rollbackTrans();
-                DwMessage::error('La Factura ha dao peos!');
-            }
-        }
-        $this->solicitud_servicio = $solicitud_servicio;
-        $this->page_title = 'Cargar Facturas a la solicitud';        
-    }
-    
   
     /**
     *Metodo para aprobar las solicitudes (Cambiar de Estatus)
