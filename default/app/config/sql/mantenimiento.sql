@@ -3,14 +3,13 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: audit_log; Type: SCHEMA; Schema: -; Owner: arrozalba
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
@@ -23,24 +22,11 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
---
--- Name: hstore; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
-
-
---
--- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
-
-
 SET search_path = public, pg_catalog;
 
+SET default_tablespace = '';
 
-SET search_path = public, pg_catalog;
+SET default_with_oids = false;
 
 --
 -- Name: acceso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
@@ -819,10 +805,10 @@ ALTER SEQUENCE fabricante_id_seq OWNED BY fabricante.id;
 
 
 --
--- Name: maquina; Type: TABLE; Schema: public; Owner: jelitox; Tablespace: 
+-- Name: equipo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-CREATE TABLE maquina (
+CREATE TABLE equipo (
     id integer NOT NULL,
     nombre character varying(100),
     codigo character varying(10),
@@ -838,13 +824,13 @@ CREATE TABLE maquina (
 );
 
 
-ALTER TABLE public.maquina OWNER TO jelitox;
+ALTER TABLE public.equipo OWNER TO arrozalba;
 
 --
--- Name: maquina_id_seq; Type: SEQUENCE; Schema: public; Owner: jelitox
+-- Name: equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
 --
 
-CREATE SEQUENCE maquina_id_seq
+CREATE SEQUENCE equipo_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -852,41 +838,41 @@ CREATE SEQUENCE maquina_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.maquina_id_seq OWNER TO jelitox;
+ALTER TABLE public.equipo_id_seq OWNER TO arrozalba;
 
 --
--- Name: maquina_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jelitox
+-- Name: equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
 --
 
-ALTER SEQUENCE maquina_id_seq OWNED BY maquina.id;
+ALTER SEQUENCE equipo_id_seq OWNED BY equipo.id;
 
 
 --
--- Name: maquina_parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+-- Name: equipo_parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-CREATE TABLE maquina_parte (
+CREATE TABLE equipo_parte (
     id integer NOT NULL,
-    maquina_id integer,
+    equipo_id integer,
     parte_id integer,
     cantidad integer
 );
 
 
-ALTER TABLE public.maquina_parte OWNER TO arrozalba;
+ALTER TABLE public.equipo_parte OWNER TO arrozalba;
 
 --
--- Name: TABLE maquina_parte; Type: COMMENT; Schema: public; Owner: arrozalba
+-- Name: TABLE equipo_parte; Type: COMMENT; Schema: public; Owner: arrozalba
 --
 
-COMMENT ON TABLE maquina_parte IS 'Modelo para manipular las partes de las maquinas';
+COMMENT ON TABLE equipo_parte IS 'Modelo para manipular las partes de las equipos';
 
 
 --
--- Name: maquina_parte_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+-- Name: equipo_parte_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
 --
 
-CREATE SEQUENCE maquina_parte_id_seq
+CREATE SEQUENCE equipo_parte_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -894,13 +880,13 @@ CREATE SEQUENCE maquina_parte_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.maquina_parte_id_seq OWNER TO arrozalba;
+ALTER TABLE public.equipo_parte_id_seq OWNER TO arrozalba;
 
 --
--- Name: maquina_parte_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+-- Name: equipo_parte_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
 --
 
-ALTER SEQUENCE maquina_parte_id_seq OWNED BY maquina_parte.id;
+ALTER SEQUENCE equipo_parte_id_seq OWNED BY equipo_parte.id;
 
 
 --
@@ -1294,7 +1280,7 @@ ALTER TABLE public.parte OWNER TO arrozalba;
 -- Name: TABLE parte; Type: COMMENT; Schema: public; Owner: arrozalba
 --
 
-COMMENT ON TABLE parte IS 'Modelo para manipular las partes de las maquinas';
+COMMENT ON TABLE parte IS 'Modelo para manipular las partes de las equipos';
 
 
 --
@@ -2377,318 +2363,6 @@ ALTER TABLE public.usuario_pregunta_id_seq OWNER TO arrozalba;
 ALTER SEQUENCE usuario_pregunta_id_seq OWNED BY usuario_pregunta.id;
 
 
-SET search_path = smsd, pg_catalog;
-
---
--- Name: daemons; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE daemons (
-    "Start" text NOT NULL,
-    "Info" text NOT NULL
-);
-
-
-ALTER TABLE smsd.daemons OWNER TO arrozalba;
-
---
--- Name: gammu; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE gammu (
-    "Version" smallint DEFAULT (0)::smallint NOT NULL
-);
-
-
-ALTER TABLE smsd.gammu OWNER TO arrozalba;
-
---
--- Name: inbox; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE inbox (
-    "UpdatedInDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "ReceivingDateTime" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "Text" text NOT NULL,
-    "SenderNumber" character varying(20) DEFAULT ''::character varying NOT NULL,
-    "Coding" character varying(255) DEFAULT 'Default_No_Compression'::character varying NOT NULL,
-    "UDH" text NOT NULL,
-    "SMSCNumber" character varying(20) DEFAULT ''::character varying NOT NULL,
-    "Class" integer DEFAULT (-1) NOT NULL,
-    "TextDecoded" text DEFAULT ''::text NOT NULL,
-    "ID" integer NOT NULL,
-    "RecipientID" text NOT NULL,
-    "Processed" boolean DEFAULT false NOT NULL,
-    CONSTRAINT "inbox_Coding_check" CHECK ((("Coding")::text = ANY (ARRAY[('Default_No_Compression'::character varying)::text, ('Unicode_No_Compression'::character varying)::text, ('8bit'::character varying)::text, ('Default_Compression'::character varying)::text, ('Unicode_Compression'::character varying)::text])))
-);
-
-
-ALTER TABLE smsd.inbox OWNER TO arrozalba;
-
---
--- Name: inbox_ID_seq; Type: SEQUENCE; Schema: smsd; Owner: arrozalba
---
-
-CREATE SEQUENCE "inbox_ID_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE smsd."inbox_ID_seq" OWNER TO arrozalba;
-
---
--- Name: inbox_ID_seq; Type: SEQUENCE OWNED BY; Schema: smsd; Owner: arrozalba
---
-
-ALTER SEQUENCE "inbox_ID_seq" OWNED BY inbox."ID";
-
-
---
--- Name: outbox; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE outbox (
-    "UpdatedInDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "InsertIntoDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "SendingDateTime" timestamp without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "SendBefore" time without time zone DEFAULT '23:59:59'::time without time zone NOT NULL,
-    "SendAfter" time without time zone DEFAULT '00:00:00'::time without time zone NOT NULL,
-    "Text" text,
-    "DestinationNumber" character varying(20) DEFAULT ''::character varying NOT NULL,
-    "Coding" character varying(255) DEFAULT 'Default_No_Compression'::character varying NOT NULL,
-    "UDH" text,
-    "Class" integer DEFAULT (-1),
-    "TextDecoded" text DEFAULT ''::text NOT NULL,
-    "ID" integer NOT NULL,
-    "MultiPart" boolean DEFAULT false NOT NULL,
-    "RelativeValidity" integer DEFAULT (-1),
-    "SenderID" character varying(255),
-    "SendingTimeOut" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "DeliveryReport" character varying(10) DEFAULT 'default'::character varying,
-    "CreatorID" text NOT NULL,
-    CONSTRAINT "outbox_Coding_check" CHECK ((("Coding")::text = ANY (ARRAY[('Default_No_Compression'::character varying)::text, ('Unicode_No_Compression'::character varying)::text, ('8bit'::character varying)::text, ('Default_Compression'::character varying)::text, ('Unicode_Compression'::character varying)::text]))),
-    CONSTRAINT "outbox_DeliveryReport_check" CHECK ((("DeliveryReport")::text = ANY (ARRAY[('default'::character varying)::text, ('yes'::character varying)::text, ('no'::character varying)::text])))
-);
-
-
-ALTER TABLE smsd.outbox OWNER TO arrozalba;
-
---
--- Name: outbox_ID_seq; Type: SEQUENCE; Schema: smsd; Owner: arrozalba
---
-
-CREATE SEQUENCE "outbox_ID_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE smsd."outbox_ID_seq" OWNER TO arrozalba;
-
---
--- Name: outbox_ID_seq; Type: SEQUENCE OWNED BY; Schema: smsd; Owner: arrozalba
---
-
-ALTER SEQUENCE "outbox_ID_seq" OWNED BY outbox."ID";
-
-
---
--- Name: outbox_multipart; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE outbox_multipart (
-    "Text" text,
-    "Coding" character varying(255) DEFAULT 'Default_No_Compression'::character varying NOT NULL,
-    "UDH" text,
-    "Class" integer DEFAULT (-1),
-    "TextDecoded" text,
-    "ID" integer NOT NULL,
-    "SequencePosition" integer DEFAULT 1 NOT NULL,
-    CONSTRAINT "outbox_multipart_Coding_check" CHECK ((("Coding")::text = ANY (ARRAY[('Default_No_Compression'::character varying)::text, ('Unicode_No_Compression'::character varying)::text, ('8bit'::character varying)::text, ('Default_Compression'::character varying)::text, ('Unicode_Compression'::character varying)::text])))
-);
-
-
-ALTER TABLE smsd.outbox_multipart OWNER TO arrozalba;
-
---
--- Name: outbox_multipart_ID_seq; Type: SEQUENCE; Schema: smsd; Owner: arrozalba
---
-
-CREATE SEQUENCE "outbox_multipart_ID_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE smsd."outbox_multipart_ID_seq" OWNER TO arrozalba;
-
---
--- Name: outbox_multipart_ID_seq; Type: SEQUENCE OWNED BY; Schema: smsd; Owner: arrozalba
---
-
-ALTER SEQUENCE "outbox_multipart_ID_seq" OWNED BY outbox_multipart."ID";
-
-
---
--- Name: pbk; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE pbk (
-    "ID" integer NOT NULL,
-    "GroupID" integer DEFAULT (-1) NOT NULL,
-    "Name" text NOT NULL,
-    "Number" text NOT NULL
-);
-
-
-ALTER TABLE smsd.pbk OWNER TO arrozalba;
-
---
--- Name: pbk_ID_seq; Type: SEQUENCE; Schema: smsd; Owner: arrozalba
---
-
-CREATE SEQUENCE "pbk_ID_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE smsd."pbk_ID_seq" OWNER TO arrozalba;
-
---
--- Name: pbk_ID_seq; Type: SEQUENCE OWNED BY; Schema: smsd; Owner: arrozalba
---
-
-ALTER SEQUENCE "pbk_ID_seq" OWNED BY pbk."ID";
-
-
---
--- Name: pbk_groups; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE pbk_groups (
-    "Name" text NOT NULL,
-    "ID" integer NOT NULL
-);
-
-
-ALTER TABLE smsd.pbk_groups OWNER TO arrozalba;
-
---
--- Name: pbk_groups_ID_seq; Type: SEQUENCE; Schema: smsd; Owner: arrozalba
---
-
-CREATE SEQUENCE "pbk_groups_ID_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE smsd."pbk_groups_ID_seq" OWNER TO arrozalba;
-
---
--- Name: pbk_groups_ID_seq; Type: SEQUENCE OWNED BY; Schema: smsd; Owner: arrozalba
---
-
-ALTER SEQUENCE "pbk_groups_ID_seq" OWNED BY pbk_groups."ID";
-
-
---
--- Name: phones; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE phones (
-    "ID" text NOT NULL,
-    "UpdatedInDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "InsertIntoDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "TimeOut" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "Send" boolean DEFAULT false NOT NULL,
-    "Receive" boolean DEFAULT false NOT NULL,
-    "IMEI" character varying(35) NOT NULL,
-    "Client" text NOT NULL,
-    "Battery" integer DEFAULT (-1) NOT NULL,
-    "Signal" integer DEFAULT (-1) NOT NULL,
-    "Sent" integer DEFAULT 0 NOT NULL,
-    "Received" integer DEFAULT 0 NOT NULL
-);
-
-
-ALTER TABLE smsd.phones OWNER TO arrozalba;
-
---
--- Name: sentitems; Type: TABLE; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE sentitems (
-    "UpdatedInDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "InsertIntoDB" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "SendingDateTime" timestamp(0) without time zone DEFAULT ('now'::text)::timestamp(0) without time zone NOT NULL,
-    "DeliveryDateTime" timestamp(0) without time zone,
-    "Text" text NOT NULL,
-    "DestinationNumber" character varying(20) DEFAULT ''::character varying NOT NULL,
-    "Coding" character varying(255) DEFAULT 'Default_No_Compression'::character varying NOT NULL,
-    "UDH" text NOT NULL,
-    "SMSCNumber" character varying(20) DEFAULT ''::character varying NOT NULL,
-    "Class" integer DEFAULT (-1) NOT NULL,
-    "TextDecoded" text DEFAULT ''::text NOT NULL,
-    "ID" integer NOT NULL,
-    "SenderID" character varying(255) NOT NULL,
-    "SequencePosition" integer DEFAULT 1 NOT NULL,
-    "Status" character varying(255) DEFAULT 'SendingOK'::character varying NOT NULL,
-    "StatusError" integer DEFAULT (-1) NOT NULL,
-    "TPMR" integer DEFAULT (-1) NOT NULL,
-    "RelativeValidity" integer DEFAULT (-1) NOT NULL,
-    "CreatorID" text NOT NULL,
-    CONSTRAINT "sentitems_Coding_check" CHECK ((("Coding")::text = ANY (ARRAY[('Default_No_Compression'::character varying)::text, ('Unicode_No_Compression'::character varying)::text, ('8bit'::character varying)::text, ('Default_Compression'::character varying)::text, ('Unicode_Compression'::character varying)::text]))),
-    CONSTRAINT "sentitems_Status_check" CHECK ((("Status")::text = ANY (ARRAY[('SendingOK'::character varying)::text, ('SendingOKNoReport'::character varying)::text, ('SendingError'::character varying)::text, ('DeliveryOK'::character varying)::text, ('DeliveryFailed'::character varying)::text, ('DeliveryPending'::character varying)::text, ('DeliveryUnknown'::character varying)::text, ('Error'::character varying)::text])))
-);
-
-
-ALTER TABLE smsd.sentitems OWNER TO arrozalba;
-
---
--- Name: sentitems_ID_seq; Type: SEQUENCE; Schema: smsd; Owner: arrozalba
---
-
-CREATE SEQUENCE "sentitems_ID_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE smsd."sentitems_ID_seq" OWNER TO arrozalba;
-
---
--- Name: sentitems_ID_seq; Type: SEQUENCE OWNED BY; Schema: smsd; Owner: arrozalba
---
-
-ALTER SEQUENCE "sentitems_ID_seq" OWNED BY sentitems."ID";
-
-
-SET search_path = audit_log, pg_catalog;
-
---
--- Name: log_id; Type: DEFAULT; Schema: audit_log; Owner: arrozalba
---
-
-ALTER TABLE ONLY audit_log ALTER COLUMN log_id SET DEFAULT nextval('audit_log_log_id_seq'::regclass);
-
-
-SET search_path = public, pg_catalog;
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
@@ -2746,17 +2420,17 @@ ALTER TABLE ONLY fabricante ALTER COLUMN id SET DEFAULT nextval('fabricante_id_s
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: jelitox
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY maquina ALTER COLUMN id SET DEFAULT nextval('maquina_id_seq'::regclass);
+ALTER TABLE ONLY equipo ALTER COLUMN id SET DEFAULT nextval('equipo_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY maquina_parte ALTER COLUMN id SET DEFAULT nextval('maquina_parte_id_seq'::regclass);
+ALTER TABLE ONLY equipo_parte ALTER COLUMN id SET DEFAULT nextval('equipo_parte_id_seq'::regclass);
 
 
 --
@@ -2878,69 +2552,6 @@ ALTER TABLE ONLY usuario ALTER COLUMN id SET DEFAULT nextval('usuario_id_seq'::r
 ALTER TABLE ONLY usuario_clave ALTER COLUMN id SET DEFAULT nextval('usuario_clave_id_seq'::regclass);
 
 
-SET search_path = smsd, pg_catalog;
-
---
--- Name: ID; Type: DEFAULT; Schema: smsd; Owner: arrozalba
---
-
-ALTER TABLE ONLY inbox ALTER COLUMN "ID" SET DEFAULT nextval('"inbox_ID_seq"'::regclass);
-
-
---
--- Name: ID; Type: DEFAULT; Schema: smsd; Owner: arrozalba
---
-
-ALTER TABLE ONLY outbox ALTER COLUMN "ID" SET DEFAULT nextval('"outbox_ID_seq"'::regclass);
-
-
---
--- Name: ID; Type: DEFAULT; Schema: smsd; Owner: arrozalba
---
-
-ALTER TABLE ONLY outbox_multipart ALTER COLUMN "ID" SET DEFAULT nextval('"outbox_multipart_ID_seq"'::regclass);
-
-
---
--- Name: ID; Type: DEFAULT; Schema: smsd; Owner: arrozalba
---
-
-ALTER TABLE ONLY pbk ALTER COLUMN "ID" SET DEFAULT nextval('"pbk_ID_seq"'::regclass);
-
-
---
--- Name: ID; Type: DEFAULT; Schema: smsd; Owner: arrozalba
---
-
-ALTER TABLE ONLY pbk_groups ALTER COLUMN "ID" SET DEFAULT nextval('"pbk_groups_ID_seq"'::regclass);
-
-
---
--- Name: ID; Type: DEFAULT; Schema: smsd; Owner: arrozalba
---
-
-ALTER TABLE ONLY sentitems ALTER COLUMN "ID" SET DEFAULT nextval('"sentitems_ID_seq"'::regclass);
-
-
-SET search_path = audit_log, pg_catalog;
-
---
--- Data for Name: audit_log; Type: TABLE DATA; Schema: audit_log; Owner: arrozalba
---
-
-COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, log_operation, log_query, log_table, log_columns, log_old_values, log_new_values) FROM stdin;
-\.
-
-
---
--- Name: audit_log_log_id_seq; Type: SEQUENCE SET; Schema: audit_log; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('audit_log_log_id_seq', 7506, true);
-
-
-SET search_path = public, pg_catalog;
-
 --
 -- Data for Name: acceso; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
@@ -2986,6 +2597,12 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 85	9	2015-07-10 13:10:39.720217-04:30	2015-07-10 13:10:39.720217-04:30	2	\N	\N	\N	\N	127.0.0.1
 86	1	2015-07-10 13:10:44.043119-04:30	2015-07-10 13:10:44.043119-04:30	1	\N	\N	\N	\N	127.0.0.1
 87	1	2015-07-21 20:28:10.493854-04:30	2015-07-21 20:28:10.493854-04:30	1	\N	\N	\N	\N	127.0.0.1
+88	1	2015-08-11 16:01:37.014118-04:30	2015-08-11 16:01:37.014118-04:30	1	\N	\N	\N	\N	127.0.0.1
+89	1	2015-08-11 17:11:39.325904-04:30	2015-08-11 17:11:39.325904-04:30	1	\N	\N	\N	\N	127.0.0.1
+90	1	2015-08-25 20:19:54.449496-04:30	2015-08-25 20:19:54.449496-04:30	1	\N	\N	\N	\N	127.0.0.1
+91	1	2015-08-25 21:12:17.017592-04:30	2015-08-25 21:12:17.017592-04:30	1	\N	\N	\N	\N	127.0.0.1
+92	1	2015-08-31 19:00:08.484204-04:30	2015-08-31 19:00:08.484204-04:30	1	\N	\N	\N	\N	127.0.0.1
+93	1	2015-08-31 19:46:22.929171-04:30	2015-08-31 19:46:22.929171-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -2993,7 +2610,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 87, true);
+SELECT pg_catalog.setval('acceso_id_seq', 93, true);
 
 
 --
@@ -3305,33 +2922,33 @@ SELECT pg_catalog.setval('fabricante_id_seq', 1, true);
 
 
 --
--- Data for Name: maquina; Type: TABLE DATA; Schema: public; Owner: jelitox
+-- Data for Name: equipo; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY maquina (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedor_id, fecha_compra, sector_id, caracteristicas, funcionamiento, observaciones) FROM stdin;
+COPY equipo (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedor_id, fecha_compra, sector_id, caracteristicas, funcionamiento, observaciones) FROM stdin;
 \.
 
 
 --
--- Name: maquina_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jelitox
+-- Name: equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('maquina_id_seq', 1, false);
+SELECT pg_catalog.setval('equipo_id_seq', 1, false);
 
 
 --
--- Data for Name: maquina_parte; Type: TABLE DATA; Schema: public; Owner: arrozalba
+-- Data for Name: equipo_parte; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY maquina_parte (id, maquina_id, parte_id, cantidad) FROM stdin;
+COPY equipo_parte (id, equipo_id, parte_id, cantidad) FROM stdin;
 \.
 
 
 --
--- Name: maquina_parte_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+-- Name: equipo_parte_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('maquina_parte_id_seq', 1, false);
+SELECT pg_catalog.setval('equipo_parte_id_seq', 1, false);
 
 
 --
@@ -3385,7 +3002,7 @@ COPY menu (id, usuario_id, fecha_registro, fecha_modificado, menu_id, recurso_id
 79	\N	2015-06-18 21:45:35.906812-04:30	2015-06-18 21:45:35.906812-04:30	15	76	Sector	config/sector/	880	icon-home	1	1
 80	\N	2015-06-20 13:21:14.531687-04:30	2015-06-20 13:21:14.531687-04:30	15	77	Proveedor	config/proveedor/	881	icon-home	1	1
 28	\N	2014-03-16 12:46:04.752491-04:30	2014-03-16 12:46:04.752491-04:30	\N	\N	Fichas de Equipos	#	100	icon-list	1	1
-26	\N	2014-03-13 13:30:24.848631-04:30	2014-03-13 13:30:24.848631-04:30	28	\N	Fichas de Equipos / Maquinarias	equipo/equipo/listar	101	icon-list	1	1
+26	\N	2014-03-13 13:30:24.848631-04:30	2014-03-13 13:30:24.848631-04:30	28	\N	Fichas de Equipos / equiporias	equipo/equipo/listar	101	icon-list	1	1
 \.
 
 
@@ -3401,6 +3018,7 @@ SELECT pg_catalog.setval('menu_id_seq', 80, true);
 --
 
 COPY modelo (id, nombre, observacion, marca_id) FROM stdin;
+1	KAGASAKI	NINGUNA	2
 \.
 
 
@@ -3408,7 +3026,7 @@ COPY modelo (id, nombre, observacion, marca_id) FROM stdin;
 -- Name: modelo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('modelo_id_seq', 1, false);
+SELECT pg_catalog.setval('modelo_id_seq', 1, true);
 
 
 --
@@ -5588,135 +5206,6 @@ COPY usuario_pregunta (id, usuario_id, fecha_registro, fecha_modificado, pregunt
 SELECT pg_catalog.setval('usuario_pregunta_id_seq', 1, false);
 
 
-SET search_path = smsd, pg_catalog;
-
---
--- Data for Name: daemons; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY daemons ("Start", "Info") FROM stdin;
-\.
-
-
---
--- Data for Name: gammu; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY gammu ("Version") FROM stdin;
-13
-\.
-
-
---
--- Data for Name: inbox; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY inbox ("UpdatedInDB", "ReceivingDateTime", "Text", "SenderNumber", "Coding", "UDH", "SMSCNumber", "Class", "TextDecoded", "ID", "RecipientID", "Processed") FROM stdin;
-\.
-
-
---
--- Name: inbox_ID_seq; Type: SEQUENCE SET; Schema: smsd; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('"inbox_ID_seq"', 1, false);
-
-
---
--- Data for Name: outbox; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY outbox ("UpdatedInDB", "InsertIntoDB", "SendingDateTime", "SendBefore", "SendAfter", "Text", "DestinationNumber", "Coding", "UDH", "Class", "TextDecoded", "ID", "MultiPart", "RelativeValidity", "SenderID", "SendingTimeOut", "DeliveryReport", "CreatorID") FROM stdin;
-\.
-
-
---
--- Name: outbox_ID_seq; Type: SEQUENCE SET; Schema: smsd; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('"outbox_ID_seq"', 1, false);
-
-
---
--- Data for Name: outbox_multipart; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY outbox_multipart ("Text", "Coding", "UDH", "Class", "TextDecoded", "ID", "SequencePosition") FROM stdin;
-\.
-
-
---
--- Name: outbox_multipart_ID_seq; Type: SEQUENCE SET; Schema: smsd; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('"outbox_multipart_ID_seq"', 1, false);
-
-
---
--- Data for Name: pbk; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY pbk ("ID", "GroupID", "Name", "Number") FROM stdin;
-\.
-
-
---
--- Name: pbk_ID_seq; Type: SEQUENCE SET; Schema: smsd; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('"pbk_ID_seq"', 1, false);
-
-
---
--- Data for Name: pbk_groups; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY pbk_groups ("Name", "ID") FROM stdin;
-\.
-
-
---
--- Name: pbk_groups_ID_seq; Type: SEQUENCE SET; Schema: smsd; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('"pbk_groups_ID_seq"', 1, false);
-
-
---
--- Data for Name: phones; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY phones ("ID", "UpdatedInDB", "InsertIntoDB", "TimeOut", "Send", "Receive", "IMEI", "Client", "Battery", "Signal", "Sent", "Received") FROM stdin;
-\.
-
-
---
--- Data for Name: sentitems; Type: TABLE DATA; Schema: smsd; Owner: arrozalba
---
-
-COPY sentitems ("UpdatedInDB", "InsertIntoDB", "SendingDateTime", "DeliveryDateTime", "Text", "DestinationNumber", "Coding", "UDH", "SMSCNumber", "Class", "TextDecoded", "ID", "SenderID", "SequencePosition", "Status", "StatusError", "TPMR", "RelativeValidity", "CreatorID") FROM stdin;
-\.
-
-
---
--- Name: sentitems_ID_seq; Type: SEQUENCE SET; Schema: smsd; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('"sentitems_ID_seq"', 1, false);
-
-
-SET search_path = audit_log, pg_catalog;
-
---
--- Name: audit_log_pkey; Type: CONSTRAINT; Schema: audit_log; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY audit_log
-    ADD CONSTRAINT audit_log_pkey PRIMARY KEY (log_id);
-
-
-SET search_path = public, pg_catalog;
-
 --
 -- Name: acceso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
@@ -5822,19 +5311,19 @@ ALTER TABLE ONLY fabricante
 
 
 --
--- Name: maquina_parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+-- Name: equipo_parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-ALTER TABLE ONLY maquina_parte
-    ADD CONSTRAINT maquina_parte_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY equipo_parte
+    ADD CONSTRAINT equipo_parte_pkey PRIMARY KEY (id);
 
 
 --
--- Name: maquina_pkey; Type: CONSTRAINT; Schema: public; Owner: jelitox; Tablespace: 
+-- Name: equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-ALTER TABLE ONLY maquina
-    ADD CONSTRAINT maquina_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY equipo
+    ADD CONSTRAINT equipo_pkey PRIMARY KEY (id);
 
 
 --
@@ -6013,66 +5502,6 @@ ALTER TABLE ONLY usuario_pregunta
     ADD CONSTRAINT usuario_pregunta_pkey PRIMARY KEY (id);
 
 
-SET search_path = smsd, pg_catalog;
-
---
--- Name: inbox_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY inbox
-    ADD CONSTRAINT inbox_pkey PRIMARY KEY ("ID");
-
-
---
--- Name: outbox_multipart_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY outbox_multipart
-    ADD CONSTRAINT outbox_multipart_pkey PRIMARY KEY ("ID", "SequencePosition");
-
-
---
--- Name: outbox_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY outbox
-    ADD CONSTRAINT outbox_pkey PRIMARY KEY ("ID");
-
-
---
--- Name: pbk_groups_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY pbk_groups
-    ADD CONSTRAINT pbk_groups_pkey PRIMARY KEY ("ID");
-
-
---
--- Name: pbk_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY pbk
-    ADD CONSTRAINT pbk_pkey PRIMARY KEY ("ID");
-
-
---
--- Name: phones_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY phones
-    ADD CONSTRAINT phones_pkey PRIMARY KEY ("IMEI");
-
-
---
--- Name: sentitems_pkey; Type: CONSTRAINT; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY sentitems
-    ADD CONSTRAINT sentitems_pkey PRIMARY KEY ("ID", "SequencePosition");
-
-
-SET search_path = public, pg_catalog;
-
 --
 -- Name: usuario_perfil_idx; Type: INDEX; Schema: public; Owner: arrozalba; Tablespace: 
 --
@@ -6086,420 +5515,6 @@ CREATE INDEX usuario_perfil_idx ON usuario USING btree (perfil_id);
 
 CREATE INDEX usuario_sucursal_idx ON usuario USING btree (sucursal_id);
 
-
-SET search_path = smsd, pg_catalog;
-
---
--- Name: outbox_date; Type: INDEX; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE INDEX outbox_date ON outbox USING btree ("SendingDateTime", "SendingTimeOut");
-
-
---
--- Name: outbox_sender; Type: INDEX; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE INDEX outbox_sender ON outbox USING btree ("SenderID");
-
-
---
--- Name: sentitems_date; Type: INDEX; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE INDEX sentitems_date ON sentitems USING btree ("DeliveryDateTime");
-
-
---
--- Name: sentitems_dest; Type: INDEX; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE INDEX sentitems_dest ON sentitems USING btree ("DestinationNumber");
-
-
---
--- Name: sentitems_sender; Type: INDEX; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE INDEX sentitems_sender ON sentitems USING btree ("SenderID");
-
-
---
--- Name: sentitems_tpmr; Type: INDEX; Schema: smsd; Owner: arrozalba; Tablespace: 
---
-
-CREATE INDEX sentitems_tpmr ON sentitems USING btree ("TPMR");
-
-
-SET search_path = public, pg_catalog;
-
---
--- Name: tgl_acceso; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_acceso AFTER INSERT OR DELETE OR UPDATE ON acceso FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_backup; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_backup AFTER INSERT OR DELETE OR UPDATE ON backup FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_cargo; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_cargo AFTER INSERT OR DELETE OR UPDATE ON cargo FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_departamento; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_departamento AFTER INSERT OR DELETE OR UPDATE ON departamento FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_empresa; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_empresa AFTER INSERT OR DELETE OR UPDATE ON empresa FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_estado; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_estado AFTER INSERT OR DELETE OR UPDATE ON estado FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_estado_usuario; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_estado_usuario AFTER INSERT OR DELETE OR UPDATE ON estado_usuario FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_fabricante; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_fabricante AFTER INSERT OR DELETE OR UPDATE ON fabricante FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_maquina_parte; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_maquina_parte AFTER INSERT OR DELETE OR UPDATE ON maquina_parte FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_marca; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_marca AFTER INSERT OR DELETE OR UPDATE ON marca FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_menu; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_menu AFTER INSERT OR DELETE OR UPDATE ON menu FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_modelo; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_modelo AFTER INSERT OR DELETE OR UPDATE ON modelo FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_municipio; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_municipio AFTER INSERT OR DELETE OR UPDATE ON municipio FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_pais; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_pais AFTER INSERT OR DELETE OR UPDATE ON pais FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_parroquia; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_parroquia AFTER INSERT OR DELETE OR UPDATE ON parroquia FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_parte; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_parte AFTER INSERT OR DELETE OR UPDATE ON parte FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_parte_categoria; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_parte_categoria AFTER INSERT OR DELETE OR UPDATE ON parte_categoria FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_perfil; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_perfil AFTER INSERT OR DELETE OR UPDATE ON perfil FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_profesion; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_profesion AFTER INSERT OR DELETE OR UPDATE ON profesion FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_reccurso_perfil; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_reccurso_perfil AFTER INSERT OR DELETE OR UPDATE ON recurso_perfil FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_recurso; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_recurso AFTER INSERT OR DELETE OR UPDATE ON recurso FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_sector; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_sector AFTER INSERT OR DELETE OR UPDATE ON sector FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_sucursal; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_sucursal AFTER INSERT OR DELETE OR UPDATE ON sucursal FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgl_usuario; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgl_usuario AFTER INSERT OR DELETE OR UPDATE ON usuario FOR EACH ROW EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_acceso; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_acceso AFTER TRUNCATE ON acceso FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_backup; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_backup AFTER TRUNCATE ON backup FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_cargo; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_cargo AFTER TRUNCATE ON cargo FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_departamento; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_departamento AFTER TRUNCATE ON departamento FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_empresa; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_empresa AFTER TRUNCATE ON empresa FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_estado; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_estado AFTER TRUNCATE ON estado FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_estado_usuario; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_estado_usuario AFTER TRUNCATE ON estado_usuario FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_fabricante; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_fabricante AFTER TRUNCATE ON fabricante FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_maquina_parte; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_maquina_parte AFTER TRUNCATE ON maquina_parte FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_marca; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_marca AFTER TRUNCATE ON marca FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_menu; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_menu AFTER TRUNCATE ON menu FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_modelo; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_modelo AFTER TRUNCATE ON modelo FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_municipio; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_municipio AFTER TRUNCATE ON municipio FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_pais; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_pais AFTER TRUNCATE ON pais FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_parroquia; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_parroquia AFTER TRUNCATE ON parroquia FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_parte; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_parte AFTER TRUNCATE ON parte FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_parte_categoria; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_parte_categoria AFTER TRUNCATE ON parte_categoria FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_perfil; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_perfil AFTER TRUNCATE ON perfil FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_profesion; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_profesion AFTER TRUNCATE ON profesion FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_recurso; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_recurso AFTER TRUNCATE ON recurso FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_recurso_perfil; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_recurso_perfil AFTER TRUNCATE ON recurso_perfil FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_sector; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_sector AFTER TRUNCATE ON sector FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_sucursal; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_sucursal AFTER TRUNCATE ON sucursal FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
---
--- Name: tgt_usuario; Type: TRIGGER; Schema: public; Owner: arrozalba
---
-
-CREATE TRIGGER tgt_usuario AFTER TRUNCATE ON usuario FOR EACH STATEMENT EXECUTE PROCEDURE logger();
-
-
-SET search_path = smsd, pg_catalog;
-
---
--- Name: update_timestamp; Type: TRIGGER; Schema: smsd; Owner: arrozalba
---
-
-CREATE TRIGGER update_timestamp BEFORE UPDATE ON inbox FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
-
-
---
--- Name: update_timestamp; Type: TRIGGER; Schema: smsd; Owner: arrozalba
---
-
-CREATE TRIGGER update_timestamp BEFORE UPDATE ON outbox FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
-
-
---
--- Name: update_timestamp; Type: TRIGGER; Schema: smsd; Owner: arrozalba
---
-
-CREATE TRIGGER update_timestamp BEFORE UPDATE ON phones FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
-
-
---
--- Name: update_timestamp; Type: TRIGGER; Schema: smsd; Owner: arrozalba
---
-
-CREATE TRIGGER update_timestamp BEFORE UPDATE ON sentitems FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
-
-
-SET search_path = public, pg_catalog;
 
 --
 -- Name: acceso_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
@@ -6598,11 +5613,11 @@ ALTER TABLE ONLY estado_usuario
 
 
 --
--- Name: maquina_fkid; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+-- Name: equipo_fkid; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY maquina_parte
-    ADD CONSTRAINT maquina_fkid FOREIGN KEY (maquina_id) REFERENCES maquina(id) ON UPDATE CASCADE;
+ALTER TABLE ONLY equipo_parte
+    ADD CONSTRAINT equipo_fkid FOREIGN KEY (equipo_id) REFERENCES equipo(id) ON UPDATE CASCADE;
 
 
 --
@@ -6657,7 +5672,7 @@ ALTER TABLE ONLY parte
 -- Name: parte_fkid; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY maquina_parte
+ALTER TABLE ONLY equipo_parte
     ADD CONSTRAINT parte_fkid FOREIGN KEY (parte_id) REFERENCES parte(id) ON UPDATE CASCADE;
 
 
@@ -6773,16 +5788,6 @@ REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
---
--- Name: smsd; Type: ACL; Schema: -; Owner: arrozalba
---
-
-REVOKE ALL ON SCHEMA smsd FROM PUBLIC;
-REVOKE ALL ON SCHEMA smsd FROM arrozalba;
-GRANT ALL ON SCHEMA smsd TO arrozalba;
-GRANT ALL ON SCHEMA smsd TO PUBLIC;
 
 
 --
