@@ -15,68 +15,33 @@
         <div class="tab-pane active" id="tab1">
         <div class="row-fluid">
             <div class="span3">
-                <?php echo DwForm::text('equipo.codigo_solicitud_id', array('class'=>'input-large disabled'),NULL, 'Código:'); ?>
-                <?php echo DwForm::hidden('equipo.codigo_solicitud', NULL, NULL); ?>
-                <?php echo DwForm::hidden('equipo.tiposolicitud_id', NULL, '7'); ?>
-                <?php echo DwForm::hidden('equipo.estado_solicitud', NULL, 'S'); ?>
-                <?php ?>
+                <?php echo DwForm::text('equipo.codigo', array('class'=>'input-large mask-alpha'),NULL, 'Código:'); ?>
             </div>
             <div class="span3">
-                <?php echo DwForm::date('equipo.fecha_registro', array('class'=>'input-required mask-date readonly input-date show-errors'), date("Y-m-d"), 'Fecha Registro'); ?>
+                <?php echo DwForm::date('equipo.fecha_registro', array('class'=>'input-required mask-date readonly input-date show-errors'), date("d-m-Y"), 'Fecha Registro'); ?>
             </div>
             <div class="span3">
-                <?php echo DwForm::date('equipo.fecha_adquisicion', array('class'=>'input-required mask-date input-date show-errors'), date("Y-m-d"), 'Fecha Adquisición'); ?>
+                <?php echo DwForm::date('equipo.fecha_compra', array('class'=>'input-required mask-date input-date show-errors'), date("Y-m-d"), 'Fecha Adquisición'); ?>
             </div>
             <div class="span3">
                 <?php echo DwForm::text('equipo.activo_fijo', array('class'=>'input-large mask-pint show-error input-required '), NULL, 'Activo Fijo'); ?>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span6">
-                <?php echo DwForm::text('equipo.nombre', array('class'=>'input-xxlarge mask-pint show-error input-required '), NULL, 'Nombre del Equipo'); ?>
-                <?php echo DwForm::hidden('equipo.titular_id', NULL, ''); ?>              
+             <div class="span3">
+                <?php echo DwForm::dbSelect('equipo.marca_id', 'nombre', array('config/marca', 'getListadoMarca'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Marca'); ?>
             </div>
             <div class="span3">
-            <label>Fabricante:</label>
-                <div id='div_beneficiario'>
-                  <select class="input-large"> <option value=""> Seleccione:</option></select>
-                </div>
+              <?php echo DwForm::dbSelect('equipo.modelo_id', 'nombre', array('config/modelo', 'getListadoModelo'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Modelo'); ?>
             </div>
             <div class="span3">
-            <label>Modelo:</label>
-                <div id='div_beneficiario'>
-                  <select class="input-large"> <option value=""> Seleccione:</option></select>
-                </div>
+              <?php echo DwForm::dbSelect('equipo.proveedor_id', 'nombre', array('config/proveedor', 'getListadoProveedor'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Proveedor'); ?>
+            </div>
+            <div class="span3">
+                <?php echo DwForm::text('equipo.nombre', array('class'=>'input-large mask-pint show-error input-required '), NULL, 'Nombre del Equipo'); ?>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span3">
-                <?php echo DwForm::text('equipo.titular', array('class'=>'input-large mask-pint show-error input-required '), NULL, 'Cedula Equipo'); ?>
-                <?php echo DwForm::hidden('equipo.titular_id', NULL, ''); ?>              
-            </div>
-            <div class="span3">
-                <?php echo DwForm::text('equipo.titular_idnombre', array('class'=>'input-large disabled '), NULL, 'Nombre Equipo:'); ?>
-            </div>
-            <div class="span3">
-            <label>Fabricante:</label>
-                <div id='div_beneficiario'>
-                  <select class="input-large"> <option value=""> Seleccione:</option></select>
-                </div>
-            </div>
-            <div class="span3">
-                <?php echo DwForm::text('equipo.servicio', array('class'=>'input-large input-required mask-alpha '), NULL, 'Modelo'); ?>
-                <?php echo DwForm::hidden('equipo.servicio_id', NULL, ''); ?>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span3">
-                <?php echo DwForm::text('equipo.proveedor', array('class'=>'input-large input-required mask-alpha '), NULL, 'Proveedor'); ?>
-                <?php echo DwForm::hidden('equipo.proveedor_id', NULL, ''); ?>
-            </div>
-            <div class="span3">
-               <?php echo DwForm::text('equipo.medico', array('class'=>'input-large input-required mask-alpha'), NULL, 'Telefono'); ?>
-               <?php echo DwForm::hidden('equipo.medico_id', NULL, ''); ?>
-            </div>
             <div class="span6">
                 <?php echo DwForm::textarea('equipo.observacion', array('class'=>'mask-text show-error input-xxlarge mask-alpha '), NULL, 'Observacion'); ?>
             </div>
