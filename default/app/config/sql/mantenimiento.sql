@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -629,6 +630,92 @@ ALTER SEQUENCE empresa_id_seq OWNED BY empresa.id;
 
 
 --
+-- Name: equipo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE equipo (
+    id integer NOT NULL,
+    nombre character varying(100),
+    codigo character varying(10),
+    fabricante_id integer,
+    activo_fijo character varying(10),
+    modelo_id integer,
+    proveedor_id integer,
+    fecha_compra date,
+    sector_id integer,
+    caracteristicas text,
+    funcionamiento text,
+    observaciones text
+);
+
+
+ALTER TABLE public.equipo OWNER TO arrozalba;
+
+--
+-- Name: equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE equipo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.equipo_id_seq OWNER TO arrozalba;
+
+--
+-- Name: equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE equipo_id_seq OWNED BY equipo.id;
+
+
+--
+-- Name: equipo_parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE equipo_parte (
+    id integer NOT NULL,
+    equipo_id integer,
+    parte_id integer,
+    cantidad integer,
+    caracteristicas text
+);
+
+
+ALTER TABLE public.equipo_parte OWNER TO arrozalba;
+
+--
+-- Name: TABLE equipo_parte; Type: COMMENT; Schema: public; Owner: arrozalba
+--
+
+COMMENT ON TABLE equipo_parte IS 'Modelo para manipular las partes de las equipos';
+
+
+--
+-- Name: equipo_parte_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE equipo_parte_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.equipo_parte_id_seq OWNER TO arrozalba;
+
+--
+-- Name: equipo_parte_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE equipo_parte_id_seq OWNED BY equipo_parte.id;
+
+
+--
 -- Name: estado; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -805,32 +892,72 @@ ALTER SEQUENCE fabricante_id_seq OWNED BY fabricante.id;
 
 
 --
--- Name: equipo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+-- Name: falla; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-CREATE TABLE equipo (
+CREATE TABLE falla (
     id integer NOT NULL,
-    nombre character varying(100),
-    codigo character varying(10),
-    fabricante_id integer,
-    activo_fijo character varying(10),
-    modelo_id integer,
-    proveedor_id integer,
-    fecha_compra date,
-    sector_id integer,
-    caracteristicas text,
-    funcionamiento text,
+    descripcion character varying(250) NOT NULL,
+    observacion text
+);
+
+
+ALTER TABLE public.falla OWNER TO arrozalba;
+
+--
+-- Name: falla_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE falla_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.falla_id_seq OWNER TO arrozalba;
+
+--
+-- Name: falla_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE falla_id_seq OWNED BY falla.id;
+
+
+--
+-- Name: incidencias; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE incidencias (
+    id integer NOT NULL,
+    fecha timestamp without time zone,
+    departamento_id integer NOT NULL,
+    hora_inicio time without time zone NOT NULL,
+    hora_fin time without time zone NOT NULL,
+    turno character varying(25) NOT NULL,
+    falla_id integer NOT NULL,
+    equipo_id integer NOT NULL,
+    sector_id integer NOT NULL,
+    parada_sector boolean,
+    parada_planta boolean,
+    analisis_falla text NOT NULL,
+    accion_correctiva text NOT NULL,
+    fecha_reparacion timestamp without time zone NOT NULL,
+    responsable_reparacion character varying(150) NOT NULL,
+    perdida_tn double precision,
+    persistencia_falla boolean,
     observaciones text
 );
 
 
-ALTER TABLE public.equipo OWNER TO arrozalba;
+ALTER TABLE public.incidencias OWNER TO arrozalba;
 
 --
--- Name: equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+-- Name: incidencias_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
 --
 
-CREATE SEQUENCE equipo_id_seq
+CREATE SEQUENCE incidencias_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -838,55 +965,13 @@ CREATE SEQUENCE equipo_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.equipo_id_seq OWNER TO arrozalba;
+ALTER TABLE public.incidencias_id_seq OWNER TO arrozalba;
 
 --
--- Name: equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+-- Name: incidencias_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
 --
 
-ALTER SEQUENCE equipo_id_seq OWNED BY equipo.id;
-
-
---
--- Name: equipo_parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE equipo_parte (
-    id integer NOT NULL,
-    equipo_id integer,
-    parte_id integer,
-    cantidad integer
-);
-
-
-ALTER TABLE public.equipo_parte OWNER TO arrozalba;
-
---
--- Name: TABLE equipo_parte; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON TABLE equipo_parte IS 'Modelo para manipular las partes de las equipos';
-
-
---
--- Name: equipo_parte_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
---
-
-CREATE SEQUENCE equipo_parte_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.equipo_parte_id_seq OWNER TO arrozalba;
-
---
--- Name: equipo_parte_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
---
-
-ALTER SEQUENCE equipo_parte_id_seq OWNED BY equipo_parte.id;
+ALTER SEQUENCE incidencias_id_seq OWNED BY incidencias.id;
 
 
 --
@@ -1836,7 +1921,6 @@ CREATE TABLE sector (
     fecha_modificado timestamp with time zone DEFAULT now() NOT NULL,
     sucursal_id integer NOT NULL,
     sector character varying(45) NOT NULL,
-    sector_slug character varying(45),
     observacion character varying(250)
 );
 
@@ -1883,13 +1967,6 @@ COMMENT ON COLUMN sector.sucursal_id IS 'ID de la Sucursal';
 --
 
 COMMENT ON COLUMN sector.sector IS 'Nombre de la sector';
-
-
---
--- Name: COLUMN sector.sector_slug; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON COLUMN sector.sector_slug IS 'Slug de la sector';
 
 
 --
@@ -2402,6 +2479,20 @@ ALTER TABLE ONLY empresa ALTER COLUMN id SET DEFAULT nextval('empresa_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
+ALTER TABLE ONLY equipo ALTER COLUMN id SET DEFAULT nextval('equipo_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY equipo_parte ALTER COLUMN id SET DEFAULT nextval('equipo_parte_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
 ALTER TABLE ONLY estado ALTER COLUMN id SET DEFAULT nextval('estado_id_seq'::regclass);
 
 
@@ -2423,14 +2514,14 @@ ALTER TABLE ONLY fabricante ALTER COLUMN id SET DEFAULT nextval('fabricante_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY equipo ALTER COLUMN id SET DEFAULT nextval('equipo_id_seq'::regclass);
+ALTER TABLE ONLY falla ALTER COLUMN id SET DEFAULT nextval('falla_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY equipo_parte ALTER COLUMN id SET DEFAULT nextval('equipo_parte_id_seq'::regclass);
+ALTER TABLE ONLY incidencias ALTER COLUMN id SET DEFAULT nextval('incidencias_id_seq'::regclass);
 
 
 --
@@ -2603,6 +2694,8 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 91	1	2015-08-25 21:12:17.017592-04:30	2015-08-25 21:12:17.017592-04:30	1	\N	\N	\N	\N	127.0.0.1
 92	1	2015-08-31 19:00:08.484204-04:30	2015-08-31 19:00:08.484204-04:30	1	\N	\N	\N	\N	127.0.0.1
 93	1	2015-08-31 19:46:22.929171-04:30	2015-08-31 19:46:22.929171-04:30	1	\N	\N	\N	\N	127.0.0.1
+94	1	2015-08-31 22:31:19.783419-04:30	2015-08-31 22:31:19.783419-04:30	1	\N	\N	\N	\N	127.0.0.1
+95	1	2015-08-31 23:30:32.975422-04:30	2015-08-31 23:30:32.975422-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -2610,7 +2703,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 93, true);
+SELECT pg_catalog.setval('acceso_id_seq', 95, true);
 
 
 --
@@ -2788,6 +2881,36 @@ SELECT pg_catalog.setval('empresa_id_seq', 1, false);
 
 
 --
+-- Data for Name: equipo; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY equipo (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedor_id, fecha_compra, sector_id, caracteristicas, funcionamiento, observaciones) FROM stdin;
+\.
+
+
+--
+-- Name: equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('equipo_id_seq', 1, false);
+
+
+--
+-- Data for Name: equipo_parte; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY equipo_parte (id, equipo_id, parte_id, cantidad, caracteristicas) FROM stdin;
+\.
+
+
+--
+-- Name: equipo_parte_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('equipo_parte_id_seq', 1, false);
+
+
+--
 -- Data for Name: estado; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
@@ -2922,33 +3045,33 @@ SELECT pg_catalog.setval('fabricante_id_seq', 1, true);
 
 
 --
--- Data for Name: equipo; Type: TABLE DATA; Schema: public; Owner: arrozalba
+-- Data for Name: falla; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY equipo (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedor_id, fecha_compra, sector_id, caracteristicas, funcionamiento, observaciones) FROM stdin;
+COPY falla (id, descripcion, observacion) FROM stdin;
 \.
 
 
 --
--- Name: equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+-- Name: falla_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('equipo_id_seq', 1, false);
+SELECT pg_catalog.setval('falla_id_seq', 1, false);
 
 
 --
--- Data for Name: equipo_parte; Type: TABLE DATA; Schema: public; Owner: arrozalba
+-- Data for Name: incidencias; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY equipo_parte (id, equipo_id, parte_id, cantidad) FROM stdin;
+COPY incidencias (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
 \.
 
 
 --
--- Name: equipo_parte_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+-- Name: incidencias_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('equipo_parte_id_seq', 1, false);
+SELECT pg_catalog.setval('incidencias_id_seq', 1, false);
 
 
 --
@@ -5108,8 +5231,8 @@ SELECT pg_catalog.setval('recurso_perfil_id_seq', 1092, true);
 -- Data for Name: sector; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY sector (id, usuario_id, fecha_registro, fecha_modificado, sucursal_id, sector, sector_slug, observacion) FROM stdin;
-1	1	2015-06-08 15:11:39.246904-04:30	2015-06-08 15:11:39.246904-04:30	1	Recepcion	Recepcion	prueba
+COPY sector (id, usuario_id, fecha_registro, fecha_modificado, sucursal_id, sector, observacion) FROM stdin;
+1	1	2015-06-08 15:11:39.246904-04:30	2015-06-08 15:11:39.246904-04:30	1	Recepcion	prueba
 \.
 
 
@@ -5271,6 +5394,22 @@ ALTER TABLE ONLY empresa
 
 
 --
+-- Name: equipo_parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY equipo_parte
+    ADD CONSTRAINT equipo_parte_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY equipo
+    ADD CONSTRAINT equipo_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: estado_codigo_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -5311,19 +5450,19 @@ ALTER TABLE ONLY fabricante
 
 
 --
--- Name: equipo_parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+-- Name: falla_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-ALTER TABLE ONLY equipo_parte
-    ADD CONSTRAINT equipo_parte_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY falla
+    ADD CONSTRAINT falla_pk PRIMARY KEY (id);
 
 
 --
--- Name: equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+-- Name: incidencias_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
-ALTER TABLE ONLY equipo
-    ADD CONSTRAINT equipo_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY incidencias
+    ADD CONSTRAINT incidencias_pkey PRIMARY KEY (id);
 
 
 --
@@ -5463,11 +5602,11 @@ ALTER TABLE ONLY recurso
 
 
 --
--- Name: sector_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+-- Name: sector_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY sector
-    ADD CONSTRAINT sector_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT sector_pk PRIMARY KEY (id);
 
 
 --
@@ -5597,6 +5736,14 @@ ALTER TABLE ONLY empresa
 
 
 --
+-- Name: equipo_fkid; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY equipo_parte
+    ADD CONSTRAINT equipo_fkid FOREIGN KEY (equipo_id) REFERENCES equipo(id) ON UPDATE CASCADE;
+
+
+--
 -- Name: estado_pais_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
 --
 
@@ -5613,11 +5760,35 @@ ALTER TABLE ONLY estado_usuario
 
 
 --
--- Name: equipo_fkid; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+-- Name: incidencia_departamento_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY equipo_parte
-    ADD CONSTRAINT equipo_fkid FOREIGN KEY (equipo_id) REFERENCES equipo(id) ON UPDATE CASCADE;
+ALTER TABLE ONLY incidencias
+    ADD CONSTRAINT incidencia_departamento_fkey FOREIGN KEY (departamento_id) REFERENCES departamento(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: incidencia_equipo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY incidencias
+    ADD CONSTRAINT incidencia_equipo_fkey FOREIGN KEY (equipo_id) REFERENCES equipo(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: incidencia_falla_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY incidencias
+    ADD CONSTRAINT incidencia_falla_fkey FOREIGN KEY (falla_id) REFERENCES falla(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: incidencia_sector_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY incidencias
+    ADD CONSTRAINT incidencia_sector_fkey FOREIGN KEY (sector_id) REFERENCES sector(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
