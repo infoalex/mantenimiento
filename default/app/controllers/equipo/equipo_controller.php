@@ -1,23 +1,6 @@
 <?php
 /**
- * UPTP - (PNFI Sección 1236) 
- *
  * Descripcion: Controlador que se encarga de la gestión de las profesiones de la empresa
- *
- * @category    
- * @package     Controllers 
- * @author      ALexis Borges (tuaalexis@gmail.com)
- * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
- * 
- *Load::models('solicitudes/factura', 'solicitudes/factura_dt');
- *Load::models('config/tiposolicitud');
- *Load::models('proveedorsalud/proveedor');
- *Load::models('proveedorsalud/servicio');
- *Load::models('proveedorsalud/medicoreembolso');
- *Load::models('proveedorsalud/especialidad');
- *Load::models('beneficiarios/titular');
- *Load::models('beneficiarios/beneficiario', 'solicitudes/solicitud_servicio', 'solicitudes/hequipo');
- *Load::models('config/patologia', 'solicitudes/solicitud_servicio_patologia', 'solicitudes/solicitud_servicio_factura');
 */
  Load::models('equipo/equipo');
 
@@ -104,8 +87,23 @@ class EquipoController extends BackendController {
      * Método para agregar
      */
     public function agregar() {
+
+        if(Input::hasPost('equipo')) {
+            if(Equipo::setEquipo('create', Input::post('equipo'))) {
+                DwMessage::valid('El Equipo se ha registrado correctamente!');
+                return DwRedirect::toAction('listar');
+            }            
+        } 
         //cierre del condicional del Input(post)
+
+
+
         $this->page_title = 'Agregar Equipo Maquinaria';
+
+
+
+
+
     }//CIERRE DE la funcion agregar
 
     /**
