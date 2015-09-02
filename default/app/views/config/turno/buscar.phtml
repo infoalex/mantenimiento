@@ -1,0 +1,67 @@
+<?php View::notify(); ?>
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            form_search: true,
+            form_action: '<?php echo PUBLIC_PATH; ?>config/turno/buscar/',
+            form_load_data : 'dw-shell-content',
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"config/turno/buscar/<?php echo $field.'/'.$value.'/'; ?>"
+        });
+    });
+</script>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("config/turno/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+            <?php echo DwHtml::button("config/turno/listar/", 'listar', array('class'=>'btn-warning'), 'ok', APP_AJAX); ?>
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="turno">turno</th>
+                    <th class="col-collapse" data-search="direccion">DIRECCION</th>
+                    <th class="col-collapse" data-search="parroquia">PARROQUIA</th>
+                    <th class="col-collapse" data-search="celular">CELULAR</th>
+                    <th class="col-collapse" data-search="telefono">TELEFONO</th>
+                    <th class="col-collapse" data-search="fax">FAX</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if($turnos) { ?>
+                <?php foreach($turnos->items as $turno): ?>
+                    <?php $key_upd = DwSecurity::getKey($turno->id, 'upd_turno'); ?>
+                    <?php $key_del = DwSecurity::getKey($turno->id, 'del_turno'); ?>
+                    <tr>
+                        <td><?php echo $turnos->counter; ?></td>
+                        <td><?php echo ($field=='turno') ? DwUtils::resaltar($value, $turno->turno) : $turno->turno; ?></td>
+                        <td><?php echo ($field=='direccion') ? DwUtils::resaltar($value, $turno->direccion) : $turno->direccion; ?></td>
+                        <td><?php echo ($field=='parroquia') ? DwUtils::resaltar($value, $turno->nombre) : $turno->nombre; ?></td>
+                        <td><?php echo ($field=='celular') ? DwUtils::resaltar($value, $turno->celular) : $turno->celular; ?></td>
+                        <td><?php echo ($field=='telefono') ? DwUtils::resaltar($value, $turno->telefono) : $turno->telefono; ?></td>
+                        <td><?php echo ($field=='fax') ? DwUtils::resaltar($value, $turno->fax) : $turno->fax; ?></td>
+                        <td>
+                            <?php echo DwHtml::buttonTable('Modificar turno', "config/turno/editar/$key_upd/", NULL, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar turno', "config/turno/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar turno', 'confirm-body'=>'Está seguro de eliminar esta turno? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>                      
+                        </td>
+                    </tr>
+                    <?php $turnos->counter++; ?>
+                <?php endforeach; ?>
+            </tbody>
+            <?php } ?>
+        </table>
+
+    </div>
+
+    <?php View::partial('paginators/default', false, array('page'=>$turnos, 'url'=>"config/turno/buscar/$field/$value/$order/")); ?>
+</div>

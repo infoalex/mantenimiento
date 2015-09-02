@@ -935,7 +935,7 @@ CREATE TABLE incidencias (
     departamento_id integer NOT NULL,
     hora_inicio time without time zone NOT NULL,
     hora_fin time without time zone NOT NULL,
-    turno character varying(25) NOT NULL,
+    turnos_id integer NOT NULL,
     falla_id integer NOT NULL,
     equipo_id integer NOT NULL,
     sector_id integer NOT NULL,
@@ -2149,6 +2149,40 @@ ALTER SEQUENCE sucursal_id_seq OWNED BY sucursal.id;
 
 
 --
+-- Name: turnos; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE turnos (
+    id integer NOT NULL,
+    descripcion character varying(50) NOT NULL,
+    observacion text
+);
+
+
+ALTER TABLE public.turnos OWNER TO arrozalba;
+
+--
+-- Name: turnos_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE turnos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.turnos_id_seq OWNER TO arrozalba;
+
+--
+-- Name: turnos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE turnos_id_seq OWNED BY turnos.id;
+
+
+--
 -- Name: usuario; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -2633,6 +2667,13 @@ ALTER TABLE ONLY sucursal ALTER COLUMN id SET DEFAULT nextval('sucursal_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
+ALTER TABLE ONLY turnos ALTER COLUMN id SET DEFAULT nextval('turnos_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
 ALTER TABLE ONLY usuario ALTER COLUMN id SET DEFAULT nextval('usuario_id_seq'::regclass);
 
 
@@ -3063,7 +3104,7 @@ SELECT pg_catalog.setval('falla_id_seq', 1, false);
 -- Data for Name: incidencias; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY incidencias (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
+COPY incidencias (id, fecha, departamento_id, hora_inicio, hora_fin, turnos_id, falla_id, equipo_id, sector_id, parada_sector, parada_planta, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
 \.
 
 
@@ -5269,6 +5310,21 @@ SELECT pg_catalog.setval('sucursal_id_seq', 11, true);
 
 
 --
+-- Data for Name: turnos; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY turnos (id, descripcion, observacion) FROM stdin;
+\.
+
+
+--
+-- Name: turnos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('turnos_id_seq', 1, false);
+
+
+--
 -- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
@@ -5618,6 +5674,14 @@ ALTER TABLE ONLY sucursal
 
 
 --
+-- Name: turnos_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY turnos
+    ADD CONSTRAINT turnos_pk PRIMARY KEY (id);
+
+
+--
 -- Name: usuario_clave_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -5789,6 +5853,14 @@ ALTER TABLE ONLY incidencias
 
 ALTER TABLE ONLY incidencias
     ADD CONSTRAINT incidencia_sector_fkey FOREIGN KEY (sector_id) REFERENCES sector(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: incidencia_turnos_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY incidencias
+    ADD CONSTRAINT incidencia_turnos_fkey FOREIGN KEY (turnos_id) REFERENCES turnos(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
