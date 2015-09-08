@@ -91,7 +91,29 @@ class EquipoController extends BackendController {
         //cierre del condicional del Input(post)
         $this->page_title = 'Agregar Equipo Maquinaria';
     }//CIERRE DE la funcion agregar
-
+        /**
+     * Método para agregar
+     */
+    public function agregar_partes($key) {
+        if(!$id = DwSecurity::isValidKey($key, 'piece_equipo', 'int')) {
+            return DwRedirect::toAction('listar');
+        } 
+        $equipo = new Equipo();
+        if(!$equipo->getInformacionEquipo($id)) {            
+            DwMessage::get('id_no_found');
+            return DwRedirect::toAction('listar');
+        }
+        $this->equipos=$equipo->getInformacionEquipo($id);
+        if(Input::hasPost('equipo')) {
+            if(Equipo::setEquipoPartes('create', Input::post('equipo'))) {
+                DwMessage::valid('El Equipo se ha registrado correctamente!');
+                return DwRedirect::toAction('listar');
+            }            
+        } 
+        //cierre del condicional del Input(post)
+        $this->page_title = 'Agregar Partes de Maquinaria';
+        
+    }//CIERRE DE la funcion agregar
   
     /**
     *Metodo para aprobar las solicitudes (Cambiar de Estatus)
