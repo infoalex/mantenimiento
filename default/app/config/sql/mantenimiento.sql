@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -645,7 +644,8 @@ CREATE TABLE equipo (
     sector_id integer,
     caracteristicas text,
     funcionamiento text,
-    observaciones text
+    observaciones text,
+    fecha_registro date
 );
 
 
@@ -935,7 +935,7 @@ CREATE TABLE incidencias (
     departamento_id integer NOT NULL,
     hora_inicio time without time zone NOT NULL,
     hora_fin time without time zone NOT NULL,
-    turnos_id integer NOT NULL,
+    turno character varying(25) NOT NULL,
     falla_id integer NOT NULL,
     equipo_id integer NOT NULL,
     sector_id integer NOT NULL,
@@ -1350,8 +1350,6 @@ ALTER SEQUENCE parroquia_id_seq OWNED BY parroquia.id;
 CREATE TABLE parte (
     id integer NOT NULL,
     usuario_id integer,
-    fecha_registro timestamp with time zone DEFAULT now() NOT NULL,
-    fecha_modificado timestamp with time zone DEFAULT now() NOT NULL,
     nombre character varying(100) NOT NULL,
     caracteristica text,
     parte_categoria_id integer,
@@ -1373,20 +1371,6 @@ COMMENT ON TABLE parte IS 'Modelo para manipular las partes de las equipos';
 --
 
 COMMENT ON COLUMN parte.usuario_id IS 'Usuario Editor del Registro';
-
-
---
--- Name: COLUMN parte.fecha_registro; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON COLUMN parte.fecha_registro IS 'Fecha del Registro';
-
-
---
--- Name: COLUMN parte.fecha_modificado; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON COLUMN parte.fecha_modificado IS 'Fecha Modificacion del Registro';
 
 
 --
@@ -1423,9 +1407,6 @@ COMMENT ON COLUMN parte.observacion IS 'Observacion de la parte';
 
 CREATE TABLE parte_categoria (
     id integer NOT NULL,
-    usuario_id integer,
-    fecha_registro timestamp with time zone DEFAULT now() NOT NULL,
-    fecha_modificado timestamp with time zone DEFAULT now() NOT NULL,
     nombre character varying(100) NOT NULL,
     observacion character varying(250)
 );
@@ -1438,27 +1419,6 @@ ALTER TABLE public.parte_categoria OWNER TO arrozalba;
 --
 
 COMMENT ON TABLE parte_categoria IS 'Modelo para manipular las categorias de las partes';
-
-
---
--- Name: COLUMN parte_categoria.usuario_id; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON COLUMN parte_categoria.usuario_id IS 'Usuario Editor del Registro';
-
-
---
--- Name: COLUMN parte_categoria.fecha_registro; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON COLUMN parte_categoria.fecha_registro IS 'Fecha del Registro';
-
-
---
--- Name: COLUMN parte_categoria.fecha_modificado; Type: COMMENT; Schema: public; Owner: arrozalba
---
-
-COMMENT ON COLUMN parte_categoria.fecha_modificado IS 'Fecha Modificacion del Registro';
 
 
 --
@@ -2149,40 +2109,6 @@ ALTER SEQUENCE sucursal_id_seq OWNED BY sucursal.id;
 
 
 --
--- Name: turnos; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
---
-
-CREATE TABLE turnos (
-    id integer NOT NULL,
-    descripcion character varying(50) NOT NULL,
-    observacion text
-);
-
-
-ALTER TABLE public.turnos OWNER TO arrozalba;
-
---
--- Name: turnos_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
---
-
-CREATE SEQUENCE turnos_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.turnos_id_seq OWNER TO arrozalba;
-
---
--- Name: turnos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
---
-
-ALTER SEQUENCE turnos_id_seq OWNED BY turnos.id;
-
-
---
 -- Name: usuario; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -2667,13 +2593,6 @@ ALTER TABLE ONLY sucursal ALTER COLUMN id SET DEFAULT nextval('sucursal_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY turnos ALTER COLUMN id SET DEFAULT nextval('turnos_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
---
-
 ALTER TABLE ONLY usuario ALTER COLUMN id SET DEFAULT nextval('usuario_id_seq'::regclass);
 
 
@@ -2737,6 +2656,11 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 93	1	2015-08-31 19:46:22.929171-04:30	2015-08-31 19:46:22.929171-04:30	1	\N	\N	\N	\N	127.0.0.1
 94	1	2015-08-31 22:31:19.783419-04:30	2015-08-31 22:31:19.783419-04:30	1	\N	\N	\N	\N	127.0.0.1
 95	1	2015-08-31 23:30:32.975422-04:30	2015-08-31 23:30:32.975422-04:30	1	\N	\N	\N	\N	127.0.0.1
+96	1	2015-09-07 19:23:57.007422-04:30	2015-09-07 19:23:57.007422-04:30	1	\N	\N	\N	\N	127.0.0.1
+97	1	2015-09-07 21:20:39.990661-04:30	2015-09-07 21:20:39.990661-04:30	1	\N	\N	\N	\N	127.0.0.1
+98	1	2015-09-07 21:20:44.980724-04:30	2015-09-07 21:20:44.980724-04:30	2	\N	\N	\N	\N	127.0.0.1
+99	1	2015-09-07 21:22:25.707007-04:30	2015-09-07 21:22:25.707007-04:30	1	\N	\N	\N	\N	127.0.0.1
+100	1	2015-09-07 23:24:25.799859-04:30	2015-09-07 23:24:25.799859-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -2744,7 +2668,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 95, true);
+SELECT pg_catalog.setval('acceso_id_seq', 100, true);
 
 
 --
@@ -2925,7 +2849,8 @@ SELECT pg_catalog.setval('empresa_id_seq', 1, false);
 -- Data for Name: equipo; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY equipo (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedor_id, fecha_compra, sector_id, caracteristicas, funcionamiento, observaciones) FROM stdin;
+COPY equipo (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedor_id, fecha_compra, sector_id, caracteristicas, funcionamiento, observaciones, fecha_registro) FROM stdin;
+1	TRANSPORTADOR 29	M-TRS-29	1	000028	1	1	2015-02-04	1	ES EL EQUIPO QUE RECIBE EL PRODUCYTO DEL ATQNEU PULMON DE ARROZ 	ES DE FACIL MANIPULACION Y TODO ESO 	\N	2015-09-07
 \.
 
 
@@ -2933,7 +2858,7 @@ COPY equipo (id, nombre, codigo, fabricante_id, activo_fijo, modelo_id, proveedo
 -- Name: equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('equipo_id_seq', 1, false);
+SELECT pg_catalog.setval('equipo_id_seq', 1, true);
 
 
 --
@@ -3074,7 +2999,7 @@ SELECT pg_catalog.setval('estado_usuario_id_seq', 124, true);
 --
 
 COPY fabricante (id, nombre, observacion) FROM stdin;
-1	trupper	everything al right
+1	TRUPPER	NINGUNA
 \.
 
 
@@ -3104,7 +3029,7 @@ SELECT pg_catalog.setval('falla_id_seq', 1, false);
 -- Data for Name: incidencias; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY incidencias (id, fecha, departamento_id, hora_inicio, hora_fin, turnos_id, falla_id, equipo_id, sector_id, parada_sector, parada_planta, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
+COPY incidencias (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
 \.
 
 
@@ -4916,7 +4841,7 @@ SELECT pg_catalog.setval('parroquia_id_seq', 1087, true);
 -- Data for Name: parte; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY parte (id, usuario_id, fecha_registro, fecha_modificado, nombre, caracteristica, parte_categoria_id, observacion) FROM stdin;
+COPY parte (id, usuario_id, nombre, caracteristica, parte_categoria_id, observacion) FROM stdin;
 \.
 
 
@@ -4924,7 +4849,8 @@ COPY parte (id, usuario_id, fecha_registro, fecha_modificado, nombre, caracteris
 -- Data for Name: parte_categoria; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY parte_categoria (id, usuario_id, fecha_registro, fecha_modificado, nombre, observacion) FROM stdin;
+COPY parte_categoria (id, nombre, observacion) FROM stdin;
+1	SISTEMA ELECTRICO	NINGUNA POR AHORA
 \.
 
 
@@ -4932,7 +4858,7 @@ COPY parte_categoria (id, usuario_id, fecha_registro, fecha_modificado, nombre, 
 -- Name: parte_categoria_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('parte_categoria_id_seq', 1, false);
+SELECT pg_catalog.setval('parte_categoria_id_seq', 1, true);
 
 
 --
@@ -5310,21 +5236,6 @@ SELECT pg_catalog.setval('sucursal_id_seq', 11, true);
 
 
 --
--- Data for Name: turnos; Type: TABLE DATA; Schema: public; Owner: arrozalba
---
-
-COPY turnos (id, descripcion, observacion) FROM stdin;
-\.
-
-
---
--- Name: turnos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
---
-
-SELECT pg_catalog.setval('turnos_id_seq', 1, false);
-
-
---
 -- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
@@ -5674,14 +5585,6 @@ ALTER TABLE ONLY sucursal
 
 
 --
--- Name: turnos_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
---
-
-ALTER TABLE ONLY turnos
-    ADD CONSTRAINT turnos_pk PRIMARY KEY (id);
-
-
---
 -- Name: usuario_clave_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -5853,14 +5756,6 @@ ALTER TABLE ONLY incidencias
 
 ALTER TABLE ONLY incidencias
     ADD CONSTRAINT incidencia_sector_fkey FOREIGN KEY (sector_id) REFERENCES sector(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: incidencia_turnos_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
---
-
-ALTER TABLE ONLY incidencias
-    ADD CONSTRAINT incidencia_turnos_fkey FOREIGN KEY (turnos_id) REFERENCES turnos(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
