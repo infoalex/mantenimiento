@@ -8,16 +8,22 @@
 
         <div class="row-fluid">
             <div class="span6">
-                <?php echo DwForm::text('discapacidad.nombre', array('class'=>'input-xxlarge input-required input-alphanum mask-alphanum show-error data-toggle="tooltip" title="Ingrese el nombre de la discapacidad"'), NULL, 'Nombre'); ?>
+                <?php echo DwForm::text('fabricante.nombre', array('class'=>'input-xxlarge input-required input-alphanum mask-alphanum show-error'), $fabricante->nombre, 'Fabricante'); ?>
             </div>
+      
             <div class="span6">
-                <?php echo DwForm::text('discapacidad.observacion', array('class'=>'input-xxlarge input-alphanum mask-alphanum show-error data-toggle="tooltip" title="Ingrese una observación de la discapacidad"', 'autocomplete'=>'off'), NULL, 'Observacion'); ?>
+                <?php echo DwForm::text('fabricante.observacion', array('class'=>'input-xxlarge input-alphanum mask-alphanum show-error'), $fabricante->observacion
+                , 'Observacion'); ?>
             </div>
+        </div>
+        
+
+            <?php echo DwForm::hiddenKey('fabricante.id', $fabricante->id); ?>
         </div>
 
         <div class="row-fluid">
             <div class="form-actions">
-                <?php echo DwButton::save('Guardar Discapacidad'); ?>
+                <?php echo DwButton::save('Guardar fabricante'); ?>
                 <?php echo DwButton::reset('form'); ?>
                 <?php echo DwButton::cancel(); ?>
             </div>
