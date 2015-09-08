@@ -1,0 +1,55 @@
+<?php View::notify(); ?>
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            form_search: true,
+            form_action: '<?php echo PUBLIC_PATH; ?>config/categoria/buscar/',
+            form_load_data : 'dw-shell-content',
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"config/categoria/listar/"
+        });
+    });
+</script>
+<div class="container-fluid dw-shell-view">
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("config/categoria/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result" >
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="observacion">OBSERVACION</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($categorias->items as $categoria): ?>
+                    <?php $key_upd = DwSecurity::getKey($categoria->id, 'upd_categoria'); ?>
+                    <?php $key_del = DwSecurity::getKey($categoria->id, 'del_categoria'); ?>
+                    <tr>
+                        <td><?php echo $categorias->counter; ?></td>
+                        <td><?php echo $categoria->nombre; ?></td>
+                        <td><?php echo $categoria->observacion; ?></td>
+                        <td>
+                            <?php echo DwHtml::buttonTable('Modificar categoria', "config/categoria/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar categoria', "config/categoria/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar categoria', 'confirm-body'=>'Está seguro de eliminar este categoria? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                        </td>
+                    </tr>
+                    <?php $categorias->counter++; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+    </div>
+
+    <?php View::partial('paginators/default', false, array('page'=>$categorias, 'url'=>"config/categoria/listar/$order/")); ?>
+
+</div>

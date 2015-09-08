@@ -26,7 +26,8 @@
                 
                 <tr>
                     <th>NUM</th>
-                    <th class="col-collapse" data-search="fecha_adquisicion">FECHA ADQUISICION</th>
+                    <th class="col-collapse" data-search="fecha_registro">FECHA REGISTRO </th>
+                    <th class="col-collapse" data-search="fecha_adquisicion">FECHA ADQUISCISION</th>
                     <th class="col-collapse" data-search="codigo">CODIGO</th>
                     <th class="col-collapse" data-search="nombre">NOMBRE</th>
                     <th class="col-collapse" data-search="fabricante">FABRICANTE</th>
@@ -34,27 +35,28 @@
                     <th class="col-collapse" data-search="modelo">MODELO</th>
                     <th class="col-collapse" data-search="proveedor">PROVEEDOR</th>
                     <th class="col-collapse" data-search="estado">ESTADO</th>
-                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                    <th class="col-collapse" >ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
                 <?php  foreach($equipos->items as $equipo): ?>
                     <?php $key_upd = DwSecurity::getKey($equipo->id, 'upd_equipo'); ?>
-                    <?php $key_del = DwSecurity::getKey($equipo->id, 'del_equipo'); ?>
+                    <?php $key_piece = DwSecurity::getKey($equipo->id, 'piece_equipo'); ?>
                     <tr>
                         <td><?php echo $equipos->counter; ?></td>
-                        <td><?php echo $equipo->fecha_compra; ?></td>
+                        <td><?php echo date("d-m-Y", strtotime($equipo->fecha_registro)); ?></td>
+                        <td><?php echo date("d-m-Y", strtotime($equipo->fecha_compra)); ?></td>
                         <td><?php echo $equipo->codigo; ?></td>
                         <td><?php echo $equipo->nombre; ?></td>
+                        <td><?php echo $equipo->fabricante_id; ?></td>
+                        <td><?php echo $equipo->marca_id; ?></td>
+                        <td><?php echo $equipo->modelo_id; ?></td>
                         <td><?php echo $equipo->proveedor_id; ?></td>
-                        <td><?php echo $equipo->servicio_id; ?></td>
-                        <td><?php echo $equipo->patologia_id; ?></td>
-                        <td><?php echo $equipo->observacion; ?></td>
                         <td><?php echo $equipo->estado_solicitud; ?></td>
                         
                         <td>
-                            <?php echo DwHtml::buttonTable('Modificar Solicitud', "#", null, 'info', 'edit'); ?>
-                            <?php echo DwHtml::buttonTable('Eliminar Solicitud', "#", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar solicitud_medicina', 'confirm-body'=>'Está seguro de eliminar este solicitud_medicina? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                            <?php echo DwHtml::buttonTable('Agregar Partes', "equipo/equipo/agregar_partes/$key_piece/", NULL, 'warning', 'cogs'); ?>
+                            <?php echo DwHtml::buttonTable('Modificar Equipo', "equipo/equipo/", null, 'info', 'edit'); ?>
                         </td>
                     </tr>
                     <?php $equipos->counter++; ?>

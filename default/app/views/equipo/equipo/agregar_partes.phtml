@@ -1,0 +1,51 @@
+<?php View::notify(); ?>
+<div class="container-fluid dw-shell-view">
+    <?php View::process($page_module, $page_title, $set_title); ?>
+    <?php echo DwForm::open('', 'post', array('id'=>'form', 'class'=>'dw-validate')); ?>
+    <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+        <thead>
+            <tr>
+                <th class="col-collapse" >CODIGO  </th>
+                <th class="col-collapse" >ACTIVO FIJO</th>
+                <th class="col-collapse" >NOMBRE</th>
+                <th class="col-collapse" >FECHA DE COMPRA</th>
+                <th class="col-collapse" >FECHA DE REGISTRO</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($equipos as $equipo): ?>
+            <tr>
+                <td><?php echo $equipo->codigo; ?></td>
+                <td><?php echo $equipo->activo_fijo; ?></td>
+                <td><?php echo $equipo->nombre; ?></td>
+                <td><?php echo date("d-m-Y", strtotime($equipo->fecha_compra)); ?></td>
+                <td><?php echo date("d-m-Y", strtotime($equipo->fecha_registro)); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div class="row-fluid">
+            
+    </div>
+    <div class="row-fluid">
+        <div class="form-actions">
+            <?php echo DwButton::save('Guardar Equipo'); ?>
+            <?php echo DwButton::reset('form'); ?>
+            <?php echo DwButton::cancel(); ?>
+        </div>
+    </div>
+<?php echo DwForm::close(); ?>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+      //$('#equipo_fecha_compra').mask('00-00-0000');
+        $("#equipo_fecha_compra").datepicker({
+            format: 'dd-mm-yyyy', 
+            changeMonth: true,
+            changeYear: true,
+            changeDay : true
+        });
+    });
+</script>
+<?php echo Tag::js('jquery/jquerymaskplugin.min').PHP_EOL; ?>

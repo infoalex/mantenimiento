@@ -11,12 +11,10 @@ class Equipo extends ActiveRecord {
      * @param int|string $id
      * @return Sucursal
      */
-    public function getInformacionEquipo($id, $isSlug=false) {
-        $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
-        $columnas = 'equipo.*';
-        $join = '';
+    public function getInformacionEquipo($id) {
+        $columnas = 'equipo.id, equipo.codigo, equipo.nombre, equipo.activo_fijo, equipo.fecha_registro, equipo.fecha_compra';
         $condicion = "equipo.id = '$id'";
-        return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
+        return $this->find("columns: $columnas", "conditions: $condicion");
     } 
     
     /**
@@ -49,16 +47,10 @@ class Equipo extends ActiveRecord {
     public static function setEquipo($method, $data, $optData=null) {
         //Se aplica la autocarga
         $obj = new Equipo($data);
-
-        $obj->fecha_registro = date("Y-m-d");
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
         }   
-        
-        /*if($method!='delete') {
-            $obj->ciudad_id = Ciudad::setCiudad($obj->ciudad)->id;        
-        }*/
         $rs = $obj->$method();
         
         return ($rs) ? $obj : FALSE;
@@ -88,6 +80,7 @@ class Equipo extends ActiveRecord {
     public function before_save() {
         //formatenado todo a mayusculas
         $this->codigo = strtoupper($this->codigo);
+        $this->fecha_registro = date("Y-m-d");
         $this->nombre = strtoupper($this->nombre);
         $this->observacion = strtoupper($this->observacion);
         $this->caracteristicas = strtoupper($this->caracteristicas);
