@@ -43,7 +43,7 @@ class ParteCategoriaController extends BackendController {
      */
     public function listar($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $categoria = new ParteCategoria();        
+        $categorias = new ParteCategoria();        
         $this->categorias = $categorias->getListadoCategoria($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Categorias de Partes';
@@ -54,8 +54,8 @@ class ParteCategoriaController extends BackendController {
      */
     public function agregar() {
     //    $empresa = Session::get('empresa', 'config');
-        if(Input::hasPost('categorias')) {
-            if(ParteCategoria::setFabricante('create', Input::post('categorias'))) {
+        if(Input::hasPost('parte_categoria')) {
+            if(ParteCategoria::setParteCategoria('create', Input::post('parte_categoria'))) {
                 DwMessage::valid('El categorias se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }            

@@ -49,7 +49,6 @@ class ParteCategoria extends ActiveRecord {
             return $this->find("columns: $columns", "order: $order", "page: $page");            
         }
     }
-    
     /**
      * Método para setear
      * @param string $method Método a ejecutar (create, update, save)
@@ -57,7 +56,7 @@ class ParteCategoria extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setFabricante($method, $data, $optData=null) {
+    public static function setParteCategoria($method, $data, $optData=null) {
         //Se aplica la autocarga
         $obj = new ParteCategoria($data);
         //Se verifica si contiene una data adicional para autocargar
@@ -71,7 +70,6 @@ class ParteCategoria extends ActiveRecord {
         
         return ($rs) ? $obj : FALSE;
     }
-
     /**
      * Método que se ejecuta antes de guardar y/o modificar     
      */
@@ -85,7 +83,7 @@ class ParteCategoria extends ActiveRecord {
         $conditions = "nombre = '$this->nombre'";
         $conditions.= (isset($this->id)) ? " AND id != $this->id" : '';
         if($this->count("conditions: $conditions")) {
-            DwMessage::error('Lo sentimos, pero ya existe un fabricante registrado con el mismo nombre.');
+            DwMessage::error('Lo sentimos, pero ya existe una categoria con ese mismo nombre.');
             return 'cancel';
         }
     }

@@ -3,10 +3,10 @@
     $(function() {
         $('table').dwGrid({
             form_search: true,
-            form_action: '<?php echo PUBLIC_PATH; ?>config/fabricante/buscar/',
+            form_action: '<?php echo PUBLIC_PATH; ?>config/categoria/buscar/',
             form_load_data : 'dw-shell-content',
             order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
-            order_action: $.KumbiaPHP.publicPath+"config/fabricante/listar/"
+            order_action: $.KumbiaPHP.publicPath+"config/categoria/listar/"
         });
     });
 </script>
@@ -15,7 +15,7 @@
 
     <div class="btn-toolbar btn-toolbar-top">
         <div class="btn-actions">
-            <?php echo DwHtml::button("config/fabricante/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+            <?php echo DwHtml::button("config/categoria/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
         </div>
     </div>
 
@@ -31,25 +31,25 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($fabricantes->items as $fabricante): ?>
-                    <?php $key_upd = DwSecurity::getKey($fabricante->id, 'upd_fabricante'); ?>
-                    <?php $key_del = DwSecurity::getKey($fabricante->id, 'del_fabricante'); ?>
+                <?php foreach($categorias->items as $categoria): ?>
+                    <?php $key_upd = DwSecurity::getKey($categoria->id, 'upd_categoria'); ?>
+                    <?php $key_del = DwSecurity::getKey($categoria->id, 'del_categoria'); ?>
                     <tr>
-                        <td><?php echo $fabricantes->counter; ?></td>
-                        <td><?php echo $fabricante->nombre; ?></td>
-                        <td><?php echo $fabricante->observacion; ?></td>
+                        <td><?php echo $categorias->counter; ?></td>
+                        <td><?php echo $categoria->nombre; ?></td>
+                        <td><?php echo $categoria->observacion; ?></td>
                         <td>
-                            <?php echo DwHtml::buttonTable('Modificar Fabricante', "config/fabricante/editar/$key_upd/", null, 'info', 'edit'); ?>
-                            <?php echo DwHtml::buttonTable('Eliminar Fabricante', "config/fabricante/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar fabricante', 'confirm-body'=>'Está seguro de eliminar este fabricante? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                            <?php echo DwHtml::buttonTable('Modificar categoria', "config/categoria/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar categoria', "config/categoria/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar categoria', 'confirm-body'=>'Está seguro de eliminar este categoria? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
                         </td>
                     </tr>
-                    <?php $fabricantes->counter++; ?>
+                    <?php $categorias->counter++; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
 
     </div>
 
-    <?php View::partial('paginators/default', false, array('page'=>$fabricantes, 'url'=>"config/fabricante/listar/$order/")); ?>
+    <?php View::partial('paginators/default', false, array('page'=>$categorias, 'url'=>"config/categoria/listar/$order/")); ?>
 
 </div>
