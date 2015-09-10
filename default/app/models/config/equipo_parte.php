@@ -1,36 +1,19 @@
 <?php
-class Parte extends ActiveRecord {
+class EquipoParte extends ActiveRecord {
+    
     protected function initialize() {     
     }  
-    /**
-     * Método para obtener fabricantes
-     * @return obj
-     */
-   public function obtener_partes($partes) {
-        if ($partes != '') {
-            $partes = stripcslashes($partes);
-            $partes = strtoupper($partes);
-            $res = $this->find('columns: nombre, caracteristica, id', "nombre like '%{$partes}%' or caracteristica like '%{$partes}%'");
-            if ($res) {
-                foreach ($res as $partes) {
-                    $partess[] = array('id'=>$partes->id,'value'=>$partes->nombre." ".$partes->caracteristica,'caracteristica'=>$partes->caracteristica);
-                }
-                return $partess;
-            }
-        }
-        return array('no hubo coincidencias');
-    }
     /**
      * Método para ver la información de una sucursal
      * @param int|string $id
      * @return Sucursal
      */
-    public function getInformacionParte($id, $isSlug=false) {
-        $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
-        $columnas = 'fabricante.*';
-        $join = '';
-        $condicion ="fabricante.id = '$id'";
-        return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
+    public function getInformacionEquipoConPartes($id) {
+        $columnas = 'equipo_parte.cantidad, parte.nombre parte, parte.caracteristica, parte_categoria.nombre categoria '; 
+        $join = ' INNER JOIN parte ON equipo_parte.parte_id = parte.id';
+        $join .= ' INNER JOIN parte_categoria ON parte.parte_categoria_id = parte_categoria.id';
+        $condicion ="equipo_parte.equipo_id = '$id'";
+        return $this->find("columns: $columnas", "join: $join", "conditions: $condicion");
     } 
     
     /**
@@ -58,9 +41,9 @@ class Parte extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setParte($method, $data, $optData=null) {
+    public static function setEquipoParte($method, $data, $optData=null) {
         //Se aplica la autocarga
-        $obj = new Parte($data);
+        $obj = new EquipoParte($data);
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
@@ -73,10 +56,7 @@ class Parte extends ActiveRecord {
      * Método que se ejecuta antes de guardar y/o modificar     
      */
     public function before_save() {
-        $this->nombre = strtoupper($this->nombre);
-        $this->caracteristica = strtoupper($this->caracteristica);
-        $this->nombre = Filter::get($this->nombre, 'string');
-        $this->caracteristica = Filter::get($this->caracteristica, 'string');
+        
     }
      /**
      * Método para buscar sucursales
