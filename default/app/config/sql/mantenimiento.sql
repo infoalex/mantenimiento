@@ -927,11 +927,25 @@ ALTER SEQUENCE falla_id_seq OWNED BY falla.id;
 
 
 --
+-- Name: incidencias_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE incidencias_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999999999999
+    CACHE 1;
+
+
+ALTER TABLE public.incidencias_id_seq OWNER TO arrozalba;
+
+--
 -- Name: incidencia; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE incidencia (
-    id integer NOT NULL,
+    id integer DEFAULT nextval('incidencias_id_seq'::regclass) NOT NULL,
     fecha timestamp without time zone,
     departamento_id integer NOT NULL,
     hora_inicio time without time zone NOT NULL,
@@ -942,6 +956,7 @@ CREATE TABLE incidencia (
     sector_id integer NOT NULL,
     parada_sector boolean,
     parada_planta boolean,
+    motivo_parada_id integer,
     analisis_falla text NOT NULL,
     accion_correctiva text NOT NULL,
     fecha_reparacion timestamp without time zone NOT NULL,
@@ -953,27 +968,6 @@ CREATE TABLE incidencia (
 
 
 ALTER TABLE public.incidencia OWNER TO arrozalba;
-
---
--- Name: incidencias_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
---
-
-CREATE SEQUENCE incidencias_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.incidencias_id_seq OWNER TO arrozalba;
-
---
--- Name: incidencias_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
---
-
-ALTER SEQUENCE incidencias_id_seq OWNED BY incidencia.id;
-
 
 --
 -- Name: marca; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
@@ -1169,6 +1163,40 @@ ALTER TABLE public.modelo_id_seq OWNER TO arrozalba;
 --
 
 ALTER SEQUENCE modelo_id_seq OWNED BY modelo.id;
+
+
+--
+-- Name: motivo_parada; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE motivo_parada (
+    id integer NOT NULL,
+    descripcion character varying(250) NOT NULL,
+    observacion text
+);
+
+
+ALTER TABLE public.motivo_parada OWNER TO arrozalba;
+
+--
+-- Name: motivo_parada_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE motivo_parada_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.motivo_parada_id_seq OWNER TO arrozalba;
+
+--
+-- Name: motivo_parada_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE motivo_parada_id_seq OWNED BY motivo_parada.id;
 
 
 --
@@ -2482,13 +2510,6 @@ ALTER TABLE ONLY falla ALTER COLUMN id SET DEFAULT nextval('falla_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
-ALTER TABLE ONLY incidencia ALTER COLUMN id SET DEFAULT nextval('incidencias_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
---
-
 ALTER TABLE ONLY marca ALTER COLUMN id SET DEFAULT nextval('marca_id_seq'::regclass);
 
 
@@ -2504,6 +2525,13 @@ ALTER TABLE ONLY menu ALTER COLUMN id SET DEFAULT nextval('menu_id_seq'::regclas
 --
 
 ALTER TABLE ONLY modelo ALTER COLUMN id SET DEFAULT nextval('modelo_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY motivo_parada ALTER COLUMN id SET DEFAULT nextval('motivo_parada_id_seq'::regclass);
 
 
 --
@@ -2667,6 +2695,10 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 103	1	2015-09-08 21:25:55.295536-04:30	2015-09-08 21:25:55.295536-04:30	1	\N	\N	\N	\N	127.0.0.1
 104	1	2015-09-08 23:17:14.254477-04:30	2015-09-08 23:17:14.254477-04:30	1	\N	\N	\N	\N	127.0.0.1
 105	1	2015-09-09 00:51:07.113573-04:30	2015-09-09 00:51:07.113573-04:30	1	\N	\N	\N	\N	127.0.0.1
+106	1	2015-09-09 04:50:29.391555-04:30	2015-09-09 04:50:29.391555-04:30	1	\N	\N	\N	\N	127.0.0.1
+107	1	2015-09-09 19:16:53.969984-04:30	2015-09-09 19:16:53.969984-04:30	1	\N	\N	\N	\N	127.0.0.1
+108	1	2015-09-09 20:05:28.0468-04:30	2015-09-09 20:05:28.0468-04:30	1	\N	\N	\N	\N	127.0.0.1
+109	1	2015-09-09 21:18:05.953275-04:30	2015-09-09 21:18:05.953275-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -2674,7 +2706,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 105, true);
+SELECT pg_catalog.setval('acceso_id_seq', 109, true);
 
 
 --
@@ -3021,6 +3053,9 @@ SELECT pg_catalog.setval('fabricante_id_seq', 1, true);
 --
 
 COPY falla (id, descripcion, observacion) FROM stdin;
+1	electrica	\N
+2	mecanica	\N
+3	otro	\N
 \.
 
 
@@ -3028,14 +3063,14 @@ COPY falla (id, descripcion, observacion) FROM stdin;
 -- Name: falla_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('falla_id_seq', 1, false);
+SELECT pg_catalog.setval('falla_id_seq', 3, true);
 
 
 --
 -- Data for Name: incidencia; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY incidencia (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
+COPY incidencia (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, motivo_parada_id, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
 \.
 
 
@@ -3125,6 +3160,23 @@ COPY modelo (id, nombre, observacion, marca_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('modelo_id_seq', 1, true);
+
+
+--
+-- Data for Name: motivo_parada; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY motivo_parada (id, descripcion, observacion) FROM stdin;
+1	mantenimiento preventivo	\N
+2	mantenimiento correctivo	\N
+\.
+
+
+--
+-- Name: motivo_parada_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('motivo_parada_id_seq', 2, true);
 
 
 --
@@ -5473,6 +5525,14 @@ ALTER TABLE ONLY modelo
 
 
 --
+-- Name: motivo_parada_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY motivo_parada
+    ADD CONSTRAINT motivo_parada_pk PRIMARY KEY (id);
+
+
+--
 -- Name: municipio_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -5764,6 +5824,14 @@ ALTER TABLE ONLY incidencia
 
 ALTER TABLE ONLY incidencia
     ADD CONSTRAINT incidencia_falla_fkey FOREIGN KEY (falla_id) REFERENCES falla(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: incidencia_motivo_parada_fkey; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY incidencia
+    ADD CONSTRAINT incidencia_motivo_parada_fkey FOREIGN KEY (motivo_parada_id) REFERENCES motivo_parada(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
