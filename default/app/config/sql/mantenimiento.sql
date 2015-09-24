@@ -859,6 +859,40 @@ ALTER SEQUENCE estado_usuario_id_seq OWNED BY estado_usuario.id;
 
 
 --
+-- Name: estatus; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE estatus (
+    id integer NOT NULL,
+    descripcion character varying(250) NOT NULL,
+    observacion text
+);
+
+
+ALTER TABLE public.estatus OWNER TO arrozalba;
+
+--
+-- Name: estatus_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE estatus_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.estatus_id_seq OWNER TO arrozalba;
+
+--
+-- Name: estatus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE estatus_id_seq OWNED BY estatus.id;
+
+
+--
 -- Name: fabricante; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -963,7 +997,8 @@ CREATE TABLE incidencia (
     responsable_reparacion character varying(150) NOT NULL,
     perdida_tn double precision,
     persistencia_falla boolean,
-    observaciones text
+    observaciones text,
+    estatus_id integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2496,6 +2531,13 @@ ALTER TABLE ONLY estado_usuario ALTER COLUMN id SET DEFAULT nextval('estado_usua
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
+ALTER TABLE ONLY estatus ALTER COLUMN id SET DEFAULT nextval('estatus_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
 ALTER TABLE ONLY fabricante ALTER COLUMN id SET DEFAULT nextval('fabricante_id_seq'::regclass);
 
 
@@ -2699,6 +2741,8 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 107	1	2015-09-09 19:16:53.969984-04:30	2015-09-09 19:16:53.969984-04:30	1	\N	\N	\N	\N	127.0.0.1
 108	1	2015-09-09 20:05:28.0468-04:30	2015-09-09 20:05:28.0468-04:30	1	\N	\N	\N	\N	127.0.0.1
 109	1	2015-09-09 21:18:05.953275-04:30	2015-09-09 21:18:05.953275-04:30	1	\N	\N	\N	\N	127.0.0.1
+110	1	2015-09-23 19:58:18.843792-04:30	2015-09-23 19:58:18.843792-04:30	1	\N	\N	\N	\N	127.0.0.1
+111	1	2015-09-23 20:39:29.122277-04:30	2015-09-23 20:39:29.122277-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -2706,7 +2750,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 109, true);
+SELECT pg_catalog.setval('acceso_id_seq', 111, true);
 
 
 --
@@ -3033,6 +3077,21 @@ SELECT pg_catalog.setval('estado_usuario_id_seq', 124, true);
 
 
 --
+-- Data for Name: estatus; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY estatus (id, descripcion, observacion) FROM stdin;
+\.
+
+
+--
+-- Name: estatus_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('estatus_id_seq', 1, false);
+
+
+--
 -- Data for Name: fabricante; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
@@ -3070,7 +3129,7 @@ SELECT pg_catalog.setval('falla_id_seq', 3, true);
 -- Data for Name: incidencia; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY incidencia (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, motivo_parada_id, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones) FROM stdin;
+COPY incidencia (id, fecha, departamento_id, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, motivo_parada_id, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones, estatus_id) FROM stdin;
 \.
 
 
@@ -5477,6 +5536,14 @@ ALTER TABLE ONLY estado_usuario
 
 
 --
+-- Name: estatus_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY estatus
+    ADD CONSTRAINT estatus_pk PRIMARY KEY (id);
+
+
+--
 -- Name: fabricante_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
@@ -5816,6 +5883,14 @@ ALTER TABLE ONLY incidencia
 
 ALTER TABLE ONLY incidencia
     ADD CONSTRAINT incidencia_equipo_fkey FOREIGN KEY (equipo_id) REFERENCES equipo(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: incidencia_estatus_fk; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY incidencia
+    ADD CONSTRAINT incidencia_estatus_fk FOREIGN KEY (estatus_id) REFERENCES estatus(id);
 
 
 --
