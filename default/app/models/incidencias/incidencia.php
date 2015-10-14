@@ -5,7 +5,7 @@
  * @package     Models Incidencia
  * @subpackage
  * @author      
- * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/mantenimiento)
+ * @copyright   Copyright (c) 2015 UPTP - (PNFI Team) (https://github.com/ArrozAlba/mantenimiento)
  *
  */
 class Incidencia extends ActiveRecord {
@@ -198,12 +198,11 @@ class Incidencia extends ActiveRecord {
      * @return ActiveRecord
      */
     public function getListadoIncidencia($order='order.descripcion.asc', $page='', $empresa=null) {
-        $columnas = 'a.id as idincidencia, a.fecha, a.departamento_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, c.id as iddepartamento, c.nombre, c.sucursal_id, d.id as idfalla, d.descripcion, e.id as idequipo, e.nombre, e.codigo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal  ';
-        $join= 'as a INNER JOIN departamento as c ON (a.departamento_id = c.id) ';
-        $join.= 'INNER JOIN falla as d ON (a.falla_id = d.id) ';
+        $columnas = 'a.id as idincidencia, a.fecha, a.sucursal_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, a.estatus, d.id as idfalla, d.descripcion, e.id as idequipo, e.nombre, e.codigo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal  ';
+        $join= ' as a INNER JOIN falla as d ON (a.falla_id = d.id) ';
         $join.= 'INNER JOIN equipo as e ON (a.equipo_id = e.id) ';
         $join.= 'INNER JOIN sector as g ON (a.sector_id = g.id) ';
-        $join.= 'INNER JOIN sucursal as h ON (c.sucursal_id = h.id) ';
+        $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
         $conditions = "";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.departamento ASC, incidencia.sector ASC',
                                                                               'DESC'=>'incidencia.departamento DESC, incidencia.sector ASC',
@@ -263,14 +262,15 @@ class Incidencia extends ActiveRecord {
     /**
      * Método que se ejecuta antes de guardar y/o modificar     
      */
-    public function before_save(){        
-    /* $actual = new DateTime("now");
-     $vencimiento = new DateTime($this->fecha_vencimiento);
-     if(($vencimiento<$actual)||($vencimiento=$actual)){
-        DwMessage::error('La Fecha de vencimiento no puede menor o igual a la fecha actual ');
-        return 'cancel';
-     }*/
-     $this->observacion = strtoupper($this->observacion);
+    public function before_save(){
+        $this->observacion = strtoupper($this->observacion);
+        $date = date("Y-m-d");
+        $this->hora_inicio = $date." ".$this->hora_inicio;
+        $this->analisis_falla = strtoupper($this->analisis_falla);
+        $this->fecha = date("Y-m-d");
+        $this->hora_inicio = date("H:i:s");
+
+
     }
     
     /**

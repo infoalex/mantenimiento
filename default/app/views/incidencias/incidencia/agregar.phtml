@@ -17,14 +17,18 @@
 
         <div class="row-fluid">
             <div class="span3">
-                <?php echo DwForm::date('incidencia.fecha_solicitud', array('class'=>'input-required mask-date readonly input-date show-errors'), date("Y/m/d"), 'Fecha Solicitud'); ?>
+                <?php echo DwForm::date('incidencia.fecha_solicitud', array('class'=>'input-required mask-date readonly input-date show-errors'), date("Y-m-d"), 'Fecha Solicitud'); ?>
             </div>
             <div class="span3">
-              <?php echo DwForm::dbSelect('incidencia.sector_id', array('sector','sucursal'), array('config/sector', 'getListadoSector'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Sector'); ?>
+              <?php echo DwForm::dbSelect('incidencia.sucursal_id', array('sucursal'), array('config/sucursal', 'getListadoSucursal'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Sucursal'); ?>
+            </div> 
+            <div class="span3">
+              <?php echo DwForm::dbSelect('incidencia.sector_id', array('sector'), array('config/sector', 'getListadoSector'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Sector'); ?>
             </div>                        
              <div class="span3">
-                <?php echo DwForm::dbSelect('incidencia.equipo_id', 'nombre', array('equipo/equipo', 'getListadoEquipo'), NULL, array('class'=>'input-xxlarge input-required input-list show-errors'), NULL, 'Equipo'); ?>
+                <?php echo DwForm::dbSelect('incidencia.equipo_id', array('codigo', 'nombre'), array('equipo/equipo', 'getListadoEquipo'), NULL, array('class'=>'input-large input-required input-list show-errors'), NULL, 'Equipo'); ?>
             </div>
+            
         </div>
 
         <div class="row-fluid">
@@ -44,34 +48,39 @@
         </div>
         <div class="row-fluid">
             <div class="span6">
+               <?php echo DwForm::select('incidencia.turno', array(''=>'Seleccione:', 'DIURNO'=>'Diurno', 'NOCTURNO'=>'Nocturno'), array('class'=>'input-xxlarge show-error data-toggle="tooltip" title="Turno" '), NULL, 'Turno:'); ?>
+            </div>                
+            <div class="span6">
+                <?php echo DwForm::textarea('incidencia.observacion', array('class'=>'mask-text show-error input-xxlarge mask-alpha '), NULL, 'Observacion'); ?>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6">
                 <?php echo DwForm::textarea('incidencia.analisis_falla', array('class'=>'mask-text show-error input-xxlarge mask-alpha '), NULL, 'Analisis de Falla:'); ?>
             </div>
             <div class="span6">
                 <?php echo DwForm::textarea('incidencia.accion_correctiva', array('class'=>'mask-text show-error readonly input-xxlarge mask-alpha '), NULL, 'Acción Correctiva:'); ?>
             </div>
 		    </div>
+
         <div class="row-fluid">
             <div class="span3">
-                <?php echo DwForm::date('incidencia.fecha_reparacion', array('class'=>'input-required mask-date readonly input-date show-errors'), date("Y/m/d"), 'Fecha Reparación:'); ?>
+                <?php echo DwForm::date('incidencia.fecha_reparacion', array('class'=>'input-required mask-date readonly input-date show-errors'), date("Y-m-d"), 'Fecha Reparación:'); ?>
             </div>
             <div class="span3">
-               <?php echo DwForm::text('incidencia.responsable_reparacion', array('class'=>'input-large input-required readonly mask-alpha'), NULL, 'Responsable Reparación: '); ?>
+               <?php echo DwForm::text('incidencia.responsable_reparacion', array('class'=>'input-large readonly mask-alpha'), NULL, 'Responsable Reparación: '); ?>
                
             </div>
             <div class="span3">
-               <?php echo DwForm::text('incidencia.perdida_tn', array('class'=>'input-large input-required readonly mask-alpha'), NULL, 'Perdida en Toneladas: '); ?>
+               <?php echo DwForm::text('incidencia.perdida_tn', array('class'=>'input-large readonly mask-alpha'), NULL, 'Perdida en Toneladas: '); ?>
                
             </div>
 
             <div class="span3">
-                <?php echo DwForm::select('incidencia.persistencia_falla', array(''=>'Seleccione:', 'true'=>'Si', 'false'=>'No'), array('class'=>'input-large readonly input-required show-error data-toggle="tooltip" title="Persistencia de la Falla" '), NULL, 'Persistencia de la Falla:'); ?>
+                <?php echo DwForm::select('incidencia.persistencia_falla', array(''=>'Seleccione:', 'true'=>'Si', 'false'=>'No'), array('class'=>'input-large readonly show-error data-toggle="tooltip" title="Persistencia de la Falla" '), NULL, 'Persistencia de la Falla:'); ?>
             </div>
         </div>
-        <div class="row-fluid">
-            <div class="span12">
-                <?php echo DwForm::textarea('incidencia.observacion', array('class'=>'mask-text show-error input-xxlarge mask-alpha '), NULL, 'Observacion'); ?>
-            </div>
-        </div>
+
         <div class="row-fluid">
             <div class="form-actions">
                 <?php echo DwButton::save('Guardar Solicitud'); ?>

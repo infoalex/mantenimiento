@@ -1,0 +1,35 @@
+<?php View::notify(); ?>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <table class="table table-bordered table-hover table-striped table-condensed">
+        <thead>
+            <tr>
+                <th class="no-responsive dw-text-middle" style="width: 15px;">NUM</th>
+                <th class="no-responsive dw-text-middle">FECHA</th>
+                <th class="no-responsive dw-text-middle">TIPO</th>
+                <th class="no-responsive dw-text-middle">USUARIO</th>
+                <th class="no-responsive dw-text-middle">IP</th>
+                <th class="no-responsive dw-text-center">DESCRIPCION</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if($ficha_equipo) { ?>
+                <?php $counter = 1; ?>
+                <?php foreach($ficha_equipo as $audit): ?>
+                <tr>
+                    <td><?php echo $counter; ?></td>
+                    <td><?php echo $audit->nombre; ?></td>
+                    <td><?php echo $audit->caracteristica; ?></td>
+                    
+                </tr>
+                <?php $counter++; ?>
+                <?php endforeach; ?>
+            <?php } ?>
+        </tbody>
+
+    </table>
+
+</div>

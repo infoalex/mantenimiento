@@ -43,17 +43,34 @@
                     <?php $key_del = DwSecurity::getKey($incidencia->id, 'del_incidencia'); ?>
                     <tr>
                         <td><?php echo $incidencias->counter; ?></td>
-                        <td><?php echo $incidencia->fecha_solicitud; ?></td>
-                        <td><?php echo $incidencia->titular_id; ?></td>
-                        <td><?php echo $incidencia->beneficiario_id; ?></td>
-                        <td><?php echo $incidencia->proveedor_id; ?></td>
-                        <td><?php echo $incidencia->servicio_id; ?></td>
-                        <td><?php echo $incidencia->patologia_id; ?></td>
-                        <td><?php echo $incidencia->observacion; ?></td>
-                        <td><?php echo $incidencia->estado_solicitud; ?></td>
-                        
+                        <td><?php echo $incidencia->fecha; ?></td>
+                        <td><?php echo $incidencia->hora_inicio; ?></td>
+                        <td><?php echo $incidencia->sector; ?></td>
+                        <td><?php echo $incidencia->codigo." ".$incidencia->nombre; ?></td>
+                        <td><?php echo $incidencia->descripcion; ?></td>
+                        <td><?php if($incidencia->parada_sector=='t'){
+                                    echo "<span class='label'>SI</span>";
+                                }
+                                else
+                                {
+                                    echo "<span class='label'>NO</span>";
+                                }
+                        ?></td>
+                        <td><?php if($incidencia->parada_planta=='t'){
+                                    echo "<span class='label'>SI</span>";
+                                }
+                                else
+                                {
+                                    echo "<span class='label label-succes'>NO</span>";
+                                }
+                        ?></td>
+                        <td><?php echo $incidencia->responsable_reparacion; ?></td>
+                        <td><?php if($incidencia->estatus=='R'){
+                                    echo "Registrada";}
+                                    ?>
+                        </td>
                         <td>
-                            <?php echo DwHtml::buttonTable('Modificar Solicitud', "incidencia/incidencia/editar/$key_upd/", null, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Aprobar Solicitud', "incidencia/incidencia/editar/$key_upd/", null, 'success', 'check'); ?>
                             <?php echo DwHtml::buttonTable('Eliminar Solicitud', "incidencia/incidencia/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar solicitud_medicina', 'confirm-body'=>'Está seguro de eliminar este solicitud_medicina? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
                         </td>
                     </tr>
