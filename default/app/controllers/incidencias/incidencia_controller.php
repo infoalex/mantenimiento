@@ -180,13 +180,17 @@ class IncidenciaController extends BackendController {
      * Método para agregar
      */
     public function agregar() {
-        $empresa = Session::get('empresa', 'config');
+       // $empresa = Session::get('empresa', 'config');
         $incidencias = new Incidencia();
-        if(Input::hasPost('incidencias')) {
-            if(Incidencias::setIncidencia('create', Input::post('incidencias'))) {
+        if(Input::hasPost('incidencia')) {
+            if(Incidencia::setIncidencia('create', Input::post('incidencia'))) {
                 DwMessage::valid('La solicitud se ha registrado correctamente!');
-                return DwRedirect::toAction('registro');
-            }            
+                return DwRedirect::toAction('listar');
+            }
+            else
+            {
+                DwMessage::error('Errores procesando solicitud!');
+            }           
         } 
        // $this->personas = Load::model('beneficiarios/titular')->getTitularesToJson();
         $this->page_title = 'Agregar Incidencia';
