@@ -48,10 +48,11 @@
                         <td><?php echo $equipo->modelo; ?></td>
                         <td><?php echo $equipo->proveedor; ?></td>
                         <td><?php echo $equipo->estado_solicitud; ?></td>
-                        
+
                         <td>
                             <?php echo DwHtml::buttonTable('Agregar Partes', "equipo/equipo/agregar_partes/$key_piece/", NULL, 'warning', 'cogs'); ?>
                             <?php echo DwHtml::buttonTable('Modificar Equipo', "equipo/equipo/", null, 'info', 'edit'); ?>
+                            <?php echo DwButton::report("equipo/ficha/$equipo->id/", 'html', 'Ficha Equipo', ''); ?>
                         </td>
                     </tr>
                     <?php $equipos->counter++; ?>

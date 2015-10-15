@@ -7,9 +7,9 @@
  * @author      Alexis Borges (jel1284@gmail.com)
  * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
  */
-Load::models('incidencias/incidencia','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector');
+Load::models('mantenimientos/mantenimiento','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector');
 
-class IncidenciaController extends BackendController {
+class MantenimientoController extends BackendController {
     /**
      * Constante para definir el tipo de solicitud
      */
@@ -19,7 +19,7 @@ class IncidenciaController extends BackendController {
      */
     protected function before_filter() {
         //Se cambia el nombre del módulo actual
-        $this->page_module = 'Incidencias';
+        $this->page_module = 'Mantenimientos';
     }
     
     /**
@@ -34,18 +34,18 @@ class IncidenciaController extends BackendController {
      */
     public function listar($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $incidencia = new Incidencia();        
-        $this->incidencias = $incidencia->getListadoIncidencia($order, $page);
+        $mantenimiento = new Mantenimiento();        
+        $this->mantenimientos = $mantenimiento->getListadoMantenimiento($order, $page);
         $this->order = $order;        
-        $this->page_title = 'Listado de Incidencias';
+        $this->page_title = 'Listado de Mantenimientos';
     }
     /**
      * Método para registro
      */
     public function registro($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $incidencias = new Incidencias();        
-        $this->incidenciass = $incidencias->getListadoRegistroIncidencias($order, $page,$tps=self::TPS);
+        $mantenimientos = new Mantenimientos();        
+        $this->mantenimientoss = $mantenimientos->getListadoRegistroMantenimientos($order, $page,$tps=self::TPS);
         $this->order = $order;        
         $this->page_title = 'Registro de Solicitudes de Atención Primaria';
     }
@@ -54,8 +54,8 @@ class IncidenciaController extends BackendController {
      */
     public function aprobacion($order='order.nombre.asc', $page='pag.1') { 
             $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-            $incidencias = new Incidencias();        
-            $this->incidenciass = $incidencias->getListadoAprobacionIncidencias($order, $page,$tps=self::TPS);
+            $mantenimientos = new Mantenimientos();        
+            $this->mantenimientoss = $mantenimientos->getListadoAprobacionMantenimientos($order, $page,$tps=self::TPS);
             $this->order = $order;        
             $this->page_title = 'Aprobación de Solicitudes de Atención Primaria';
     }
@@ -64,8 +64,8 @@ class IncidenciaController extends BackendController {
      */
     public function facturacion($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $incidencias = new Incidencias();        
-        $this->incidenciass = $incidencias->getListadoSiniestrosIncidencias($order, $page,$tps=self::TPS);
+        $mantenimientos = new Mantenimientos();        
+        $this->mantenimientoss = $mantenimientos->getListadoSiniestrosMantenimientos($order, $page,$tps=self::TPS);
         $this->order = $order;        
         $this->page_title = 'Cargar Facturas a las solicitudes de Atención Primaria';
     }
@@ -75,8 +75,8 @@ class IncidenciaController extends BackendController {
      */
     public function aprobadas($order='order.nombre.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $incidencias = new Incidencias();        
-        $this->incidenciass = $incidencias->getListadoContabilizarIncidencias($order, $page,$tps=self::TPS);
+        $mantenimientos = new Mantenimientos();        
+        $this->mantenimientoss = $mantenimientos->getListadoContabilizarMantenimientos($order, $page,$tps=self::TPS);
         $this->order = $order;        
         $this->page_title = 'Contabilizar Solicitudes de Atención Primaria';
     }
@@ -84,19 +84,19 @@ class IncidenciaController extends BackendController {
      * Método para cargar los siniestros
      */
     public function siniestro($key) { 
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('registro');
         }        
-        $incidencias = new Incidencias();
-        $incidencias_patologia = new IncidenciasPatologia();
-        if(!$incidencias->getInformacionIncidencias($id)) {            
+        $mantenimientos = new Mantenimientos();
+        $mantenimientos_patologia = new MantenimientosPatologia();
+        if(!$mantenimientos->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
-        if(Input::hasPost('incidencias')) {
+        if(Input::hasPost('mantenimientos')) {
             ActiveRecord::beginTrans();
-            if(IncidenciasPatologia::setSolServicioPatolgia(Input::post('patologia_id'), $id)) {
-                $sol = $incidencias->getInformacionIncidencias($id);
+            if(MantenimientosPatologia::setSolServicioPatolgia(Input::post('patologia_id'), $id)) {
+                $sol = $mantenimientos->getInformacionMantenimientos($id);
                 //Input::post('diagnostico') cambie el nombre del campo para poder tomar el valor revisar en el view 
                 $sol->diagnostico = strtoupper(Input::post('diagnostico'));
                 $sol->motivo = strtoupper(Input::post('motivo'));
@@ -111,22 +111,22 @@ class IncidenciaController extends BackendController {
                 return DwRedirect::toAction('aprobadas');
             }
         } 
-        $this->incidencias = $incidencias;
+        $this->mantenimientos = $mantenimientos;
         $this->page_title = 'Cargar Siniestro';        
     }
     /**
     * Método para cargar las facturas
     */
     public function facturar($key){
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('registro');
         }
-        $incidencias = new Incidencias();
-        $obj = new IncidenciasPatologia();
+        $mantenimientos = new Mantenimientos();
+        $obj = new MantenimientosPatologia();
         //$factura = new Factura();
         $factura_dt = new FacturaDt();
-        $this->sol =  $obj->getInformacionIncidenciasPatologia($id);
-        if(!$incidencias->getInformacionIncidencias($id)) {            
+        $this->sol =  $obj->getInformacionMantenimientosPatologia($id);
+        if(!$mantenimientos->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
@@ -135,19 +135,19 @@ class IncidenciaController extends BackendController {
             $factu = Factura::setFactura('create', Input::post('factura'));
             if($factu){
                 if(FacturaDt::setFacturaDt(Input::post('descripcion'), Input::post('cantidad'), Input::post('monto'), Input::post('exento'), $factu->id)) {
-                    $solfactura = IncidenciasFactura::setIncidenciasFactura($factu->id, $id);
+                    $solfactura = MantenimientosFactura::setMantenimientosFactura($factu->id, $id);
                     if($solfactura){
                         if(Input::post('multifactura')){ //para saber si va a cargar multiples facturas sobre esa solicitud 
-                            $solser = $incidencias->getInformacionIncidencias($id);
+                            $solser = $mantenimientos->getInformacionMantenimientos($id);
                             $solser->estado_solicitud="G"; //estado G parcialmente facturada 
                             $solser->save();
                             ActiveRecord::commitTrans();
                             DwMessage::valid('Se ha cargado la factura exitosamente!');
-                            $key_upd = DwSecurity::getKey($id, 'upd_incidencias'); 
+                            $key_upd = DwSecurity::getKey($id, 'upd_mantenimientos'); 
                             return DwRedirect::toAction('facturar/'.$key_upd);   //retorna a la misma visata de facturacion 
                         }
                         else{
-                            $solser = $incidencias->getInformacionIncidencias($id);
+                            $solser = $mantenimientos->getInformacionMantenimientos($id);
                             $solser->estado_solicitud="F";
                             $solser->save();
                             ActiveRecord::commitTrans();
@@ -172,7 +172,7 @@ class IncidenciaController extends BackendController {
                 DwMessage::error('La Factura no se ha cargado con exito!');
             }
         }
-        $this->incidencias = $incidencias;
+        $this->mantenimientos = $mantenimientos;
         $this->page_title = 'Cargar Facturas a la solicitud';        
     }
 
@@ -181,9 +181,9 @@ class IncidenciaController extends BackendController {
      */
     public function agregar() {
        // $empresa = Session::get('empresa', 'config');
-        $incidencias = new Incidencia();
-        if(Input::hasPost('incidencia')) {
-            if(Incidencia::setIncidencia('create', Input::post('incidencia'))) {
+        $mantenimientos = new Mantenimiento();
+        if(Input::hasPost('mantenimiento')) {
+            if(Mantenimiento::setMantenimiento('create', Input::post('mantenimiento'))) {
                 DwMessage::valid('La solicitud se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }
@@ -193,7 +193,7 @@ class IncidenciaController extends BackendController {
             }           
         } 
        // $this->personas = Load::model('beneficiarios/titular')->getTitularesToJson();
-        $this->page_title = 'Agregar Incidencia';
+        $this->page_title = 'Agregar Mantenimiento';
     }
 
     /**
@@ -201,13 +201,13 @@ class IncidenciaController extends BackendController {
     */
 
     public function aprobar($key){
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('aprobacion');
         }
         //Mejorar esta parte  implementando algodon de seguridad
     
-        $incidencias = new Incidencias();
-        $sol = $incidencias->getInformacionIncidencias($id);
+        $mantenimientos = new Mantenimientos();
+        $sol = $mantenimientos->getInformacionMantenimientos($id);
         $sol->estado_solicitud="A";
         $sol->save();
         $cod = $sol->codigo_solicitud;
@@ -222,24 +222,24 @@ class IncidenciaController extends BackendController {
 
     /** Metodo para rechazar con motivo una solicitud **/
     public function rechazar($key) {        
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('aprobacion');
         }
-        $incidencias = new Incidencias();
-        $sol = $incidencias->getInformacionIncidencias($id);
+        $mantenimientos = new Mantenimientos();
+        $sol = $mantenimientos->getInformacionMantenimientos($id);
         if(!$sol) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
-        if(Input::hasPost('incidencias')) {
+        if(Input::hasPost('mantenimientos')) {
             $es = "E";
-            //$motivo = $_POST['incidencias'];
-            if(Incidencias::setIncidencias('update', Input::post('incidencias'), array('estado_solicitud'=>$es))){
+            //$motivo = $_POST['mantenimientos'];
+            if(Mantenimientos::setMantenimientos('update', Input::post('mantenimientos'), array('estado_solicitud'=>$es))){
                 DwMessage::valid('La solicitud se ha rechazado correctamente!');
                 return DwRedirect::toAction('registro');
             }       
         } 
-        $this->incidencias = $sol;
+        $this->mantenimientos = $sol;
         $this->page_title = 'Rechazar solicitud';        
     }
     /**
@@ -247,12 +247,12 @@ class IncidenciaController extends BackendController {
     */
 
     public function reversar_aprobacion($key){
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('aprobacion');
         } 
         //Mejorar esta parte  implementando algodon de seguridad
-        $incidencias = new Incidencias();
-        $sol = $incidencias->getInformacionIncidencias($id);
+        $mantenimientos = new Mantenimientos();
+        $sol = $mantenimientos->getInformacionMantenimientos($id);
         $sol->estado_solicitud="R";
         $sol->save();
         return DwRedirect::toAction('aprobacion');
@@ -262,29 +262,29 @@ class IncidenciaController extends BackendController {
      */
     public function reporte_aprobacion($id) { 
         View::template(NULL);       
-       // if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+       // if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
        //     return DwRedirect::toAction('aprobacion');
        // }
 
         //Mejorar esta parte  implementando algodon de seguridad
-        $incidencias = new Incidencias();
-                if(!$sol = $incidencias->getReporteIncidencias($id)) {
+        $mantenimientos = new Mantenimientos();
+                if(!$sol = $mantenimientos->getReporteMantenimientos($id)) {
             DwMessage::get('id_no_found');
         };
-        $this->fecha_sol = $incidencias->fecha_solicitud;
-        $this->nombres = strtoupper($incidencias->nombre1." ".$incidencias->nombre2);
-        $this->apellidos = strtoupper($incidencias->apellido1." ".$incidencias->apellido2);
-        $this->cedula = $incidencias->cedula;
-        $this->telefono = $incidencias->telefono;
-        $this->celular = $incidencias->celular;
-        $this->nacionalidad = $incidencias->nacionalidad;        
-        $this->sexo = $incidencias->sexo;  
-        $this->idtitular = $incidencias->idtitular;
-        $this->bene = $incidencias->beneficiario_id;
-        $this->medico = strtoupper($incidencias->nombrem1." ".$incidencias->nombrem2." ".$incidencias->apellidom1." ".$incidencias->apellidom2);
-        $this->clinica = strtoupper($incidencias->proveedor);
-        $this->servicio = strtoupper($incidencias->servicio);
-        $this->direccion = $incidencias->direccionp;
+        $this->fecha_sol = $mantenimientos->fecha_solicitud;
+        $this->nombres = strtoupper($mantenimientos->nombre1." ".$mantenimientos->nombre2);
+        $this->apellidos = strtoupper($mantenimientos->apellido1." ".$mantenimientos->apellido2);
+        $this->cedula = $mantenimientos->cedula;
+        $this->telefono = $mantenimientos->telefono;
+        $this->celular = $mantenimientos->celular;
+        $this->nacionalidad = $mantenimientos->nacionalidad;        
+        $this->sexo = $mantenimientos->sexo;  
+        $this->idtitular = $mantenimientos->idtitular;
+        $this->bene = $mantenimientos->beneficiario_id;
+        $this->medico = strtoupper($mantenimientos->nombrem1." ".$mantenimientos->nombrem2." ".$mantenimientos->apellidom1." ".$mantenimientos->apellidom2);
+        $this->clinica = strtoupper($mantenimientos->proveedor);
+        $this->servicio = strtoupper($mantenimientos->servicio);
+        $this->direccion = $mantenimientos->direccionp;
 
         //llamada a otra funcion, ya que no logre un solo query para ese reportee! :S
         $titular = new titular();
@@ -312,46 +312,46 @@ class IncidenciaController extends BackendController {
      y se van a actualizar)
      */
     public function editar($key) {        
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('registro');
         }        
         
-        $incidencias = new Incidencias();
-        if(!$incidencias->getInformacionIncidencias($id)) {            
+        $mantenimientos = new Mantenimientos();
+        if(!$mantenimientos->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
         
-        if(Input::hasPost('incidencias') && DwSecurity::isValidKey(Input::post('incidencias_id_key'), 'form_key')) {
-            if(Incidencias::setIncidencias('update', Input::post('incidencias'), array('id'=>$id))){
+        if(Input::hasPost('mantenimientos') && DwSecurity::isValidKey(Input::post('mantenimientos_id_key'), 'form_key')) {
+            if(Mantenimientos::setMantenimientos('update', Input::post('mantenimientos'), array('id'=>$id))){
                 DwMessage::valid('La solicitud se ha actualizado correctamente!');
                 return DwRedirect::toAction('registro');
             }
         } 
-        $this->incidencias = $incidencias;
+        $this->mantenimientos = $mantenimientos;
         $this->page_title = 'Actualizar solicitud';        
     }
     /*
         Metodo para modificar las solicitudes de modificacion
     */
     public function modificar($key) {        
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'upd_mantenimientos', 'int')) {
             return DwRedirect::toAction('registro');
         }        
         
-        $incidencias = new Incidencias();
-        if(!$incidencias->getInformacionIncidencias($id)) {            
+        $mantenimientos = new Mantenimientos();
+        if(!$mantenimientos->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('registro');
         }
         
-        if(Input::hasPost('incidencias') && DwSecurity::isValidKey(Input::post('incidencias_id_key'), 'form_key')) {
-            if(Incidencias::setIncidencias('update', Input::post('incidencias'), array('id'=>$id))){
+        if(Input::hasPost('mantenimientos') && DwSecurity::isValidKey(Input::post('mantenimientos_id_key'), 'form_key')) {
+            if(Mantenimientos::setMantenimientos('update', Input::post('mantenimientos'), array('id'=>$id))){
                 DwMessage::valid('La solicitud se ha actualizado correctamente!');
                 return DwRedirect::toAction('registro');
             }
         } 
-        $this->incidencias = $incidencias;
+        $this->mantenimientos = $mantenimientos;
         $this->page_title = 'Actualizar solicitud';        
     }
     
@@ -359,17 +359,17 @@ class IncidenciaController extends BackendController {
      * Método para eliminar
      */
     public function eliminar($key) {         
-        if(!$id = DwSecurity::isValidKey($key, 'del_incidencias', 'int')) {
+        if(!$id = DwSecurity::isValidKey($key, 'del_mantenimientos', 'int')) {
             return DwRedirect::toAction('listar');
         }        
         
-        $incidencias = new Incidencias();
-        if(!$incidencias->getInformacionIncidencias($id)) {            
+        $mantenimientos = new Mantenimientos();
+        if(!$mantenimientos->getInformacionMantenimientos($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }                
         try {
-            if(Incidencias::setIncidencias('delete', array('id'=>$incidencias->id))) {
+            if(Mantenimientos::setMantenimientos('delete', array('id'=>$mantenimientos->id))) {
                 DwMessage::valid('La solicitud se ha eliminado correctamente!');
             }
         } catch(KumbiaException $e) {

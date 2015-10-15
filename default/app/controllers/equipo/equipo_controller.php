@@ -34,6 +34,18 @@ class EquipoController extends BackendController {
         $this->field = $field;
         $this->value = $value;
         $this->page_title = 'Búsqueda de Reemnbolsos del sistema';        
+    }
+    /**
+    * Metodo para imprimir la ficha del equipo
+    */
+    public function ficha($equipo_id) {
+        if(empty($equipo)) {
+            DwMessage::info('No se ha seleccionado un equipo');
+            return DwRedirect::toAction('listar');
+        }
+        $equipo_parte = new EquipoParte();
+        $this->ficha_equipo = $equipo_parte->getInformacionEquipoConPartes($equipo_id);
+        $this->page_module = 'Ficha del equipo ';
     }    
 
 
