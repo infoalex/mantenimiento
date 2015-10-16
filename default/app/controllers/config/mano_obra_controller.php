@@ -10,7 +10,7 @@
 
 Load::models('config/mano_obra');
 
-class Mano_obraController extends BackendController {
+class ManoObraController extends BackendController {
     
     /**
      * Método que se ejecuta antes de cualquier acción
@@ -34,7 +34,7 @@ class Mano_obraController extends BackendController {
         $field = (Input::hasPost('field')) ? Input::post('field') : $field;
         $value = (Input::hasPost('field')) ? Input::post('value') : $value;
         $value = strtoupper($value);
-        $Mano_obra = new Mano_obra();
+        $Mano_obra = new ManoObra();
         $Mano_obras = $Mano_obra->getAjaxMano_obras($field, $value, $order, $page);
         if(empty($Mano_obras->items)) {
             DwMessage::info('No se han encontrado registros');
@@ -51,7 +51,7 @@ class Mano_obraController extends BackendController {
      */
     public function listar($order='order.Mano_obra.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $mano_obra = new Mano_obra();        
+        $mano_obra = new ManoObra();        
         $this->mano_obras = $mano_obra->getListadoMano_obra($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Mano_obras';
@@ -61,7 +61,7 @@ class Mano_obraController extends BackendController {
      */
     public function agregar() {
         if(Input::hasPost('mano_obra')){
-            if(Mano_obra::setMano_obra('create', Input::post('mano_obra'))){
+            if(Mano_obra::setManoObra('create', Input::post('mano_obra'))){
                 DwMessage::valid('El Mano_obra se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }  
@@ -77,14 +77,14 @@ class Mano_obraController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Mano_obra = new Mano_obra();
+        $Mano_obra = new ManoObra();
         if(!$Mano_obra->getInformacionMano_obra($id)) {            
             DwMessage::get('id_no_found')
 ;            return DwRedirect::toAction('listar');
         }
         
         if(Input::hasPost('Mano_obra') && DwSecurity::isValidKey(Input::post('Mano_obra_id_key'), 'form_key')) {
-            if(Mano_obra::setMano_obra('update', Input::post('Mano_obra'), array('id'=>$id, 'empresa_id'=>$Mano_obra->empresa_id))){
+            if(Mano_obra::setManoObra('update', Input::post('Mano_obra'), array('id'=>$id, 'empresa_id'=>$Mano_obra->empresa_id))){
                 DwMessage::valid('La Mano_obra se ha actualizado correctamente!');
                 return DwRedirect::toAction('listar');
             }
@@ -101,13 +101,13 @@ class Mano_obraController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Mano_obra = new Mano_obra();
+        $Mano_obra = new ManoObra();
         if(!$Mano_obra->getInformacionMano_obra($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }                
         try {
-            if(Mano_obra::setMano_obra('delete', array('id'=>$Mano_obra->id))) {
+            if(Mano_obra::setManoObra('delete', array('id'=>$Mano_obra->id))) {
                 DwMessage::valid('La Mano_obra se ha eliminado correctamente!');
             }
         } catch(KumbiaException $e) {
