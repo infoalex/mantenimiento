@@ -10,7 +10,7 @@
 
 Load::models('config/equipo_herramienta');
 
-class Equipo_herramientaController extends BackendController {
+class EquipoHerramientaController extends BackendController {
     
     /**
      * Método que se ejecuta antes de cualquier acción
@@ -34,7 +34,7 @@ class Equipo_herramientaController extends BackendController {
         $field = (Input::hasPost('field')) ? Input::post('field') : $field;
         $value = (Input::hasPost('field')) ? Input::post('value') : $value;
         $value = strtoupper($value);
-        $Equipo_herramienta = new Equipo_herramienta();
+        $Equipo_herramienta = new EquipoHerramienta();
         $Equipo_herramientas = $Equipo_herramienta->getAjaxEquipo_herramientas($field, $value, $order, $page);
         if(empty($Equipo_herramientas->items)) {
             DwMessage::info('No se han encontrado registros');
@@ -51,7 +51,7 @@ class Equipo_herramientaController extends BackendController {
      */
     public function listar($order='order.Equipo_herramienta.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $equipo_herramienta = new Equipo_herramienta();        
+        $equipo_herramienta = new EquipoHerramienta();        
         $this->equipo_herramientas = $equipo_herramienta->getListadoEquipo_herramienta($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Equipo_herramientas';
@@ -61,7 +61,7 @@ class Equipo_herramientaController extends BackendController {
      */
     public function agregar() {
         if(Input::hasPost('equipo_herramienta')){
-            if(Equipo_herramienta::setEquipo_herramienta('create', Input::post('equipo_herramienta'))){
+            if(Equipo_herramienta::setEquipoHerramienta('create', Input::post('equipo_herramienta'))){
                 DwMessage::valid('El Equipo_herramienta se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }  
@@ -77,14 +77,14 @@ class Equipo_herramientaController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Equipo_herramienta = new Equipo_herramienta();
+        $Equipo_herramienta = new EquipoHerramienta();
         if(!$Equipo_herramienta->getInformacionEquipo_herramienta($id)) {            
             DwMessage::get('id_no_found')
 ;            return DwRedirect::toAction('listar');
         }
         
         if(Input::hasPost('Equipo_herramienta') && DwSecurity::isValidKey(Input::post('Equipo_herramienta_id_key'), 'form_key')) {
-            if(Equipo_herramienta::setEquipo_herramienta('update', Input::post('Equipo_herramienta'), array('id'=>$id, 'empresa_id'=>$Equipo_herramienta->empresa_id))){
+            if(Equipo_herramienta::setEquipoHerramienta('update', Input::post('Equipo_herramienta'), array('id'=>$id, 'empresa_id'=>$Equipo_herramienta->empresa_id))){
                 DwMessage::valid('La Equipo_herramienta se ha actualizado correctamente!');
                 return DwRedirect::toAction('listar');
             }
@@ -101,13 +101,13 @@ class Equipo_herramientaController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Equipo_herramienta = new Equipo_herramienta();
+        $Equipo_herramienta = new EquipoHerramienta();
         if(!$Equipo_herramienta->getInformacionEquipo_herramienta($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }                
         try {
-            if(Equipo_herramienta::setEquipo_herramienta('delete', array('id'=>$Equipo_herramienta->id))) {
+            if(Equipo_herramienta::setEquipoHerramienta('delete', array('id'=>$Equipo_herramienta->id))) {
                 DwMessage::valid('La Equipo_herramienta se ha eliminado correctamente!');
             }
         } catch(KumbiaException $e) {

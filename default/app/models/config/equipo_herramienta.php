@@ -7,7 +7,7 @@
  * @copyright
  */
 
-class Equipo_herramienta extends ActiveRecord {
+class EquipoHerramienta extends ActiveRecord {
     
     protected function initialize() {
         //$this->belongs_to('sucursal');
@@ -50,9 +50,9 @@ class Equipo_herramienta extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setEquipo_herramienta($method, $data, $optData=null) {
+    public static function setEquipoHerramienta($method, $data, $optData=null) {
         //Se aplica la autocarga
-        $obj = new equipo_herramienta($data);
+        $obj = new EquipoHerramienta($data);
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
