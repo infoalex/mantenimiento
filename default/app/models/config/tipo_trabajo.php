@@ -7,7 +7,7 @@
  * @copyright
  */
 
-class Tipo_trabajo extends ActiveRecord {
+class TipoTrabajo extends ActiveRecord {
     
     protected function initialize() {
         //$this->belongs_to('sucursal');
@@ -50,9 +50,9 @@ class Tipo_trabajo extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setTipo_trabajo($method, $data, $optData=null) {
+    public static function setTipoTrabajo($method, $data, $optData=null) {
         //Se aplica la autocarga
-        $obj = new tipo_trabajo($data);
+        $obj = new TipoTrabajo($data);
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);

@@ -28,12 +28,8 @@
             <thead>
                 <tr>
                     <th>NUM</th>
-                    <th class="col-collapse" data-search="tipo_trabajo">tipo_trabajo</th>
-                    <th class="col-collapse" data-search="direccion">DIRECCION</th>
-                    <th class="col-collapse" data-search="parroquia">PARROQUIA</th>
-                    <th class="col-collapse" data-search="celular">CELULAR</th>
-                    <th class="col-collapse" data-search="telefono">TELEFONO</th>
-                    <th class="col-collapse" data-search="fax">FAX</th>
+                    <th class="col-collapse" data-search="descripcion">DESCRIPCIÓN</th>
+                    <th class="col-collapse" data-search="direccion">OBSERVACIÓN</th>
                     <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
                 </tr>
             </thead>
@@ -44,12 +40,8 @@
                     <?php $key_del = DwSecurity::getKey($tipo_trabajo->id, 'del_tipo_trabajo'); ?>
                     <tr>
                         <td><?php echo $tipo_trabajos->counter; ?></td>
-                        <td><?php echo ($field=='tipo_trabajo') ? DwUtils::resaltar($value, $tipo_trabajo->tipo_trabajo) : $tipo_trabajo->tipo_trabajo; ?></td>
-                        <td><?php echo ($field=='direccion') ? DwUtils::resaltar($value, $tipo_trabajo->direccion) : $tipo_trabajo->direccion; ?></td>
-                        <td><?php echo ($field=='parroquia') ? DwUtils::resaltar($value, $tipo_trabajo->nombre) : $tipo_trabajo->nombre; ?></td>
-                        <td><?php echo ($field=='celular') ? DwUtils::resaltar($value, $tipo_trabajo->celular) : $tipo_trabajo->celular; ?></td>
-                        <td><?php echo ($field=='telefono') ? DwUtils::resaltar($value, $tipo_trabajo->telefono) : $tipo_trabajo->telefono; ?></td>
-                        <td><?php echo ($field=='fax') ? DwUtils::resaltar($value, $tipo_trabajo->fax) : $tipo_trabajo->fax; ?></td>
+                        <td><?php echo ($field=='descripcion') ? DwUtils::resaltar($value, $tipo_trabajo->descripcion) : $tipo_trabajo->descripcion; ?></td>
+                        <td><?php echo ($field=='observacion') ? DwUtils::resaltar($value, $tipo_trabajo->observacion) : $tipo_trabajo->observacion; ?></td>
                         <td>
                             <?php echo DwHtml::buttonTable('Modificar tipo_trabajo', "config/tipo_trabajo/editar/$key_upd/", NULL, 'info', 'edit'); ?>
                             <?php echo DwHtml::buttonTable('Eliminar tipo_trabajo', "config/tipo_trabajo/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar tipo_trabajo', 'confirm-body'=>'Está seguro de eliminar esta tipo_trabajo? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>                      

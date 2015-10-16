@@ -4,12 +4,9 @@
     <?php View::process($page_module, $page_title, $set_title); ?>
 
     <?php echo DwForm::open('', 'post', array('id'=>'form', 'class'=>'dw-validate')); ?>
-		<div class="row-fluid">
+		<div class="row-fluid">      
             <div class="span4">
-                <?php echo DwForm::dbSelect('material_recurso.sucursal_id', 'sucursal', array('params/sucursal', 'getListadoSucursal'), NULL, array('class'=>'input-xlarge input-required input-list show-errors data-toggle="tooltip" title="Seleccione la Sucursal"'), NULL, 'Sucursal','Ejemplo Piritu I'); ?>
-            </div>       
-            <div class="span4">
-                <?php echo DwForm::text('material_recurso.material_recurso', array('class'=>'input-xlarge input-required mask-alpha show-error data-toggle="tooltip" title="material_recurso"'), NULL, 'Nombre del material_recurso'); ?>
+                <?php echo DwForm::text('material_recurso.descripcion', array('class'=>'input-xlarge input-required mask-alpha show-error data-toggle="tooltip" title="Equipo / Herramienta"'), NULL, 'Nombre del Equipo / Herramienta'); ?>
             </div>
             <div class="span4">
                 <?php echo DwForm::text('material_recurso.observacion', array('class'=>'input-xlarge mask-alpha show-error data-toggle="tooltip" title="Observación"'), NULL, 'Observación'); ?>
