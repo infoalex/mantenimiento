@@ -10,7 +10,7 @@
 
 Load::models('config/tipo_trabajo');
 
-class Tipo_trabajoController extends BackendController {
+class TipoTrabajoController extends BackendController {
     
     /**
      * Método que se ejecuta antes de cualquier acción
@@ -34,7 +34,7 @@ class Tipo_trabajoController extends BackendController {
         $field = (Input::hasPost('field')) ? Input::post('field') : $field;
         $value = (Input::hasPost('field')) ? Input::post('value') : $value;
         $value = strtoupper($value);
-        $Tipo_trabajo = new Tipo_trabajo();
+        $Tipo_trabajo = new TipoTrabajo();
         $Tipo_trabajos = $Tipo_trabajo->getAjaxTipo_trabajos($field, $value, $order, $page);
         if(empty($Tipo_trabajos->items)) {
             DwMessage::info('No se han encontrado registros');
@@ -51,7 +51,7 @@ class Tipo_trabajoController extends BackendController {
      */
     public function listar($order='order.Tipo_trabajo.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $tipo_trabajo = new Tipo_trabajo();        
+        $tipo_trabajo = new TipoTrabajo();        
         $this->tipo_trabajos = $tipo_trabajo->getListadoTipo_trabajo($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Tipo_trabajos';
@@ -61,7 +61,7 @@ class Tipo_trabajoController extends BackendController {
      */
     public function agregar() {
         if(Input::hasPost('tipo_trabajo')){
-            if(Tipo_trabajo::setTipo_trabajo('create', Input::post('tipo_trabajo'))){
+            if(Tipo_trabajo::setTipoTrabajo('create', Input::post('tipo_trabajo'))){
                 DwMessage::valid('El Tipo_trabajo se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }  
@@ -77,14 +77,14 @@ class Tipo_trabajoController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Tipo_trabajo = new Tipo_trabajo();
+        $Tipo_trabajo = new TipoTrabajo();
         if(!$Tipo_trabajo->getInformacionTipo_trabajo($id)) {            
             DwMessage::get('id_no_found')
 ;            return DwRedirect::toAction('listar');
         }
         
         if(Input::hasPost('Tipo_trabajo') && DwSecurity::isValidKey(Input::post('Tipo_trabajo_id_key'), 'form_key')) {
-            if(Tipo_trabajo::setTipo_trabajo('update', Input::post('Tipo_trabajo'), array('id'=>$id, 'empresa_id'=>$Tipo_trabajo->empresa_id))){
+            if(Tipo_trabajo::setTipoTrabajo('update', Input::post('Tipo_trabajo'), array('id'=>$id, 'empresa_id'=>$Tipo_trabajo->empresa_id))){
                 DwMessage::valid('La Tipo_trabajo se ha actualizado correctamente!');
                 return DwRedirect::toAction('listar');
             }
@@ -101,13 +101,13 @@ class Tipo_trabajoController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Tipo_trabajo = new Tipo_trabajo();
+        $Tipo_trabajo = new TipoTrabajo();
         if(!$Tipo_trabajo->getInformacionTipo_trabajo($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }                
         try {
-            if(Tipo_trabajo::setTipo_trabajo('delete', array('id'=>$Tipo_trabajo->id))) {
+            if(Tipo_trabajo::setTipoTrabajo('delete', array('id'=>$Tipo_trabajo->id))) {
                 DwMessage::valid('La Tipo_trabajo se ha eliminado correctamente!');
             }
         } catch(KumbiaException $e) {

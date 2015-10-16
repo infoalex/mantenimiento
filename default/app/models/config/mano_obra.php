@@ -7,7 +7,7 @@
  * @copyright
  */
 
-class Mano_obra extends ActiveRecord {
+class ManoObra extends ActiveRecord {
     
     protected function initialize() {
         //$this->belongs_to('sucursal');
@@ -50,9 +50,9 @@ class Mano_obra extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setMano_obra($method, $data, $optData=null) {
+    public static function setManoObra($method, $data, $optData=null) {
         //Se aplica la autocarga
-        $obj = new mano_obra($data);
+        $obj = new manoObra($data);
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);

@@ -10,7 +10,7 @@
 
 Load::models('config/material_recurso');
 
-class Material_recursoController extends BackendController {
+class MaterialRecursoController extends BackendController {
     
     /**
      * Método que se ejecuta antes de cualquier acción
@@ -34,7 +34,7 @@ class Material_recursoController extends BackendController {
         $field = (Input::hasPost('field')) ? Input::post('field') : $field;
         $value = (Input::hasPost('field')) ? Input::post('value') : $value;
         $value = strtoupper($value);
-        $Material_recurso = new Material_recurso();
+        $Material_recurso = new MaterialRecurso();
         $Material_recursos = $Material_recurso->getAjaxMaterial_recursos($field, $value, $order, $page);
         if(empty($Material_recursos->items)) {
             DwMessage::info('No se han encontrado registros');
@@ -51,7 +51,7 @@ class Material_recursoController extends BackendController {
      */
     public function listar($order='order.Material_recurso.asc', $page='pag.1') { 
         $page = (Filter::get($page, 'page') > 0) ? Filter::get($page, 'page') : 1;
-        $material_recurso = new Material_recurso();        
+        $material_recurso = new MaterialRecurso();        
         $this->material_recursos = $material_recurso->getListadoMaterial_recurso($order, $page);
         $this->order = $order;        
         $this->page_title = 'Listado de Material_recursos';
@@ -61,7 +61,7 @@ class Material_recursoController extends BackendController {
      */
     public function agregar() {
         if(Input::hasPost('material_recurso')){
-            if(Material_recurso::setMaterial_recurso('create', Input::post('material_recurso'))){
+            if(Material_recurso::setMaterialRecurso('create', Input::post('material_recurso'))){
                 DwMessage::valid('El Material_recurso se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }  
@@ -77,14 +77,14 @@ class Material_recursoController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Material_recurso = new Material_recurso();
+        $Material_recurso = new MaterialRecurso();
         if(!$Material_recurso->getInformacionMaterial_recurso($id)) {            
             DwMessage::get('id_no_found')
 ;            return DwRedirect::toAction('listar');
         }
         
         if(Input::hasPost('Material_recurso') && DwSecurity::isValidKey(Input::post('Material_recurso_id_key'), 'form_key')) {
-            if(Material_recurso::setMaterial_recurso('update', Input::post('Material_recurso'), array('id'=>$id, 'empresa_id'=>$Material_recurso->empresa_id))){
+            if(Material_recurso::setMaterialRecurso('update', Input::post('Material_recurso'), array('id'=>$id, 'empresa_id'=>$Material_recurso->empresa_id))){
                 DwMessage::valid('La Material_recurso se ha actualizado correctamente!');
                 return DwRedirect::toAction('listar');
             }
@@ -101,13 +101,13 @@ class Material_recursoController extends BackendController {
             return DwRedirect::toAction('listar');
         }        
         
-        $Material_recurso = new Material_recurso();
+        $Material_recurso = new MaterialRecurso();
         if(!$Material_recurso->getInformacionMaterial_recurso($id)) {            
             DwMessage::get('id_no_found');
             return DwRedirect::toAction('listar');
         }                
         try {
-            if(Material_recurso::setMaterial_recurso('delete', array('id'=>$Material_recurso->id))) {
+            if(Material_recurso::setMaterialRecurso('delete', array('id'=>$Material_recurso->id))) {
                 DwMessage::valid('La Material_recurso se ha eliminado correctamente!');
             }
         } catch(KumbiaException $e) {

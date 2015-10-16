@@ -27,9 +27,7 @@
             <thead>
                 <tr>
                     <th>NUM</th>
-                    <th class="col-collapse" data-search="sucursal">SUCURSAL</th>
-                    <th class="col-collapse" data-search="mano_obra">mano_obra</th>
-                    <th class="col-collapse" data-search="mano_obra_slug">mano_obra SLUG</th>
+                    <th class="col-collapse" data-search="descripcion">Descripción</th>
                     <th class="col-collapse" data-search="observacion">observacion</th>
                     <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
                 </tr>
@@ -40,9 +38,7 @@
                     <?php $key_del = DwSecurity::getKey($mano_obra->id, 'del_mano_obra'); ?>
                     <tr>
                         <td><?php echo $mano_obras->counter; ?></td>
-                        <td><?php echo $mano_obra->sucursal; ?></td>
-                        <td><?php echo $mano_obra->mano_obra; ?></td>
-                        <td><?php echo $mano_obra->mano_obra_slug; ?></td>
+                        <td><?php echo $mano_obra->descripcion; ?></td>
                         <td><?php echo $mano_obra->observacion; ?></td>
                         <td>
                             <?php echo DwHtml::buttonTable('Modificar mano_obra', "config/mano_obra/editar/$key_upd/", null, 'info', 'edit'); ?>

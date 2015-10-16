@@ -7,7 +7,7 @@
  * @copyright
  */
 
-class Material_recurso extends ActiveRecord {
+class MaterialRecurso extends ActiveRecord {
     
     protected function initialize() {
         //$this->belongs_to('sucursal');
@@ -50,9 +50,9 @@ class Material_recurso extends ActiveRecord {
      * @param array $otherData Array con datos adicionales
      * @return Obj
      */
-    public static function setMaterial_recurso($method, $data, $optData=null) {
+    public static function setMaterialRecurso($method, $data, $optData=null) {
         //Se aplica la autocarga
-        $obj = new material_recurso($data);
+        $obj = new MaterialRecurso($data);
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
