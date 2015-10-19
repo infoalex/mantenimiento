@@ -1,0 +1,59 @@
+<?php View::notify(); ?>
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            form_search: true,
+            form_action: '<?php echo PUBLIC_PATH; ?>config/equipo_herramienta/buscar/',
+            form_load_data : 'dw-shell-content',
+            order_attr: '<?php echo (APP_AJAX) ? 'class="dw-ajax dw-spinner"' : ''; ?>',
+            order_action: $.KumbiaPHP.publicPath+"config/equipo_herramienta/buscar/<?php echo $field.'/'.$value.'/'; ?>"
+        });
+    });
+</script>
+
+<div class="container-fluid dw-shell-view">
+
+    <?php View::process($page_module, $page_title, $set_title); ?>
+
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            <?php echo DwHtml::button("config/equipo_herramienta/agregar/", 'agregar', array('class'=>'btn-success'), 'check', APP_AJAX); ?>
+            <?php echo DwHtml::button("config/equipo_herramienta/listar/", 'listar', array('class'=>'btn-warning'), 'ok', APP_AJAX); ?>
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="descripcion">DESCRIPCIÓN</th>
+                    <th class="col-collapse" data-search="direccion">OBSERVACIÓN</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if($equipo_herramientas) { ?>
+                <?php foreach($equipo_herramientas->items as $equipo_herramienta): ?>
+                    <?php $key_upd = DwSecurity::getKey($equipo_herramienta->id, 'upd_equipo_herramienta'); ?>
+                    <?php $key_del = DwSecurity::getKey($equipo_herramienta->id, 'del_equipo_herramienta'); ?>
+                    <tr>
+                        <td><?php echo $equipo_herramientas->counter; ?></td>
+                        <td><?php echo ($field=='descripcion') ? DwUtils::resaltar($value, $equipo_herramienta->descripcion) : $equipo_herramienta->descripcion; ?></td>
+                        <td><?php echo ($field=='observacion') ? DwUtils::resaltar($value, $equipo_herramienta->observacion) : $equipo_herramienta->observacion; ?></td>
+                        <td>
+                            <?php echo DwHtml::buttonTable('Modificar equipo_herramienta', "config/equipo_herramienta/editar/$key_upd/", NULL, 'info', 'edit'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar equipo_herramienta', "config/equipo_herramienta/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar equipo_herramienta', 'confirm-body'=>'Está seguro de eliminar esta equipo_herramienta? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>                      
+                        </td>
+                    </tr>
+                    <?php $equipo_herramientas->counter++; ?>
+                <?php endforeach; ?>
+            </tbody>
+            <?php } ?>
+        </table>
+
+    </div>
+
+    <?php View::partial('paginators/default', false, array('page'=>$equipo_herramientas, 'url'=>"config/equipo_herramienta/buscar/$field/$value/$order/")); ?>
+</div>

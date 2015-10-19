@@ -5,3 +5,5 @@ default/app/temp/
 composer.phar
 composer.lock
 .idea
+default/app/config/databases.ini
+databases.ini
