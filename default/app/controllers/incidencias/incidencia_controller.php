@@ -7,7 +7,7 @@
  * @author      Alexis Borges (jel1284@gmail.com)
  * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
  */
-Load::models('incidencias/incidencia','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector');
+Load::models('incidencias/incidencia','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector', 'mantenimientos/mantenimiento');
 
 class IncidenciaController extends BackendController {
     /**
@@ -201,18 +201,23 @@ class IncidenciaController extends BackendController {
             return DwRedirect::toAction('listar');
         }
         $incidencias = new Incidencia();
-        $detalle_incidencia = $incidencias->getInformacionIncidencia($id);
+        $detalle_incidencia = $incidencias->getBasicoIncidencia($id);
         if(Input::hasPost('incidencia'))
         {
-            ActiveRecord::beginTrans();
+            //ActiveRecord::beginTrans();
             if(Incidencia::setIncidencia('update',$detalle_incidencia, Input::post('incidencia')))
             {
 
-               
+              /*  if(mantenimiento::setMantenimiento('create', Input::post('incidencia')))
+                {*/
+                    DwMessage::valid('La solicitud ha sido procesada exitosamente!');
+                    return DwRedirect::toAction('listar');
+               /*     ActiveRecord::commitTrans();  
+                }
 
-                DwMessage::valid('La solicitud ha sido procesada exitosamente!');
-                return DwRedirect::toAction('listar');
-                ActiveRecord::commitTrans();    
+*/
+
+                
             }
             else
             {

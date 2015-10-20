@@ -38,7 +38,19 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
         $conditions = "a.id = '$id'";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $conditions");
-    } 
+    }
+     /**
+     * Método para traer basico de incidencia 
+     * @param int|string $id
+     * @return 
+     */
+    public function getBasicoIncidencia($id, $isSlug=false) {
+        $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
+        $columnas = '*';
+        $conditions = "id = '$id'";
+        return $this->find_first("columns: $columnas", "conditions: $conditions");
+    }
+
     /**
      * Método para ver la información de un reporte
      * @param int|string $id

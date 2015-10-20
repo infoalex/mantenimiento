@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -1060,7 +1059,7 @@ CREATE TABLE mantenimiento (
     id integer DEFAULT nextval('mantenimiento_id_seq'::regclass) NOT NULL,
     orden character varying(10),
     fecha timestamp without time zone,
-    tipo_mantenimiento boolean,
+    tipo_mantenimiento character varying(1),
     fecha_inicio timestamp without time zone,
     fecha_fin timestamp without time zone,
     sucursal_id integer,
@@ -3107,6 +3106,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 111	1	2015-10-13 19:14:16.041304-04:30	2015-10-13 19:14:16.041304-04:30	1	\N	\N	\N	\N	127.0.0.1
 112	1	2015-10-13 19:32:11.513541-04:30	2015-10-13 19:32:11.513541-04:30	1	\N	\N	\N	\N	127.0.0.1
 113	1	2015-10-13 22:41:08.406761-04:30	2015-10-13 22:41:08.406761-04:30	1	\N	\N	\N	\N	127.0.0.1
+114	1	2015-10-19 21:06:33.372365-04:30	2015-10-19 21:06:33.372365-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -3114,7 +3114,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 113, true);
+SELECT pg_catalog.setval('acceso_id_seq', 114, true);
 
 
 --
