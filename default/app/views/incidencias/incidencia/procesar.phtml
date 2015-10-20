@@ -1,0 +1,155 @@
+<?php View::notify(); ?>
+<div class="container-fluid dw-shell-view">
+    <?php View::process($page_module, $page_title, $set_title); ?>
+    <?php echo DwForm::open('', 'post', array('id'=>'form', 'class'=>'dw-validate')); ?>
+        
+        <div class="row-fluid">
+            <div class="span12">
+                <p class="text-right">
+                    <span class="label ">BORRADOR</span>
+                    <span class="label label-success">REGISTRADA</span>
+                    <span class="label">PROCESADA</span>                    
+                    <span class="label">CERRADA</span>
+                    <span class="label">ANULADA</span>                    
+                </p>
+            </div>
+        </div>
+         <div class="row-fluid">
+            <div class="span3">
+               <?php echo DwForm::text('incidencia.responsable_reparacion', array('class'=>'input-large mask-alpha'), NULL, 'Responsable Reparación: '); ?>
+               
+            </div>
+            <div class="span3">
+               <?php echo DwForm::text('incidencia.perdida_tn', array('class'=>'input-large mask-num'), NULL, 'Perdida en Toneladas: '); ?>
+            </div>
+            <div class="span6">
+                <?php echo DwForm::select('incidencia.persistencia_falla', array(''=>'Seleccione:', 'true'=>'Si', 'false'=>'No'), array('class'=>'input-large show-error data-toggle="tooltip" title="Persistencia de la Falla" '), NULL, 'Persistencia de la Falla:'); ?>
+            </div>
+        </div>
+        <div class="row-fluid">
+           <div class="span6">
+                <?php echo DwForm::textarea('incidencia.observacion', array('class'=>'mask-text show-error input-xlarge mask-alpha '), NULL, 'Observacion'); ?>
+            </div>
+            <div class="span6">
+                <?php echo DwForm::textarea('incidencia.accion_correctiva', array('class'=>'mask-text show-error input-xlarge mask-alpha '), NULL, 'Acción Correctiva:'); ?>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="form-actions">
+                <?php echo DwButton::save('Procesar Incidencia','cogs', '', 'PROCESAR' ); ?>
+                <?php echo DwButton::reset('form'); ?>
+                <?php echo DwButton::cancel(); ?>
+            </div>
+        </div>
+    <?php echo DwForm::close(); ?>
+</div>
+<script type="text/javascript" >
+$(document).ready(function(){
+  select: function ll(event, ui) {
+                  $('input#incidencia_codigo_solicitud').val(ui.item.codid);// Asignacion de Id en Campo
+                 // $('textarea#incidencia_observacion').val(ui.item.id);// Asignacion de Id en Campo
+              }
+    
+    $('input#incidencia_titular').autocomplete({
+            minLength : 3 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
+            source: function(request, response) {
+                $.ajax({
+                  url: "<?php echo PUBLIC_PATH ?>beneficiarios/titular/autocomplete",
+                  data: {'busqueda':request.term},
+                  dataType: "json",
+                  type: "POST",
+                  success: function(data){
+                      response(data);
+                  }
+                });
+              },
+              select: function(event, ui) {
+                  $('input#incidencia_titular_id').val(ui.item.id);// Asignacion de Id en Campo
+                  $('input#incidencia_titular_idnombre').val(ui.item.idnombre);// Asignacion de Id en Campo
+                 // $('textarea#incidencia_observacion').val(ui.item.id);// Asignacion de Id en Campo
+              }
+    });
+    $('input#incidencia_beneficiario').autocomplete({
+            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
+            source: function(request, response) {
+                $.ajax({
+                  url: "<?php echo PUBLIC_PATH ?>beneficiarios/beneficiario/autocomplete",
+                  data: {'busqueda':request.term},
+                  dataType: "json",
+                  type: "POST",
+                  success: function(data){
+                      response(data);
+                  }
+                });
+              },
+              select: function(event, ui) {
+                  $('input#incidencia_beneficiario_id').val(ui.item.id);// Asignacion de Id en Campo
+                  $('input#incidencia_beneficiario_idnombre').val(ui.item.idnombre);// Asignacion de Id en Campo
+              }
+    });
+    $( "input#incidencia_proveedor" ).autocomplete({
+            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
+            source: function(request, response) {
+                $.ajax({
+                  url: "<?php echo PUBLIC_PATH ?>proveedorsalud/proveedor/autocomplete",
+                  data: {'busqueda':request.term},
+                  dataType: "json",
+                  type: "POST",
+                  success: function(data){
+                      response(data);
+                  }
+                });
+              },
+              select: function(event, ui) {
+                  $('input#incidencia_proveedor_id').val(ui.item.id);// Asignacion de Id en Campo
+              }
+    });
+    $('input#incidencia_medico').autocomplete({
+            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
+            source: function(request, response) {
+                $.ajax({
+                  url: "<?php echo PUBLIC_PATH ?>proveedorsalud/medico/autocomplete",
+                  data: {'busqueda':request.term},
+                  dataType: "json",
+                  type: "POST",
+                  success: function(data){
+                      response(data);
+                  }
+                });
+              },
+              select: function(event, ui) {
+                  $('input#incidencia_medico_id').val(ui.item.id);// Asignacion de Id en Campo
+              }
+    });
+    $('input#incidencia_servicio').autocomplete({
+            minLength : 1 , //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
+            source: function(request, response) {
+                $.ajax({
+                  url: "<?php echo PUBLIC_PATH ?>proveedorsalud/servicio/autocomplete",
+                  data: {'busqueda':request.term},
+                  dataType: "json",
+                  type: "POST",
+                  success: function(data){
+                      response(data);
+                  }
+                });
+              },
+              select: function(event, ui) {
+                  $('input#incidencia_servicio_id').val(ui.item.id);// Asignacion de Id en Campo
+                   //$('textarea#incidencia_observacion').val(ui.item.id);// Asignacion de Id en Campo
+              }
+    }); 
+$("#incidencia_titular").change(function(){
+    var titular_id     =   $('#incidencia_titular_id').val();
+        $.ajax({
+          type: "POST",
+          url: "<?php echo PUBLIC_PATH . 'beneficiarios/beneficiario/getBeneficiarios/'; ?>",
+          data: "titular_id=" + titular_id,
+          success: function(html){
+            $("#div_beneficiario").html(html);
+          }
+        });
+});
+});
+</script>
