@@ -1,11 +1,9 @@
 <?php
 /**
- * UPTP - (PNFI Sección 1236) 
- *
- * @category    
+ * @category
  * @package     Controllers 
- * @author      Alexis Borges (jel1284@gmail.com)
- * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
+ * @author
+ * @copyright
  */
 Load::models('incidencias/incidencia','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector', 'mantenimientos/mantenimiento');
 
@@ -202,29 +200,44 @@ class IncidenciaController extends BackendController {
         }
         $incidencias = new Incidencia();
         $detalle_incidencia = $incidencias->getBasicoIncidencia($id);
+
         if(Input::hasPost('incidencia'))
         {
-            //ActiveRecord::beginTrans();
-            if(Incidencia::setIncidencia('update',$detalle_incidencia, Input::post('incidencia')))
-            {
+            $array = Input::post('incidencia');
+            ActiveRecord::beginTrans();
 
-              /*  if(mantenimiento::setMantenimiento('create', Input::post('incidencia')))
-                {*/
-                    DwMessage::valid('La solicitud ha sido procesada exitosamente!');
-                    return DwRedirect::toAction('listar');
-               /*     ActiveRecord::commitTrans();  
-                }
+            $detalle_incidencia->responsable_reparacion =  $array['responsable_reparacion'];
+            $detalle_incidencia->perdida_tn =  $array['perdida_tn'];
+            $detalle_incidencia->persistencia_falla=  $array['persistencia_falla'];
+            $detalle_incidencia->observacion =  $array['observacion'];
+            $detalle_incidencia->accion_correctiva  = $array['accion_correctiva'];
+            $detalle_incidencia->estatus = 'P'; //procesado = P
 
-*/
+            $result = $detalle_incidencia->update();
+            $objIn = $incidencias->getBasicoIncidencia($id);
 
-                
+            if($result) {
+                //tipo mantenimiento 1 preventivo , 2 correctivo
+                $data = array('tipo_mantenimiento'=>'2', 'sucursal_id'=>$objIn->sucursal_id, 'sector_id'=>$objIn->sector_id, 'equipo_id'=>$objIn->equipo_id, 'falla_id'=>$objIn->falla_id, 'trabajo_solicitado'=>$objIn->analisis_falla,'responsable_reparacion'=>$objIn->responsable_reparacion, 'estatus'=>'2');
+
+               if(mantenimiento::setMantenimiento('create',$data)) {
+                   ActiveRecord::commitTrans();
+                   DwMessage::valid('La solicitud se ha rechazado correctamente!');
+                   return DwRedirect::toAction('reporte_orden_mantenimiento');
+               }
+               else
+               {
+                   ActiveRecord::rollbackTrans();
+                   DwMessage::error("Problemas guardando el mantenimiento");
+               }
             }
             else
             {
-                ActiveRecord::rollbackTrans();    
-                DwMessage::error('Errores procesando solicitud!');
-            }           
-        } 
+                ActiveRecord::rollbackTrans();
+                DwMessage::error("Problemas actualizando la incidencia");
+            }
+
+        }
         $this->page_title = 'Procesar solicitud';  
    }
 

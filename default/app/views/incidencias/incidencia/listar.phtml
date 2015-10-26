@@ -75,9 +75,20 @@
                                 echo $incidencia->responsable_reparacion;
                             }
                             ?></td>
-                        <td><?php if($incidencia->estatus=='R'){
-                                    echo "REGISTRADA";}
-                                    ?>
+                        <td><?php switch($incidencia->estatus){
+                                case "R":
+                                    echo "REGISTRADA";
+                                    break;
+                                case "P":
+                                    echo "PROCESADA";
+                                    break;
+                                case "C":
+                                    echo "CERRADA";
+                                    break;
+                                case "A":
+                                    echo "ANULADA";
+                                    break;
+                            } ?>
                         </td>
                         <td>
                             <?php echo DwHtml::buttonTable('Procesar Incidencia', "incidencias/incidencia/procesar/$key_prs/", null, 'success', 'check'); ?>

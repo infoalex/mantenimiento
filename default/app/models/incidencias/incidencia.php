@@ -45,7 +45,7 @@ class Incidencia extends ActiveRecord {
      * @return 
      */
     public function getBasicoIncidencia($id, $isSlug=false) {
-        $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
+       // $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
         $columnas = '*';
         $conditions = "id = '$id'";
         return $this->find_first("columns: $columnas", "conditions: $conditions");
@@ -264,10 +264,12 @@ class Incidencia extends ActiveRecord {
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
-        }   
+        }
         $rs = $obj->$method();
         return ($rs) ? $obj : FALSE;
     }
+
+
 
     /**
      * Método que se ejecuta antes de guardar y/o modificar     
