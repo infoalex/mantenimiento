@@ -31,16 +31,26 @@ class Incidencia extends ActiveRecord {
      */
     public function getInformacionIncidencia($id, $isSlug=false) {
         $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
-        $columnas = 'a.id, a.estado_solicitud, a.tiposolicitud_id, a.fecha_solicitud, a.codigo_solicitud, a.titular_id, a.beneficiario_id, a.proveedor_id, a.medico_id, a.servicio_id, a.fecha_vencimiento, a.motivo_rechazo, a.observacion,b.id idmedico, b.nombre1 as nombrem, b.apellido1 as apellidom, c.cedula, c.celular, c.nombre1 as nombre, c.apellido1 as apellido, c.id as idtitular, d.id idproveedor, d.nombre_corto as proveedor, e.id as idservicio, e.descripcion as servicio, f.nombre1 as nombreb, f.apellido1 as apellidob, f.id as idbeneficiario, g.id idtiposolicitud, g.nombre as tiposolicitud ';
-        $join= 'as a INNER JOIN titular as c ON (a.titular_id = c.id) ';
-        $join.= 'INNER JOIN medico as b ON (a.medico_id = b.id) ';
-        $join.= 'INNER JOIN proveedor as d ON (a.proveedor_id = d.id) ';
-        $join.= 'INNER JOIN servicio as e ON (a.servicio_id = e.id) ';
-        $join.= 'INNER JOIN beneficiario as f ON (a.beneficiario_id = f.id) ';
-        $join.= 'INNER JOIN tiposolicitud as g ON (a.tiposolicitud_id = g.id) ';
-        $condicion = "a.id = '$id'";
-        return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
-    } 
+        $columnas = 'a.id as idincidencia, a.fecha, a.sucursal_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, a.estatus, d.id as idfalla, d.descripcion, e.id as idequipo, e.nombre, e.codigo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal  ';
+        $join = ' as a INNER JOIN falla as d ON (a.falla_id = d.id) ';
+        $join.= 'INNER JOIN equipo as e ON (a.equipo_id = e.id) ';
+        $join.= 'INNER JOIN sector as g ON (a.sector_id = g.id) ';
+        $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
+        $conditions = "a.id = '$id'";
+        return $this->find_first("columns: $columnas", "join: $join", "conditions: $conditions");
+    }
+     /**
+     * Método para traer basico de incidencia 
+     * @param int|string $id
+     * @return 
+     */
+    public function getBasicoIncidencia($id, $isSlug=false) {
+       // $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
+        $columnas = '*';
+        $conditions = "id = '$id'";
+        return $this->find_first("columns: $columnas", "conditions: $conditions");
+    }
+
     /**
      * Método para ver la información de un reporte
      * @param int|string $id
@@ -254,10 +264,12 @@ class Incidencia extends ActiveRecord {
         //Se verifica si contiene una data adicional para autocargar
         if ($optData) {
             $obj->dump_result_self($optData);
-        }   
+        }
         $rs = $obj->$method();
         return ($rs) ? $obj : FALSE;
     }
+
+
 
     /**
      * Método que se ejecuta antes de guardar y/o modificar     

@@ -1,13 +1,11 @@
 <?php
 /**
- * UPTP - (PNFI Sección 1236) 
- *
- * @category    
+ * @category
  * @package     Controllers 
- * @author      Alexis Borges (jel1284@gmail.com)
- * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
+ * @author
+ * @copyright
  */
-Load::models('incidencias/incidencia','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector');
+Load::models('incidencias/incidencia','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector', 'mantenimientos/mantenimiento');
 
 class IncidenciaController extends BackendController {
     /**
@@ -21,12 +19,30 @@ class IncidenciaController extends BackendController {
         //Se cambia el nombre del módulo actual
         $this->page_module = 'Incidencias';
     }
-    
     /**
      * Método principal
      */
     public function index() {
         DwRedirect::toAction('registro');
+    }
+    /**
+     * Método para agregar
+     */
+    public function agregar() {
+       // $empresa = Session::get('empresa', 'config');
+        $incidencias = new Incidencia();
+        if(Input::hasPost('incidencia')) {
+            if(Incidencia::setIncidencia('create', Input::post('incidencia'))) {
+                DwMessage::valid('La solicitud se ha registrado correctamente!');
+                return DwRedirect::toAction('listar');
+            }
+            else
+            {
+                DwMessage::error('Errores procesando solicitud!');
+            }           
+        } 
+       // $this->personas = Load::model('beneficiarios/titular')->getTitularesToJson();
+        $this->page_title = 'Agregar Incidencia';
     }
     
     /**
@@ -175,50 +191,55 @@ class IncidenciaController extends BackendController {
         $this->incidencias = $incidencias;
         $this->page_title = 'Cargar Facturas a la solicitud';        
     }
-
     /**
-     * Método para agregar
-     */
-    public function agregar() {
-       // $empresa = Session::get('empresa', 'config');
+    *Metodo para procesar las solicitudes (Cambiar de Estatus)
+    */
+    public function procesar($key){
+        if(!$id = DwSecurity::isValidKey($key, 'prs_incidencia', 'int')) {
+            return DwRedirect::toAction('listar');
+        }
         $incidencias = new Incidencia();
-        if(Input::hasPost('incidencia')) {
-            if(Incidencia::setIncidencia('create', Input::post('incidencia'))) {
-                DwMessage::valid('La solicitud se ha registrado correctamente!');
-                return DwRedirect::toAction('listar');
+        $detalle_incidencia = $incidencias->getBasicoIncidencia($id);
+
+        if(Input::hasPost('incidencia'))
+        {
+            $array = Input::post('incidencia');
+            ActiveRecord::beginTrans();
+
+            $detalle_incidencia->responsable_reparacion =  $array['responsable_reparacion'];
+            $detalle_incidencia->perdida_tn =  $array['perdida_tn'];
+            $detalle_incidencia->persistencia_falla=  $array['persistencia_falla'];
+            $detalle_incidencia->observacion =  $array['observacion'];
+            $detalle_incidencia->accion_correctiva  = $array['accion_correctiva'];
+            $detalle_incidencia->estatus = 'P'; //procesado = P
+
+            $result = $detalle_incidencia->update();
+            $objIn = $incidencias->getBasicoIncidencia($id);
+
+            if($result) {
+                //tipo mantenimiento 1 preventivo , 2 correctivo
+                $data = array('tipo_mantenimiento'=>'2', 'sucursal_id'=>$objIn->sucursal_id, 'sector_id'=>$objIn->sector_id, 'equipo_id'=>$objIn->equipo_id, 'falla_id'=>$objIn->falla_id, 'trabajo_solicitado'=>$objIn->analisis_falla,'responsable_reparacion'=>$objIn->responsable_reparacion, 'estatus'=>'2');
+
+               if(mantenimiento::setMantenimiento('create',$data)) {
+                   ActiveRecord::commitTrans();
+                   DwMessage::valid('La solicitud se ha rechazado correctamente!');
+                   return DwRedirect::toAction('reporte_orden_mantenimiento');
+               }
+               else
+               {
+                   ActiveRecord::rollbackTrans();
+                   DwMessage::error("Problemas guardando el mantenimiento");
+               }
             }
             else
             {
-                DwMessage::error('Errores procesando solicitud!');
-            }           
-        } 
-       // $this->personas = Load::model('beneficiarios/titular')->getTitularesToJson();
-        $this->page_title = 'Agregar Incidencia';
-    }
+                ActiveRecord::rollbackTrans();
+                DwMessage::error("Problemas actualizando la incidencia");
+            }
 
-    /**
-    *Metodo para aprobar las solicitudes (Cambiar de Estatus)
-    */
-
-    public function aprobar($key){
-        if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
-            return DwRedirect::toAction('aprobacion');
         }
-        //Mejorar esta parte  implementando algodon de seguridad
-    
-        $incidencias = new Incidencias();
-        $sol = $incidencias->getInformacionIncidencias($id);
-        $sol->estado_solicitud="A";
-        $sol->save();
-        $cod = $sol->codigo_solicitud;
-        $nro = $sol->celular;
-        $nombre = $sol->nombre;
-        $apellido = $sol->apellido;
-        $contenido= "Sr. ".$nombre." ".$apellido." Su solicitud ha sido aprobada Aprobada con el codigo: ".$cod;
-        $destinatario=$nro;
-        system( '/usr/bin/gammu -c /etc/gammu-smsdrc --sendsms EMS ' . escapeshellarg( $destinatario ) . ' -text ' . escapeshellarg( $contenido ) ); 
-        return DwRedirect::toAction('reporte_aprobacion/'.$id);
-    }
+        $this->page_title = 'Procesar solicitud';  
+   }
 
     /** Metodo para rechazar con motivo una solicitud **/
     public function rechazar($key) {        

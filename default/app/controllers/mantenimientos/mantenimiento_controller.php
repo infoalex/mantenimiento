@@ -1,10 +1,9 @@
 <?php
-/**
- * UPTP - (PNFI Sección 1236) 
+/** 
  *
  * @category    
  * @package     Controllers 
- * @author      Alexis Borges (jel1284@gmail.com)
+ * @author      Dorta
  * @copyright   Copyright (c) 2014 UPTP - (PNFI Team) (https://github.com/ArrozAlba/SASv2)
  */
 Load::models('mantenimientos/mantenimiento','config/departamento', 'config/falla', 'equipo/equipo', 'config/sector');

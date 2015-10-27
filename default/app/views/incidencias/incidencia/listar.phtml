@@ -39,11 +39,12 @@
             </thead>
             <tbody>
                 <?php foreach($incidencias->items as $incidencia): ?>
-                    <?php $key_upd = DwSecurity::getKey($incidencia->id, 'upd_incidencia'); ?>
-                    <?php $key_del = DwSecurity::getKey($incidencia->id, 'del_incidencia'); ?>
+                    <?php $key_prs = DwSecurity::getKey($incidencia->idincidencia, 'prs_incidencia'); ?>
+                    <?php $key_del = DwSecurity::getKey($incidencia->idincidencia, 'del_incidencia'); ?>
                     <tr>
                         <td><?php echo $incidencias->counter; ?></td>
-                        <td><?php echo $incidencia->fecha; ?></td>
+                        <td><?php $date = date_create($incidencia->fecha);
+                        echo date_format($date, "d-m-Y"); ?></td>
                         <td><?php echo $incidencia->hora_inicio; ?></td>
                         <td><?php echo $incidencia->sector; ?></td>
                         <td><?php echo $incidencia->codigo." ".$incidencia->nombre; ?></td>
@@ -64,14 +65,34 @@
                                     echo "<span class='label label-succes'>NO</span>";
                                 }
                         ?></td>
-                        <td><?php echo $incidencia->responsable_reparacion; ?></td>
-                        <td><?php if($incidencia->estatus=='R'){
-                                    echo "Registrada";}
-                                    ?>
+                        <td><?php
+                            if(!$incidencia->responsable_reparacion)
+                            {
+                                echo "SIN ASIGNAR";
+                            }
+                            else
+                            {
+                                echo $incidencia->responsable_reparacion;
+                            }
+                            ?></td>
+                        <td><?php switch($incidencia->estatus){
+                                case "R":
+                                    echo "REGISTRADA";
+                                    break;
+                                case "P":
+                                    echo "PROCESADA";
+                                    break;
+                                case "C":
+                                    echo "CERRADA";
+                                    break;
+                                case "A":
+                                    echo "ANULADA";
+                                    break;
+                            } ?>
                         </td>
                         <td>
-                            <?php echo DwHtml::buttonTable('Aprobar Solicitud', "incidencia/incidencia/editar/$key_upd/", null, 'success', 'check'); ?>
-                            <?php echo DwHtml::buttonTable('Eliminar Solicitud', "incidencia/incidencia/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar solicitud_medicina', 'confirm-body'=>'Está seguro de eliminar este solicitud_medicina? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
+                            <?php echo DwHtml::buttonTable('Procesar Incidencia', "incidencias/incidencia/procesar/$key_prs/", null, 'success', 'check'); ?>
+                            <?php echo DwHtml::buttonTable('Eliminar Incidencia', "incidencia/incidencia/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Anular solicitud_medicina', 'confirm-body'=>'Está seguro de eliminar este solicitud_medicina? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'ban-circle'); ?>
                         </td>
                     </tr>
                     <?php $incidencias->counter++; ?>
