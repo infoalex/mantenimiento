@@ -52,7 +52,7 @@
                         <td>
                             <?php echo DwHtml::buttonTable('Agregar Partes', "equipo/equipo/agregar_partes/$key_piece/", NULL, 'warning', 'cogs'); ?>
                             <?php echo DwHtml::buttonTable('Modificar Equipo', "equipo/equipo/", null, 'info', 'edit'); ?>
-                            <?php echo DwButton::report("equipo/ficha/$equipo->id/", 'html', 'Ficha Equipo', ''); ?>
+                            <?php echo DwHtml::buttonTable('Ficha Equipo', "equipo/equipo/reporte_ficha_maquina/$equipo->id", null, 'info', 'print'); ?>
                         </td>
                     </tr>
                     <?php $equipos->counter++; ?>

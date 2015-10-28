@@ -4,7 +4,6 @@ class EquipoParte extends ActiveRecord {
     protected function initialize() {     
     }  
     /**
-     * Método para ver la información de una sucursal
      * @param int|string $id
      * @return Sucursal
      */
@@ -14,7 +13,8 @@ class EquipoParte extends ActiveRecord {
         $join .= ' INNER JOIN parte_categoria ON parte.parte_categoria_id = parte_categoria.id';
         $condicion ="equipo_parte.equipo_id = '$id'";
         return $this->find("columns: $columnas", "join: $join", "conditions: $condicion");
-    } 
+    }
+    
     
     /**
      * Método que devuelve las sucursales

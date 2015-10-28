@@ -1,0 +1,61 @@
+<?php
+// LImpia el bufer (evita los errores de: Some data has already been output ) 
+//ob_end_clean(); 
+Load::lib('pdf_cabecera_solicitud');
+Load::lib('modelo_pdf');
+//require_once("modelo_pdf.php");
+	$fpdf = new MyFpdf ();
+	$fpdf->AddPage('P','Letter');
+	$fpdf->SetFont('times','B','12');
+	$fpdf->SetFillColor(138,180,196);
+	$fpdf->Cell(0,5,"ORDEN DE TRABAJO DE MANTENIMIENTO",1,1,'C','true');
+	$fpdf->SetFont('times','','10');
+	//
+	$fpdf->Cell(50,5,utf8_decode("N° DE ORDEN DE TRABAJO:"),'LR',0,'');
+	$fpdf->Cell(60,5,"FECHA Y HORA DE LA SOLICITUD:",'R',0,'');
+	$fpdf->Cell(86,5,"SOLICITADO POR:",'R',1,'');
+	//
+	$fpdf->Cell(50,5,utf8_decode($nro_orden),'LRB',0,'');
+	$fpdf->Cell(60,5,$fecha,'RB',0,'');
+	$fpdf->Cell(86,5,utf8_decode(""),'RB',1,'');
+	//
+	$fpdf->Cell(40,5,"CODIGO DEL EQUIPO: ",'LB',0,'');
+	$fpdf->Cell(40,5,$codigo_equipo,'B',0,'');
+	$fpdf->Cell(40,5,"NOMBRE DEL EQUIPO: ",'LB',0,'');
+	$fpdf->SetFont('times','B','10');
+	$fpdf->Cell(76,5, $nombre_equipo ,'BR',1,'');
+	$fpdf->SetFont('times','','10');
+	//
+	$fpdf->Cell(98,5,"TIPO DE TRABAJO A EJECUTAR: ",'L',0,'');
+	$fpdf->Cell(98,5,"TIPO DE MANTENIMIENTO: ",'LR',1,'');
+	//
+	$fpdf->Cell(98,5,utf8_decode("MECÁNICO (X)         ELECTRICO ( )         OTRO ( )"),'L',0,'C');
+	if($tipo_mantenimiento == 2)
+	{
+	$fpdf->Cell(98,5,"CORRECTIVO (X)         PREVENTIVO ( )",'LR',1,'C');
+	}
+	else
+	{
+		$fpdf->Cell(98,5,"CORRECTIVO ()         PREVENTIVO (X)",'LR',1,'C');
+	}
+
+	$fpdf->Cell(98,3," ",'L',0,'C');
+	$fpdf->Cell(98,3," ",'LR',1,'C');
+	//
+	$fpdf->SetFont('times','B','12');
+	$fpdf->Cell(0,5,"TRABAJO SOLICITADO",1,1,'C','true');
+	//
+	$fpdf->SetFont('times','','10');
+	$fpdf->MultiCell(0,20,$trabajo_solicitado,'LR');
+	//
+	$fpdf->SetFont('times','B','12');
+	$fpdf->Cell(0,5,"TRABAJO EJECUTADO",1,1,'C','true');
+	//
+	$fpdf->SetFont('times','','10');
+	$fpdf->MultiCell(0,20,"",'LR');
+	//
+	$fpdf->SetFont('times','B','12');
+	$fpdf->Cell(0,5,"RECURSOS NECESARIOS",1,1,'C','true');
+
+	$fpdf->Output();
+?>

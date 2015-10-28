@@ -12,9 +12,21 @@ class Equipo extends ActiveRecord {
      * @return Sucursal
      */
     public function getInformacionEquipo($id) {
-        $columnas = 'equipo.id, equipo.codigo, equipo.nombre, equipo.activo_fijo, equipo.fecha_registro, equipo.fecha_compra';
-        $condicion = "equipo.id = '$id'";
-        return $this->find("columns: $columnas", "conditions: $condicion");
+        $columnas = ' E.id, E.codigo, E.nombre, E.activo_fijo, E.fecha_registro, E.fecha_compra, E.caracteristicas, E.funcionamiento, E.observaciones observacion, F.nombre fabricante, S.sector';
+        $join = " AS E INNER JOIN fabricante F ON E.fabricante_id = F.id ";
+        $join.= " INNER JOIN sector S ON E.sector_id = S.id ";
+        $condicion = "E.id = '$id'";
+        return $this->find("columns: $columnas", "join: $join ", "conditions: $condicion");
+    }
+
+    public function getInformacionEquipoFull($id) {
+        $columnas = ' E.id, E.codigo, E.nombre, E.activo_fijo, E.fecha_registro, E.fecha_compra, E.caracteristicas, E.funcionamiento, E.observaciones observacion, F.nombre fabricante, S.sector, M.nombre modelo, MA.nombre marca';
+        $join = " AS E INNER JOIN fabricante F ON E.fabricante_id = F.id ";
+        $join.= " INNER JOIN sector S ON E.sector_id = S.id ";
+        $join.= " INNER JOIN modelo M ON E.modelo_id = M.id ";
+        $join.= " INNER JOIN marca MA ON M.marca_id = MA.id ";
+        $condicion = "E.id = '$id'";
+        return $this->find_first("columns: $columnas", "join: $join ", "conditions: $condicion");
     } 
     
     /**

@@ -56,7 +56,19 @@ class Mantenimiento extends ActiveRecord {
         $join.= 'INNER JOIN medico as h ON (a.medico_id = h.id) ';
         $condicion = "a.id = '$id' ";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
-    } 
+    }
+    
+    public function getOrdenMantenimiento($id, $isSlug=false) {
+        $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
+        $columnas= 'M.orden, M.fecha, M.tipo_mantenimiento, M.trabajo_solicitado, M.responsable_reparacion, M.trabajo_ejecutado, E.codigo codigo_equipo, E.nombre nombre_equipo, S.sucursal , F.descripcion falla ';
+        $join = " as M INNER JOIN equipo E ON M.equipo_id = E.id ";
+        $join.= " INNER JOIN sucursal S ON M.sucursal_id = S.id ";
+        $join.= " INNER JOIN falla F ON M.falla_id = F.id ";
+        $join.= " INNER JOIN sector SE ON M.sector_id = SE.id ";
+        $condicion = "M.id = '$id' ";
+        return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
+    }
+
     /**
      * Método que devuelve las sucursales
      * @param string $order
