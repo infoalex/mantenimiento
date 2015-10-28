@@ -1,0 +1,75 @@
+<?php
+Load::lib('pdf_cabecera_solicitud');
+Load::lib('modelo_pdf');
+	$fpdf = new MyFpdf ();
+	$fpdf->AddPage('P','Letter');
+	$fpdf->SetFont('times','BU','15');
+	$fpdf->SetFillColor(138,180,196);
+	$fpdf->Cell(7,5,"",0,0);
+	$fpdf->Cell(185,5,utf8_decode("FICHA TÉCNICA DE LOS EQUIPOS"),0,1,'C');
+	$fpdf->ln(7);
+	$fpdf->Cell(7,5,"",0,0);
+	$fpdf->SetFont('times','','12');
+	//
+	$fpdf->Cell(52,5,"CODIGO DE INVENTARIO",1,0,'',true);   // TAMAÑO ESTANDAR DE LA CELDAS ANCHO 185 ALTO 5 
+	$fpdf->Cell(35,5,$codigo,1,0);
+	$fpdf->Cell(37,5,"NOMBRE-EQUIPO",1,0,'',true);
+	$fpdf->Cell(61,5,$nombre,1,1);
+	//
+	$fpdf->Cell(7,5,'',0,0);
+	$fpdf->Cell(20,5,"MARCA",1,0,'',true);
+	$fpdf->Cell(42,5,$marca,1,0);
+	$fpdf->Cell(20,5,"MODELO",1,0,'',true);
+	$fpdf->Cell(42,5,$modelo,1,0);
+	$fpdf->Cell(20,5,"SERIAL",1,0,'',true);
+	$fpdf->Cell(41,5,'',1,1);
+	//
+	$fpdf->Cell(7,5,"",0,0);
+	$fpdf->Cell(20,5,"ACTIVO",1,0,'',true);
+	$fpdf->Cell(42,5,$activo_fijo,1,0);
+	$fpdf->Cell(45,5,utf8_decode("SECTOR - UBICACIÓN"),1,0,'',true);
+	$fpdf->Cell(78,5,$sector,1,1);
+	//
+	$fecha_compra = date("d-m-Y", strtotime($fecha_compra));
+	$fpdf->Cell(7,5,"",0,0);
+	$fpdf->Cell(29,5,"FABRICANTE",1,0,'',true);
+	$fpdf->Cell(89,5,$fabricante,1,0);
+	$fpdf->Cell(45,5,utf8_decode("FECHA ADQUISICIÓN"),1,0,'',true);
+	$fpdf->Cell(22,5, $fecha_compra, 1,1);
+	//
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->Cell(185,7,"ESPECIFICACIONES Y CARACTERISTICAS PRINCIPALES",1,1,'C',true);
+	//
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->MultiCell(185,7,$caracteristicas,1,'J');
+	//
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->Cell(185,7,"FUNCIONAMIENTO Y MANEJO",1,1,'C',true);
+	//
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->MultiCell(185,7,$funcionamiento,1,'J');
+	//
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->Cell(185,7,utf8_decode("OBSERVACIÓN"),1,1,'C',true);
+	//
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->MultiCell(185,7,$observacion,1,'J');
+
+	$fpdf->Cell(7,7,"",0,0);
+	$fpdf->Cell(185,7,utf8_decode("PARTES DEL EQUIPO"),1,1,'C',true);
+
+	$fpdf->Cell(7,5,'',0,0);
+	$fpdf->Cell(46,5,"CATEGORIA",1,0,'',true);
+	$fpdf->Cell(46,5,"PARTE",1,0,'',true);
+	$fpdf->Cell(46,5,"CARACTERISTICAS",1,0,'',true);
+	$fpdf->Cell(47,5,"CANTIDAD",1,1,'',true);
+
+	foreach ($partes as $parte):
+		$fpdf->Cell(7,5,'',0,0);
+    	$fpdf->Cell(46,5,$parte->categoria,1,0);
+    	$fpdf->Cell(46,5,$parte->parte,1,0);
+    	$fpdf->Cell(46,5,$parte->caracteristica,1,0);
+    	$fpdf->Cell(47,5,$parte->cantidad,1,1);
+	endforeach;
+	$fpdf->Output();
+?>
