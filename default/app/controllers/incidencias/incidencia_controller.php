@@ -220,10 +220,10 @@ class IncidenciaController extends BackendController {
                 //tipo mantenimiento 1 preventivo , 2 correctivo
                 $data = array('tipo_mantenimiento'=>'2', 'sucursal_id'=>$objIn->sucursal_id, 'sector_id'=>$objIn->sector_id, 'equipo_id'=>$objIn->equipo_id, 'falla_id'=>$objIn->falla_id, 'trabajo_solicitado'=>$objIn->analisis_falla,'responsable_reparacion'=>$objIn->responsable_reparacion, 'estatus'=>'2');
 
-               if(mantenimiento::setMantenimiento('create',$data)) {
+               if($man = Mantenimiento::setMantenimiento('create',$data)) {
                    ActiveRecord::commitTrans();
                    DwMessage::valid('La solicitud se ha rechazado correctamente!');
-                   return DwRedirect::toAction('reporte_orden_mantenimiento');
+                   return DwRedirect::toAction('reporte_orden_trabajo/'.$man->id);
                }
                else
                {
@@ -281,52 +281,25 @@ class IncidenciaController extends BackendController {
     /**
      * Método para formar el reporte en pdf 
      */
-    public function reporte_aprobacion($id) { 
+    public function reporte_orden_trabajo($id) { 
         View::template(NULL);       
-       // if(!$id = DwSecurity::isValidKey($key, 'upd_incidencias', 'int')) {
-       //     return DwRedirect::toAction('aprobacion');
-       // }
 
-        //Mejorar esta parte  implementando algodon de seguridad
-        $incidencias = new Incidencias();
-                if(!$sol = $incidencias->getReporteIncidencias($id)) {
+        $objMantenimiento = new Mantenimiento();
+        if(!$mantenimiento = $objMantenimiento->getOrdenMantenimiento($id)) {
             DwMessage::get('id_no_found');
-        };
-        $this->fecha_sol = $incidencias->fecha_solicitud;
-        $this->nombres = strtoupper($incidencias->nombre1." ".$incidencias->nombre2);
-        $this->apellidos = strtoupper($incidencias->apellido1." ".$incidencias->apellido2);
-        $this->cedula = $incidencias->cedula;
-        $this->telefono = $incidencias->telefono;
-        $this->celular = $incidencias->celular;
-        $this->nacionalidad = $incidencias->nacionalidad;        
-        $this->sexo = $incidencias->sexo;  
-        $this->idtitular = $incidencias->idtitular;
-        $this->bene = $incidencias->beneficiario_id;
-        $this->medico = strtoupper($incidencias->nombrem1." ".$incidencias->nombrem2." ".$incidencias->apellidom1." ".$incidencias->apellidom2);
-        $this->clinica = strtoupper($incidencias->proveedor);
-        $this->servicio = strtoupper($incidencias->servicio);
-        $this->direccion = $incidencias->direccionp;
+        }
 
-        //llamada a otra funcion, ya que no logre un solo query para ese reportee! :S
-        $titular = new titular();
-        $datoslaborales = $titular->getInformacionLaboralTitular($this->idtitular);
-        $this->upsa = $titular->sucursal;
-        $this->direccionlaboral = strtoupper($titular->direccion);
-        $this->municipio_laboral = strtoupper($titular->municipios);
-        $this->estado_laboral = strtoupper($titular->estados);
-        $this->pais_laboral = strtoupper($titular->paiss);
-        $this->cargo = strtoupper($titular->cargo);
-        //instanciando la clase beneficiario 
+        $this->nro_orden  = $mantenimiento->nro_orden;
+        $this->fecha  = $mantenimiento->fecha;
+        $this->tipo_mantenimiento  = $mantenimiento->tipo_mantenimiento;
+        $this->responsable_reparacion  = $mantenimiento->responsable_reparacion;
+        $this->trabajo_ejecutado  = $mantenimiento->trabajo_ejecutado;
+        $this->trabajo_solicitado  = $mantenimiento->trabajo_solicitado;
+        $this->codigo_equipo  = $mantenimiento->codigo_equipo;
+        $this->nombre_equipo  = $mantenimiento->nombre_equipo;
+        $this->sucursal  = $mantenimiento->sucursal;
+        $this->falla  = $mantenimiento->falla;
         
-        $beneficiarios = new beneficiario();
-        $beneficiarios->getInformacionbeneficiario($this->bene);
-        $this->nombresb = strtoupper($beneficiarios->nombre1." ".$beneficiarios->nombre2);
-        $this->apellidosb = strtoupper($beneficiarios->apellido1." ".$beneficiarios->apellido2);
-        $this->cedulab = $beneficiarios->cedula;
-        $this->parentesco = $beneficiarios->parentesco;
- 
-
-
     }
     /*
      Método para editar solicitudes que estan registradas solamente (ya que el metodo de modificar es para afectar aquellas que fueron rechazads 
