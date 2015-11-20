@@ -13,7 +13,7 @@ class Parte extends ActiveRecord {
             $res = $this->find('columns: nombre, caracteristica, id', "nombre like '%{$partes}%' or caracteristica like '%{$partes}%'");
             if ($res) {
                 foreach ($res as $partes) {
-                    $partess[] = array('id'=>$partes->id,'value'=>$partes->nombre." ".$partes->caracteristica,'caracteristica'=>$partes->caracteristica);
+                    $partess[] = array('id'=>$partes->id,'value'=>$partes->nombre." ".$partes->caracteristica,'caracteristicas'=>$partes->caracteristica);
                 }
                 return $partess;
             }

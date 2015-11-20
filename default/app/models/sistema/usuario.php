@@ -380,8 +380,22 @@ class Usuario extends ActiveRecord {
         $join.= 'LEFT JOIN sucursal ON sucursal.id = usuario.sucursal_id ';
         $condicion = "usuario.id = $usuario";        
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
-    } 
-       
-    
+    }
+
+    /** Encargado de pasar por busqueas asincronas los responsables tecnicos disponibles */
+
+    public function obtener_usuarios($busqueda) {
+        if ($busqueda != '') {
+            $busqueda = stripcslashes($busqueda);
+            $busqueda = strtoupper($busqueda);
+            $res = $this->find('columns: nombres, apellidos, id', " ( nombres like '%{$busqueda}%' or apellidos like '%{$busqueda}%' ) and perfil_id='9' ");
+            if ($res) {
+                foreach ($res as $busqueda) {
+                    $busquedas[] = array('id'=>$busqueda->id,'value'=>$busqueda->nombres." ".$busqueda->apellidos);
+                }
+                return $busquedas;
+            }
+        }
+        return array('no hubo coincidencias');
+    }
 }
-?>

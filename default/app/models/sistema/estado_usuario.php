@@ -109,5 +109,4 @@ class EstadoUsuario extends ActiveRecord {
         }
         
     }
-      
 }

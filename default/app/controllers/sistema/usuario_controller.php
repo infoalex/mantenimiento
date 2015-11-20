@@ -208,6 +208,19 @@ class UsuarioController extends BackendController {
         sleep(1);//Por la velocidad del script no permite que se actualize el archivo
         View::json($data);
     }
+
+    /** Para el autocmpletado por las busquedas en asignacion de responsables */
+    public function autocomplete() {
+        View::template(NULL);
+        View::select(NULL);
+        if (Input::isAjax()) { //solo devolvemos los estados si se accede desde ajax
+            $busqueda = Input::post('busqueda');
+            $usuarios = Load::model('sistema/usuario')->obtener_usuarios($busqueda);
+            die(json_encode($usuarios)); // solo devolvemos los datos, sin template ni vista
+            //json_encode nos devolverá el array en formato json ["aragua","carabobo","..."]
+        }
+    }
+
     
 }
 

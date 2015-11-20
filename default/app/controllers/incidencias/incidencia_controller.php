@@ -207,10 +207,11 @@ class IncidenciaController extends BackendController {
             ActiveRecord::beginTrans();
 
             $detalle_incidencia->responsable_reparacion =  $array['responsable_reparacion'];
-            $detalle_incidencia->perdida_tn =  $array['perdida_tn'];
+            $detalle_incidencia->observacion =  $array['observacion'];
+            /* $detalle_incidencia->perdida_tn =  $array['perdida_tn'];
             $detalle_incidencia->persistencia_falla=  $array['persistencia_falla'];
             $detalle_incidencia->observacion =  $array['observacion'];
-            $detalle_incidencia->accion_correctiva  = $array['accion_correctiva'];
+            $detalle_incidencia->accion_correctiva  = $array['accion_correctiva'];*/
             $detalle_incidencia->estatus = 'P'; //procesado = P
 
             $result = $detalle_incidencia->update();
