@@ -210,7 +210,6 @@ class IncidenciaController extends BackendController {
             $detalle_incidencia->observacion =  $array['observacion'];
             /* $detalle_incidencia->perdida_tn =  $array['perdida_tn'];
             $detalle_incidencia->persistencia_falla=  $array['persistencia_falla'];
-            $detalle_incidencia->observacion =  $array['observacion'];
             $detalle_incidencia->accion_correctiva  = $array['accion_correctiva'];*/
             $detalle_incidencia->estatus = 'P'; //procesado = P
 
@@ -241,6 +240,58 @@ class IncidenciaController extends BackendController {
         }
         $this->page_title = 'Procesar solicitud';  
    }
+
+
+    /**
+     *Metodo para asignar un tecnico a la incidencia ( solo cambiar de estatus y agregar el tecnico en cuestion )
+     */
+    public function asignar($key){
+        if(!$id = DwSecurity::isValidKey($key, 'prs_incidencia', 'int')) {
+            return DwRedirect::toAction('listar');
+        }
+        $incidencias = new Incidencia();
+        $detalle_incidencia = $incidencias->getBasicoIncidencia($id);
+
+        if(Input::hasPost('incidencia'))
+        {
+            $array = Input::post('incidencia');
+            ActiveRecord::beginTrans();
+
+            $detalle_incidencia->responsable_reparacion =  $array['responsable_reparacion'];
+            $detalle_incidencia->responsable_id  =  $array['responsable_id'];
+            $detalle_incidencia->observacion =  $array['observacion'];
+            /* $detalle_incidencia->perdida_tn =  $array['perdida_tn'];
+            $detalle_incidencia->persistencia_falla=  $array['persistencia_falla'];
+            $detalle_incidencia->accion_correctiva  = $array['accion_correctiva'];*/
+            $detalle_incidencia->estatus = 'A'; // Asignado = A
+
+            $result = $detalle_incidencia->update();
+            $objIn = $incidencias->getBasicoIncidencia($id);
+
+            if($result) {
+                //tipo mantenimiento 1 preventivo , 2 correctivo
+                $data = array('tipo_mantenimiento'=>'2', 'sucursal_id'=>$objIn->sucursal_id, 'sector_id'=>$objIn->sector_id, 'equipo_id'=>$objIn->equipo_id, 'falla_id'=>$objIn->falla_id, 'trabajo_solicitado'=>$objIn->analisis_falla,'responsable_reparacion'=>$objIn->responsable_reparacion, 'estatus'=>'2');
+
+                if($man = Mantenimiento::setMantenimiento('create',$data)) {
+                    ActiveRecord::commitTrans();
+                    DwMessage::valid('La solicitud se ha creado correctamente!');
+                    return DwRedirect::toAction('listar');
+                }
+                else {
+                    ActiveRecord::rollbackTrans();
+                    DwMessage::error("Problemas guardando el mantenimiento");
+                }
+            }
+            else
+            {
+                ActiveRecord::rollbackTrans();
+                DwMessage::error("Problemas actualizando la incidencia");
+            }
+
+        }
+        $this->page_title = 'Asignando solicitud';
+    }
+
 
     /** Metodo para rechazar con motivo una solicitud **/
     public function rechazar($key) {        
