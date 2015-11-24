@@ -32,17 +32,23 @@ class IncidenciaController extends BackendController {
        // $empresa = Session::get('empresa', 'config');
         $incidencias = new Incidencia();
         if(Input::hasPost('incidencia')) {
-            if(Incidencia::setIncidencia('create', Input::post('incidencia'))) {
+            $inci = Incidencia::setIncidencia('create', Input::post('incidencia'));
+            if($inci) {
                 DwMessage::valid('La solicitud se ha registrado correctamente!');
                 return DwRedirect::toAction('listar');
             }
-            else
-            {
+            else {
                 DwMessage::error('Errores procesando solicitud!');
             }           
         } 
-       // $this->personas = Load::model('beneficiarios/titular')->getTitularesToJson();
         $this->page_title = 'Agregar Incidencia';
+    }
+    /**
+     * agregar las piezas a usar en el mantenimiento
+     */
+    public function agregar_piezas($id) {
+
+
     }
     
     /**
@@ -238,7 +244,7 @@ class IncidenciaController extends BackendController {
             }
 
         }
-        $this->page_title = 'Procesar solicitud';  
+        $this->page_title = 'Procesar solicitud ( Registro de los materiales ) ';
    }
 
 

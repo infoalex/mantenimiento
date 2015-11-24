@@ -21,6 +21,27 @@ class Parte extends ActiveRecord {
         return array('no hubo coincidencias');
     }
     /**
+     *  Obtener las piezas de un equipo en especifico
+     */
+
+    public function obtener_partes_incidencia($partes) {
+        if ($partes != '') {
+            $partes = stripcslashes($partes);
+            $partes = strtoupper($partes);
+            $res = $this->find('columns: nombre, caracteristica, id', "nombre like '%{$partes}%' or caracteristica like '%{$partes}%'");
+            if ($res) {
+                foreach ($res as $partes) {
+                    $partess[] = array('id'=>$partes->id,'value'=>$partes->nombre." ".$partes->caracteristica,'caracteristicas'=>$partes->caracteristica);
+                }
+                return $partess;
+            }
+        }
+        return array('no hubo coincidencias');
+    }
+
+
+
+    /**
      * Método para ver la información de una sucursal
      * @param int|string $id
      * @return Sucursal

@@ -97,7 +97,15 @@ $(document).ready(function() {
 
   $("#paid").blur(update_balance);
   $("#addrow").click(function(){
-    var aux = '<tr class="item-row"><td class="description"><div class="delete-wpr"><input type="text" name="descripcion[]" class="input-xlarge mask-alpha"> <a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td><input type="text" name="cantidad[]" class="qty input-small mask-num"></td><td><input type="text" name="monto[]" class="cost input-small mask-num"></td><td> <input type="checkbox" name="exento[]" ></td><td><span class="price"></span></td></tr>'
+    var aux = '<tr class="item-row">' +
+            '<td class="description">' +
+          '<div class="delete-wpr">' +
+            '<input type="text" name="nombre[]" class="input-medium mask-alpha">' +
+            ' <a class="delete" href="javascript:;" title="Remove row">X</a>' +
+          '</div>' +
+        '</td>' +
+        '<td> <input type="text" name="descripcion[]" class="qty input-medium mask-num"></td>'+
+        '<td> <input type="text" name="cantidad[]" class="qty input-medium mask-num"></td>'
     $(".item-row:last").after(aux);
     if ($(".delete").length > 0) $(".delete").show();
     bind();

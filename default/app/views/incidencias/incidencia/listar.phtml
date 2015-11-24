@@ -100,7 +100,7 @@
                                 echo DwHtml::buttonTable('Asignar Incidencia', "incidencias/incidencia/asignar/$key_prs/", null, 'success', 'user');
                             }
                             elseif($incidencia->estatus=="A") {
-                                echo DwHtml::buttonTable('Aprobar Incidencia', "incidencias/incidencia/asignar/$key_prs/", null, 'success', 'check');
+                                echo DwHtml::buttonTable('Aprobar Incidencia', "incidencias/incidencia/procesar/$key_prs/", null, 'success', 'check');
                                 echo DwHtml::buttonTable('Vista previa ', "incidencias/incidencia/print_parcial/$key_prs/", null, 'info', 'print');
                             }
                             elseif($incidencia->estatus=="P") {

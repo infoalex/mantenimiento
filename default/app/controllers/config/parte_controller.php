@@ -101,7 +101,20 @@ class ParteController extends BackendController {
         $this->fabricante = $fabricante;
         $this->page_title = 'Actualizar fabricante';        
     }
-    
+
+
+    //accion que busca en las fabricantes y devuelve el json con los datos
+    public function autocomplete_piezas() {
+        View::template(NULL);
+        View::select(NULL);
+        if (Input::isAjax()) { //solo devolvemos los estados si se accede desde ajax
+            $busqueda = Input::post('busqueda');
+            $partes = Load::model('config/parte')->obtener_partes_incidencia($busqueda);
+            die(json_encode($partes)); // solo devolvemos los datos, sin template ni vista
+            //json_encode nos devolverá el array en formato json ["aragua","carabobo","..."]
+        }
+    }
+
     /**
      * Método para eliminar
      */
@@ -109,7 +122,7 @@ class ParteController extends BackendController {
         if(!$id = DwSecurity::isValidKey($key, 'del_fabricante', 'int')) {
             return DwRedirect::toAction('listar');
         }        
-        
+
         $fabricante = new Parte();
         if(!$fabricante->getInformacionParte($id)) {            
             DwMessage::get('id_no_found');
