@@ -1,4 +1,4 @@
--
+--
 -- PostgreSQL database dump
 --
 
@@ -8,24 +8,6 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
 
 --
 -- Name: audit_log; Type: SCHEMA; Schema: -; Owner: arrozalba
@@ -44,31 +26,17 @@ COMMENT ON SCHEMA audit_log IS 'Esquema de Auditoria';
 
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: hstore; Type: EXTENSION; Schema: -; Owner:
---
-
-CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
-
-
---
--- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner:
---
-
-COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
 SET search_path = public, pg_catalog;
@@ -147,7 +115,7 @@ $$;
 ALTER FUNCTION public.logger() OWNER TO arrozalba;
 
 --
--- Name: update_timestamp(); Type: FUNCTION; Schema: smsd; Owner: arrozalba
+-- Name: update_timestamp(); Type: FUNCTION; Schema: public; Owner: arrozalba
 --
 
 CREATE FUNCTION update_timestamp() RETURNS trigger
@@ -160,6 +128,8 @@ CREATE FUNCTION update_timestamp() RETURNS trigger
 $$;
 
 
+ALTER FUNCTION public.update_timestamp() OWNER TO arrozalba;
+
 SET search_path = audit_log, pg_catalog;
 
 SET default_tablespace = '';
@@ -167,7 +137,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: audit_log; Type: TABLE; Schema: audit_log; Owner: arrozalba; Tablespace:
+-- Name: audit_log; Type: TABLE; Schema: audit_log; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE audit_log (
@@ -210,9 +180,8 @@ ALTER SEQUENCE audit_log_log_id_seq OWNED BY audit_log.log_id;
 
 SET search_path = public, pg_catalog;
 
-
 --
--- Name: acceso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: acceso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE acceso (
@@ -316,7 +285,7 @@ ALTER SEQUENCE acceso_id_seq OWNED BY acceso.id;
 
 
 --
--- Name: backup; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: backup; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE backup (
@@ -389,7 +358,7 @@ ALTER SEQUENCE backup_id_seq OWNED BY backup.id;
 
 
 --
--- Name: cargo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: cargo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE cargo (
@@ -468,7 +437,7 @@ ALTER SEQUENCE cargo_id_seq OWNED BY cargo.id;
 
 
 --
--- Name: configuracion; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: configuracion; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE configuracion (
@@ -571,7 +540,7 @@ ALTER SEQUENCE configuracion_id_seq OWNED BY configuracion.id;
 
 
 --
--- Name: departamento; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: departamento; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE departamento (
@@ -651,7 +620,43 @@ ALTER SEQUENCE departamento_id_seq OWNED BY departamento.id;
 
 
 --
--- Name: empresa; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: detalle_requisicion; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE detalle_requisicion (
+    id integer NOT NULL,
+    requisicion_id integer,
+    nombre character varying,
+    descripcion character varying(200),
+    cantidad integer
+);
+
+
+ALTER TABLE public.detalle_requisicion OWNER TO arrozalba;
+
+--
+-- Name: detalle_requisicion_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE detalle_requisicion_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.detalle_requisicion_id_seq OWNER TO arrozalba;
+
+--
+-- Name: detalle_requisicion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE detalle_requisicion_id_seq OWNED BY detalle_requisicion.id;
+
+
+--
+-- Name: empresa; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE empresa (
@@ -812,7 +817,7 @@ ALTER SEQUENCE empresa_id_seq OWNED BY empresa.id;
 
 
 --
--- Name: equipo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: equipo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE equipo (
@@ -835,7 +840,7 @@ CREATE TABLE equipo (
 ALTER TABLE public.equipo OWNER TO arrozalba;
 
 --
--- Name: equipo_herramienta; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: equipo_herramienta; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE equipo_herramienta (
@@ -890,7 +895,7 @@ ALTER SEQUENCE equipo_id_seq OWNED BY equipo.id;
 
 
 --
--- Name: equipo_parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: equipo_parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE equipo_parte (
@@ -933,7 +938,7 @@ ALTER SEQUENCE equipo_parte_id_seq OWNED BY equipo_parte.id;
 
 
 --
--- Name: estado; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: estado; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE estado (
@@ -996,7 +1001,7 @@ ALTER SEQUENCE estado_id_seq OWNED BY estado.id;
 
 
 --
--- Name: estado_usuario; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: estado_usuario; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE estado_usuario (
@@ -1075,7 +1080,7 @@ ALTER SEQUENCE estado_usuario_id_seq OWNED BY estado_usuario.id;
 
 
 --
--- Name: fabricante; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: fabricante; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE fabricante (
@@ -1109,7 +1114,7 @@ ALTER SEQUENCE fabricante_id_seq OWNED BY fabricante.id;
 
 
 --
--- Name: falla; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: falla; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE falla (
@@ -1157,7 +1162,7 @@ CREATE SEQUENCE incidencia_id_seq
 ALTER TABLE public.incidencia_id_seq OWNER TO arrozalba;
 
 --
--- Name: incidencia; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: incidencia; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE incidencia (
@@ -1172,22 +1177,23 @@ CREATE TABLE incidencia (
     parada_sector boolean,
     parada_planta boolean,
     motivo_parada_id integer,
-    analisis_falla text NOT NULL,
+    analisis_falla text,
     accion_correctiva text,
-    fecha_reparacion timestamp without time zone NOT NULL,
+    fecha_reparacion timestamp without time zone,
     responsable_reparacion character varying(150),
     perdida_tn double precision,
     persistencia_falla boolean,
     observaciones text,
     sucursal_id integer,
-    estatus character varying(2)
+    estatus character varying(2) DEFAULT 'R'::character varying,
+    responsable_id integer
 );
 
 
 ALTER TABLE public.incidencia OWNER TO arrozalba;
 
 --
--- Name: mano_obra; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mano_obra; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE mano_obra (
@@ -1235,7 +1241,7 @@ CREATE SEQUENCE mantenimiento_id_seq
 ALTER TABLE public.mantenimiento_id_seq OWNER TO arrozalba;
 
 --
--- Name: mantenimiento; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE mantenimiento (
@@ -1260,7 +1266,7 @@ CREATE TABLE mantenimiento (
 ALTER TABLE public.mantenimiento OWNER TO arrozalba;
 
 --
--- Name: mantenimiento_equipo_herramienta; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_equipo_herramienta; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE mantenimiento_equipo_herramienta (
@@ -1303,7 +1309,7 @@ ALTER SEQUENCE mantenimiento_equipo_herramienta_id_seq OWNED BY mantenimiento_eq
 
 
 --
--- Name: mantenimiento_mano_obra; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_mano_obra; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE mantenimiento_mano_obra (
@@ -1346,7 +1352,7 @@ ALTER SEQUENCE mantenimiento_mano_obra_id_seq OWNED BY mantenimiento_mano_obra.i
 
 
 --
--- Name: mantenimiento_material_recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_material_recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE mantenimiento_material_recurso (
@@ -1389,7 +1395,7 @@ ALTER SEQUENCE mantenimiento_material_recurso_id_seq OWNED BY mantenimiento_mate
 
 
 --
--- Name: mantenimiento_tipo_trabajo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_tipo_trabajo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE mantenimiento_tipo_trabajo (
@@ -1432,7 +1438,7 @@ ALTER SEQUENCE mantenimiento_tipo_trabajo_id_seq OWNED BY mantenimiento_tipo_tra
 
 
 --
--- Name: marca; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: marca; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE marca (
@@ -1466,7 +1472,7 @@ ALTER SEQUENCE marca_id_seq OWNED BY marca.id;
 
 
 --
--- Name: material_recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: material_recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE material_recurso (
@@ -1500,7 +1506,7 @@ ALTER SEQUENCE material_recurso_id_seq OWNED BY material_recurso.id;
 
 
 --
--- Name: menu; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: menu; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE menu (
@@ -1627,7 +1633,7 @@ ALTER SEQUENCE menu_id_seq OWNED BY menu.id;
 
 
 --
--- Name: modelo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: modelo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE modelo (
@@ -1662,7 +1668,7 @@ ALTER SEQUENCE modelo_id_seq OWNED BY modelo.id;
 
 
 --
--- Name: motivo_parada; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: motivo_parada; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE motivo_parada (
@@ -1696,7 +1702,7 @@ ALTER SEQUENCE motivo_parada_id_seq OWNED BY motivo_parada.id;
 
 
 --
--- Name: municipio; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: municipio; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE municipio (
@@ -1759,7 +1765,7 @@ ALTER SEQUENCE municipio_id_seq OWNED BY municipio.id;
 
 
 --
--- Name: pais; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: pais; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE pais (
@@ -1814,7 +1820,7 @@ ALTER SEQUENCE pais_id_seq OWNED BY pais.id;
 
 
 --
--- Name: parroquia; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: parroquia; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE parroquia (
@@ -1869,7 +1875,7 @@ ALTER SEQUENCE parroquia_id_seq OWNED BY parroquia.id;
 
 
 --
--- Name: parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: parte; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE parte (
@@ -1927,7 +1933,7 @@ COMMENT ON COLUMN parte.observacion IS 'Observacion de la parte';
 
 
 --
--- Name: parte_categoria; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: parte_categoria; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE parte_categoria (
@@ -2003,7 +2009,7 @@ ALTER SEQUENCE parte_id_seq OWNED BY parte.id;
 
 
 --
--- Name: perfil; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: perfil; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE perfil (
@@ -2090,7 +2096,7 @@ ALTER SEQUENCE perfil_id_seq OWNED BY perfil.id;
 
 
 --
--- Name: profesion; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: profesion; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE profesion (
@@ -2169,7 +2175,7 @@ ALTER SEQUENCE profesion_id_seq OWNED BY profesion.id;
 
 
 --
--- Name: proveedor; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: proveedor; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE proveedor (
@@ -2206,7 +2212,7 @@ ALTER SEQUENCE proveedor_id_seq OWNED BY proveedor.id;
 
 
 --
--- Name: recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: recurso; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE recurso (
@@ -2317,7 +2323,7 @@ ALTER SEQUENCE recurso_id_seq OWNED BY recurso.id;
 
 
 --
--- Name: recurso_perfil; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: recurso_perfil; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE recurso_perfil (
@@ -2396,7 +2402,45 @@ ALTER SEQUENCE recurso_perfil_id_seq OWNED BY recurso_perfil.id;
 
 
 --
--- Name: sector; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: requisicio; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+CREATE TABLE requisicio (
+    id integer NOT NULL,
+    fecha_elaboracio timestamp without time zone,
+    incidecia_id integer,
+    prioridad character varying(1),
+    trabajo_requerido character varying(250),
+    tipo character varying(1),
+    unidad_solicitante character varying(50)
+);
+
+
+ALTER TABLE public.requisicio OWNER TO arrozalba;
+
+--
+-- Name: requisicio_id_seq; Type: SEQUENCE; Schema: public; Owner: arrozalba
+--
+
+CREATE SEQUENCE requisicio_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.requisicio_id_seq OWNER TO arrozalba;
+
+--
+-- Name: requisicio_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: arrozalba
+--
+
+ALTER SEQUENCE requisicio_id_seq OWNED BY requisicio.id;
+
+
+--
+-- Name: sector; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE sector (
@@ -2483,7 +2527,7 @@ ALTER SEQUENCE sector_id_seq OWNED BY sector.id;
 
 
 --
--- Name: sucursal; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: sucursal; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE sucursal (
@@ -2634,7 +2678,7 @@ ALTER SEQUENCE sucursal_id_seq OWNED BY sucursal.id;
 
 
 --
--- Name: tipo_trabajo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: tipo_trabajo; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE tipo_trabajo (
@@ -2668,7 +2712,7 @@ ALTER SEQUENCE tipo_trabajo_id_seq OWNED BY tipo_trabajo.id;
 
 
 --
--- Name: usuario; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE usuario (
@@ -2773,7 +2817,7 @@ COMMENT ON COLUMN usuario.datagrid IS 'Datos por página en los datagrid';
 
 
 --
--- Name: usuario_clave; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_clave; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE usuario_clave (
@@ -2881,7 +2925,7 @@ ALTER SEQUENCE usuario_id_seq OWNED BY usuario.id;
 
 
 --
--- Name: usuario_pregunta; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_pregunta; Type: TABLE; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE TABLE usuario_pregunta (
@@ -2985,6 +3029,13 @@ ALTER TABLE ONLY cargo ALTER COLUMN id SET DEFAULT nextval('cargo_id_seq'::regcl
 --
 
 ALTER TABLE ONLY departamento ALTER COLUMN id SET DEFAULT nextval('departamento_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY detalle_requisicion ALTER COLUMN id SET DEFAULT nextval('detalle_requisicion_id_seq'::regclass);
 
 
 --
@@ -3187,6 +3238,13 @@ ALTER TABLE ONLY recurso_perfil ALTER COLUMN id SET DEFAULT nextval('recurso_per
 -- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
 --
 
+ALTER TABLE ONLY requisicio ALTER COLUMN id SET DEFAULT nextval('requisicio_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: arrozalba
+--
+
 ALTER TABLE ONLY sector ALTER COLUMN id SET DEFAULT nextval('sector_id_seq'::regclass);
 
 
@@ -3217,6 +3275,25 @@ ALTER TABLE ONLY usuario ALTER COLUMN id SET DEFAULT nextval('usuario_id_seq'::r
 
 ALTER TABLE ONLY usuario_clave ALTER COLUMN id SET DEFAULT nextval('usuario_clave_id_seq'::regclass);
 
+
+SET search_path = audit_log, pg_catalog;
+
+--
+-- Data for Name: audit_log; Type: TABLE DATA; Schema: audit_log; Owner: arrozalba
+--
+
+COPY audit_log (log_id, log_relid, log_session_user, log_when, log_client_addr, log_operation, log_query, log_table, log_columns, log_old_values, log_new_values) FROM stdin;
+\.
+
+
+--
+-- Name: audit_log_log_id_seq; Type: SEQUENCE SET; Schema: audit_log; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('audit_log_log_id_seq', 1, false);
+
+
+SET search_path = public, pg_catalog;
 
 --
 -- Data for Name: acceso; Type: TABLE DATA; Schema: public; Owner: arrozalba
@@ -3294,6 +3371,15 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 116	1	2015-10-25 09:12:09.768579-04:30	2015-10-25 09:12:09.768579-04:30	1	\N	\N	\N	\N	127.0.0.1
 117	1	2015-10-25 14:27:05.449657-04:30	2015-10-25 14:27:05.449657-04:30	1	\N	\N	\N	\N	127.0.0.1
 118	1	2015-11-03 13:56:26.721686-04:30	2015-11-03 13:56:26.721686-04:30	1	\N	\N	\N	\N	127.0.0.1
+119	1	2015-11-19 21:11:55.955916-04:30	2015-11-19 21:11:55.955916-04:30	1	\N	\N	\N	\N	127.0.0.1
+120	1	2015-11-21 20:55:21.00364-04:30	2015-11-21 20:55:21.00364-04:30	1	\N	\N	\N	\N	127.0.0.1
+121	1	2015-11-21 22:18:21.23698-04:30	2015-11-21 22:18:21.23698-04:30	1	\N	\N	\N	\N	192.168.0.104
+122	1	2015-11-21 22:18:23.056984-04:30	2015-11-21 22:18:23.056984-04:30	1	\N	\N	\N	\N	192.168.0.107
+123	1	2015-11-21 22:35:09.381106-04:30	2015-11-21 22:35:09.381106-04:30	1	\N	\N	\N	\N	192.168.0.105
+124	1	2015-11-21 22:43:34.210909-04:30	2015-11-21 22:43:34.210909-04:30	1	\N	\N	\N	\N	192.168.0.105
+125	1	2015-11-21 23:16:17.523701-04:30	2015-11-21 23:16:17.523701-04:30	1	\N	\N	\N	\N	192.168.0.107
+126	1	2015-11-22 00:00:07.795478-04:30	2015-11-22 00:00:07.795478-04:30	1	\N	\N	\N	\N	192.168.0.104
+127	1	2015-11-22 08:02:14.143807-04:30	2015-11-22 08:02:14.143807-04:30	1	\N	\N	\N	\N	127.0.0.1
 \.
 
 
@@ -3301,7 +3387,7 @@ COPY acceso (id, usuario_id, fecha_registro, fecha_modificado, tipo_acceso, nave
 -- Name: acceso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('acceso_id_seq', 118, true);
+SELECT pg_catalog.setval('acceso_id_seq', 127, true);
 
 
 --
@@ -3324,26 +3410,6 @@ SELECT pg_catalog.setval('backup_id_seq', 1, false);
 --
 
 COPY cargo (id, usuario_id, fecha_registro, fecha_modificado, nombre, observacion) FROM stdin;
-1	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	SIN CARGO
-2	\N	2014-04-04 18:09:20.016389-04:30	2014-04-04 18:09:20.016389-04:30	PRESIDENTE	 I
-3	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	VICE-PRESIDENTE
-4	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE GENERAL
-5	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE PLANIFICACION Y PRESUPUESTO
-6	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE ADMINISTRACION Y FINANZAS
-7	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE ASISTENCIA TECNICA Y DESARROLLO TECNOLOGICO
-8	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE ATENCION AL CIUDADANO
-9	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE COMERCIALIZACION
-10	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE PRODUCCION AGRICOLA
-11	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE RECURSOS HUMANOS
-12	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	GERENTE DE PRODUCCION INDUSTRIAL
-13	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	AUDITOR INTERNO
-14	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	CONSULTOR JURIDICO
-15	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	COORDINADOR
-16	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	ESPECIALISTA INTEGRAL
-17	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	ESPECIALISTA I
-18	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	TECNICO II
-19	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	TECNICO I
-20	\N	2014-04-03 10:41:19.049463-04:30	2014-04-03 10:41:19.049463-04:30	OBRERO
 \.
 
 
@@ -3460,6 +3526,21 @@ COPY departamento (id, usuario_id, fecha_registro, fecha_modificado, nombre, obs
 --
 
 SELECT pg_catalog.setval('departamento_id_seq', 78, true);
+
+
+--
+-- Data for Name: detalle_requisicion; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY detalle_requisicion (id, requisicion_id, nombre, descripcion, cantidad) FROM stdin;
+\.
+
+
+--
+-- Name: detalle_requisicion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('detalle_requisicion_id_seq', 1, false);
 
 
 --
@@ -3632,6 +3713,7 @@ COPY estado_usuario (id, usuario_id, fecha_registro, fecha_modificado, estado_us
 122	7	2015-07-10 11:01:17.376406-04:30	2015-07-10 11:01:17.376406-04:30	1	Activado por registro inicial
 123	8	2015-07-10 12:50:12.499781-04:30	2015-07-10 12:50:12.499781-04:30	1	Activado por registro inicial
 124	9	2015-07-10 12:53:28.264245-04:30	2015-07-10 12:53:28.264245-04:30	1	Activado por registro inicial
+125	10	2015-11-19 23:22:41.179125-04:30	2015-11-19 23:22:41.179125-04:30	1	Activado por registro inicial
 \.
 
 
@@ -3639,7 +3721,7 @@ COPY estado_usuario (id, usuario_id, fecha_registro, fecha_modificado, estado_us
 -- Name: estado_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('estado_usuario_id_seq', 124, true);
+SELECT pg_catalog.setval('estado_usuario_id_seq', 125, true);
 
 
 --
@@ -3680,8 +3762,10 @@ SELECT pg_catalog.setval('falla_id_seq', 3, true);
 -- Data for Name: incidencia; Type: TABLE DATA; Schema: public; Owner: arrozalba
 --
 
-COPY incidencia (id, fecha, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, motivo_parada_id, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones, sucursal_id, estatus) FROM stdin;
-3	2015-10-25 00:00:00	14:42:44	\N	NOCTURNO	2	1	1	f	t	1	ASDFASDFASD	se procesdera a  limpiar las cosas	2015-10-13 00:00:00	richar dorta	10	f	\N	9	P
+COPY incidencia (id, fecha, hora_inicio, hora_fin, turno, falla_id, equipo_id, sector_id, parada_sector, parada_planta, motivo_parada_id, analisis_falla, accion_correctiva, fecha_reparacion, responsable_reparacion, perdida_tn, persistencia_falla, observaciones, sucursal_id, estatus, responsable_id) FROM stdin;
+6	2015-11-20 00:00:00	00:57:46	\N	DIURNO	3	1	1	f	f	2	\N	\N	\N	SIMON BOLIVAR	\N	\N	\N	6	A	10
+7	2015-11-21 00:00:00	22:17:42	\N	DIURNO	2	1	1	t	t	1	SE DAñO TODOOOOO	\N	\N	\N	\N	\N	\N	3	R	\N
+8	2015-11-21 00:00:00	22:33:39	\N	DIURNO	1	1	1	t	t	1	PRUEBA CON EDGAR	\N	\N	\N	\N	\N	\N	3	R	\N
 \.
 
 
@@ -3689,7 +3773,7 @@ COPY incidencia (id, fecha, hora_inicio, hora_fin, turno, falla_id, equipo_id, s
 -- Name: incidencia_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('incidencia_id_seq', 3, true);
+SELECT pg_catalog.setval('incidencia_id_seq', 8, true);
 
 
 --
@@ -3713,6 +3797,7 @@ SELECT pg_catalog.setval('mano_obra_id_seq', 1, false);
 
 COPY mantenimiento (id, orden, fecha, tipo_mantenimiento, fecha_inicio, fecha_fin, sucursal_id, sector_id, equipo_id, falla_id, trabajo_solicitado, trabajo_ejecutado, responsable_reparacion, observaciones, estatus) FROM stdin;
 1	\N	2015-10-25 00:00:00	2	\N	\N	9	1	1	2	ASDFASDFASD	\N	richar dorta	\N	2
+2	\N	2015-11-20 00:00:00	2	\N	\N	6	1	1	3	\N	\N	SIMON BOLIVAR	\N	2
 \.
 
 
@@ -3721,6 +3806,7 @@ COPY mantenimiento (id, orden, fecha, tipo_mantenimiento, fecha_inicio, fecha_fi
 --
 
 COPY mantenimiento_equipo_herramienta (id, mantenimiento_id, equipo_herramienta_id, cantidad, caracteristicas) FROM stdin;
+1	1	\N	34	dfgsdf
 \.
 
 
@@ -3728,14 +3814,14 @@ COPY mantenimiento_equipo_herramienta (id, mantenimiento_id, equipo_herramienta_
 -- Name: mantenimiento_equipo_herramienta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('mantenimiento_equipo_herramienta_id_seq', 1, false);
+SELECT pg_catalog.setval('mantenimiento_equipo_herramienta_id_seq', 1, true);
 
 
 --
 -- Name: mantenimiento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('mantenimiento_id_seq', 1, true);
+SELECT pg_catalog.setval('mantenimiento_id_seq', 2, true);
 
 
 --
@@ -3789,7 +3875,8 @@ SELECT pg_catalog.setval('mantenimiento_tipo_trabajo_id_seq', 1, false);
 
 COPY marca (id, nombre, observacion) FROM stdin;
 1	3m	\N
-2	Trupper	trupper
+2	TRUPPER	\N
+3	CATERPILLAR	\N
 \.
 
 
@@ -3797,7 +3884,7 @@ COPY marca (id, nombre, observacion) FROM stdin;
 -- Name: marca_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('marca_id_seq', 2, true);
+SELECT pg_catalog.setval('marca_id_seq', 3, true);
 
 
 --
@@ -5620,6 +5707,19 @@ SELECT pg_catalog.setval('parroquia_id_seq', 1087, true);
 --
 
 COPY parte (id, usuario_id, nombre, caracteristica, parte_categoria_id, observacion) FROM stdin;
+1	\N	BRACKER	VOL 220 / 440	1	EVERIGN FIN
+2	\N	POLEA	TIPO 2RAN E 20PUNTO5 CM I 2 CM	2	\N
+3	\N	POLEA	TIPO 2RAN E 28CM  I 4CM	2	\N
+4	\N	CORREA	TIPO B NUMERO 106	4	\N
+5	\N	CORREA	TIPO A    NUMERO 95	4	\N
+6	\N	ENGRANE	D 20  P 50  I 2PUNTO5	4	\N
+7	\N	ENGRANE	D 17  P 50 I 2PUNTO5	4	\N
+8	\N	ENGRANE	D 35  P 50 I 2PUNTO5	4	\N
+9	\N	ENGRANE	D 41  P 50 I 3	4	\N
+10	\N	ENGRANE	D 60  P 50 I 3PUNTO8	4	\N
+11	\N	CADENA	TIPO P50	4	\N
+12	\N	CADENA	TIPO P60	4	\N
+13	\N	ENGRANE	D 62  P  60  I 3PUNTO8	4	\N
 \.
 
 
@@ -5629,6 +5729,9 @@ COPY parte (id, usuario_id, nombre, caracteristica, parte_categoria_id, observac
 
 COPY parte_categoria (id, nombre, observacion) FROM stdin;
 1	SISTEMA ELECTRICO	NINGUNA POR AHORA
+2	SISTEMA MECANICO	\N
+3	SISTEMA HIDRAULICO	\N
+4	SISTEMA TRANSMISION	\N
 \.
 
 
@@ -5636,14 +5739,14 @@ COPY parte_categoria (id, nombre, observacion) FROM stdin;
 -- Name: parte_categoria_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('parte_categoria_id_seq', 1, true);
+SELECT pg_catalog.setval('parte_categoria_id_seq', 4, true);
 
 
 --
 -- Name: parte_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('parte_id_seq', 1, false);
+SELECT pg_catalog.setval('parte_id_seq', 13, true);
 
 
 --
@@ -5659,6 +5762,7 @@ COPY perfil (id, usuario_id, fecha_registro, fecha_modificado, perfil, estado, p
 8	\N	2014-08-20 14:31:07.601335-04:30	2014-08-20 14:31:07.601335-04:30	Minimo	2	default
 4	\N	2014-07-31 14:53:16.920671-04:30	2014-07-31 14:53:16.920671-04:30	Presidente	2	default
 6	\N	2014-07-31 14:54:17.855932-04:30	2014-07-31 14:54:17.855932-04:30	Enlace	2	default
+9	\N	2015-11-19 23:06:42.289954-04:30	2015-11-19 23:06:42.289954-04:30	Tecnico	1	default
 \.
 
 
@@ -5666,7 +5770,7 @@ COPY perfil (id, usuario_id, fecha_registro, fecha_modificado, perfil, estado, p
 -- Name: perfil_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('perfil_id_seq', 8, true);
+SELECT pg_catalog.setval('perfil_id_seq', 9, true);
 
 
 --
@@ -5674,191 +5778,6 @@ SELECT pg_catalog.setval('perfil_id_seq', 8, true);
 --
 
 COPY profesion (id, usuario_id, fecha_registro, fecha_modificado, nombre, observacion) FROM stdin;
-1	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	SIN PROFESION
-2	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	EDUCACION BASICA
-3	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	BACHILLER EN CIENCIA
-4	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	BACHILLER EN HUMANIDADES
-5	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	BACHILLER INTEGRAL
-6	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO EN TELEFONIA
-7	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO QUIMICO
-8	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO AZUCARERO
-9	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO MERCANTIL
-10	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN COMERCIO
-11	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO AGROPECUARIO MENCION CIENCIAS AGRICOLAS
-12	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO INDUSTRIAL MENCION TEC.DE ALIMENTOS
-13	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MECANICA INDUSTRIAL
-14	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN RECURSOS HUMANOS
-15	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U.  ADMON INDUSTRIAL
-16	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ORGANIZACION EMPRESARIAL
-17	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN MERCADOTECNIA
-18	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN ORGANIZACION Y METODOS
-19	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN ELECTRICIDAD AGROINDUSTRIAL
-20	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN CONTADURIA PUBLICA
-21	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN BANCA Y FINANZAS
-22	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. INFORMATICA
-23	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN AGROTECNIA
-24	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. HIGIENE Y SEGURIDAD INDUSTRIAL
-25	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. RELACIONES INDUSTRIALES
-26	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EDUCACION INTEGRAL
-27	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN MANTENIMIENTO
-28	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. GERENCIA FINANCIERA
-29	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN TECNOLOGIA AGRICOLA
-30	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U.AGRONOMIA
-31	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. PUBLICIDAD
-32	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ADMON. RECURSOS FISICOS Y FINANCIEROS
-33	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ADMON DE PERSONAL
-34	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. CONTABILIDAD COMPUTARIZADA
-35	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. TRABAJO SOCIAL
-36	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. CONSTRUCCION CIVIL
-37	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. INFORMACION Y DOCUMENTACION
-38	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ADMINISTRACION TRIBUTARIA
-39	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. AGROINDUSTRIAL
-40	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. TECNOLOG. DE CONSERV. DE LOS RECURSOS NAT. RENOVABLES
-41	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. PUBLICIDAD Y MERCADEO
-42	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. PERIODISMO
-43	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN AUDIOVISUALES
-44	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN GESTION SOCIAL
-45	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ADMINISTRACION DE EMPRESAS
-46	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN ADMINISTRACION
-47	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN COMERCIO EXTERIOR
-48	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U TECNOLOGIA PECUARIA
-49	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN MANTENIMIENTO MECANICO
-50	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN TECNOLOGIA AGROPECUARIA
-51	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN ADMINISTRACION DE ADUANAS
-52	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN CANTABILIDAD
-53	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN LOGISTICA INDUSTRIAL
-54	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN DISEÃO GRAFICO
-55	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN TURISMO
-56	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. TECNOLOGIA AUTOMOTRIZ
-57	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. PLANIFICACION DE PROGRAMAS SOCIOCOMUNITARIOS
-58	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN PRODUCCION INDUSTRIAL
-59	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U.  EN ADMON DE EMPRESAS PETROLERAS
-60	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U.  EN ADMON DE FINCAS
-61	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN ADMON DE SISTEMAS CONTABLES
-62	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN EDUCACION
-63	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U.  EN ALIMENTO
-64	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ELECTRONICA INDUSTRIAL
-65	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN CIENCIAS AGROPECUARIAS
-66	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN CONTABILIDAD Y FINANZAS
-67	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN ADMINISTRACION Y GERENCIA
-68	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN GEODECIA
-69	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. CONTROL DE CALIDAD
-70	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN MECANICA AEREONAUTICA
-71	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. ELECTROMECANICA
-72	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN ZOOTECNIA
-73	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. TECNOLOGIA INSTRUMENTISTA
-74	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN PSICOPEDAGOGIA
-75	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN ADMON DE COSTOS
-76	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN PRODUCCION AGROALIMENTARIA
-77	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U.  EN DISEÃO DE OBRAS CIVILES
-78	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN MECANICA
-79	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. PRODUCCION AGROPECUARIA
-80	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN GESTION HOTELERA Y TURISTICA
-81	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN MANTENIMIENTO INDUSTRIAL
-82	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN RESGUARDO NACIONAL
-83	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN EDUCACION PREESCOLAR
-84	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. EN TECNO. NAVAL MENC. MECANICA Y MTTO NAVAL
-85	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LICENCIADO EN  PLANIFICACION
-86	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ADMINISTRACION
-87	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. AGROINDUSTRIAL
-88	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. CONTADOR PUBLICO
-89	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN CIENCIAS POLITICAS
-90	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN COMUNICACION SOCIAL MENCION DESARROLLO SOCIAL
-91	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ESTADISTICAS
-92	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LICDA. EN EFERMERIA
-93	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN INFORMATICA
-94	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LICENCIADO EN CIENCIAS Y ARTES MILITARES
-95	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN RELACIONES PUBLICAS
-96	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN PSICOLOGIA
-97	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ADMON. RELACIONES INDUSTRIALES
-98	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. GERENCIA AGROINDUSTRIAL
-99	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. SOCIOLOGIA DEL DESARROLLO
-100	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ESTUDIOS AMBIENTALES
-101	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN DISEÃO GRAFICO
-102	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN COMUNICACION SOCIAL
-103	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. COMERCIO INTERNACIONAL
-104	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN CIENCIAS FISCALES
-105	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN TRABAJO SOCIAL
-106	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN CIENCIAS POLITICAS Y ADMINISTRATIVAS
-107	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ADMON  MENCION RECURSOS HUMANOS
-108	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN COMUNICACION SOCIAL MENCION AUDIOVISUAL
-109	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ADMON. RECURSOS MATERIALES Y FINANCIERO
-110	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. ADM. MENCION MERCADEO
-111	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LICENCIADO EN TEOLOGIA
-112	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN EDUCACION
-113	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO ELECTRICISTA
-114	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO AGRONOMO
-115	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. CIVIL
-116	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. INFORMATICA
-117	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. AGROINDUSTRIAL
-118	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO EN ALIMENTOS
-119	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO INDUSTRIAL
-120	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO MECANICO
-121	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO QUIMICO
-122	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. PETROLEO
-123	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. PRODUCCION ANIMAL
-124	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. AGRICOLA
-125	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. EN SISTEMAS
-126	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. GEOGRAFO
-127	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. COMPUTACION
-128	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO EN MANTENIMIENTO MECANICO
-129	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ING. DE LA PRODUCION AGROPECUARIA
-130	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ABOGADO
-131	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ECOLOGISTA
-132	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ZOOTENISTA
-133	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	PRODUCTOR T.V.
-134	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	PERITO FORESTAL
-135	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	MEDICO VETERINARIO
-136	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	PSICOLOGO
-137	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ANALISTA DE SISTEMAS
-138	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	SOCIOLOGO
-139	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	POLITOLOGO
-140	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ARQUITECTO
-141	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN ESTUDIOS INTERNACIONALES
-142	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN ADMINISTRACION COMERCIAL
-143	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN INFORMATICA
-144	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU TECNOLOGIA DE ALIMENTOS
-145	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU ADMINISTRACION Y PLANIFICACION DE EMPRESAS AGROPECUARIAS
-146	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN PLANIFICACION REGIONAL
-147	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN CIENCIA Y CULTURA DE LA ALIMENTACIÃN
-148	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN PRODUCCION AGRICOLA
-149	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU PRODUCCION AGRO ALIMENTARIA
-150	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO SUPERIOR UNIVERSITARIO EN TEGNOLOGIA INSTRUMENTISTA
-151	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U. QUIMICA
-152	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	BACHILLER MERCANTIL
-153	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN FITOTECNIA
-154	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO PRODUCCIÃN AGROPECUARIO ZOOTERNISTA
-155	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU EN ELCTRICIDAD MENCION INSTALACIONES ELECTRICAS
-156	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U ADMON DE EMPRESAS
-157	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU PRODUCCION AGRO INDUSTRIAL
-158	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN ELECTRICIDAD
-159	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU PRODUCCION INDUSTRIAL
-160	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN TECNOLOGIA AGRICOLA
-161	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU EVALUCION AMBIENTAL
-162	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN CONTABILIDAD
-163	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN ELECTRICIDAD INDUSTRIAL
-164	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO SUPERIOR AGROINDUSTRIAL EN GRANOS Y SEMILLAS
-165	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU MANTENIMIENTO INDUSTRIAL
-166	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO MENCION ZOOTECNIA
-167	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TSU EN PETROLEO
-168	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN ADMON Y PLANIFICACION DE EMPRESAS AGROPECUARIAS
-169	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO TOPOGRAFICO
-170	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	ECONOMISTA
-171	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN METALURGIA - MENCION METALURGIA
-172	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U GESTION AMNBIENTAL
-173	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN TECNOLOGIA PECUARIA MENCION ZOOTECNIA
-174	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO EN ADMINISTRACION MENCION INFORMATICA
-175	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U EN ADMINISTRCION PENITENCIA
-176	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	EECNICO MEDIO EN AGROPECUARIA MENCION FITOTECNIA
-177	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LICENCIADO EN GESTION SOCIAL DEL DESARROLLO LOCAL
-178	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	PLANIFICACON DE PROGRAMAS SOCIOCOMUNITARIO
-179	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	T.S.U ADMINISTRACION MENCION CONTABILIDAD Y FINANZAS
-180	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	LIC. EN EDUCACION INTEGRAL
-181	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	TECNICO MEDIO MENCION FITOTECNIA
-182	\N	2014-04-03 10:40:37.528706-04:30	2014-04-03 10:40:37.528706-04:30	INGENIERO AGROINDUSTRIAL
-183	\N	2014-09-10 20:41:39.755341-04:30	2014-09-10 20:41:39.755341-04:30	EDUCacion basica	\N
-185	\N	2014-09-10 20:43:19.518979-04:30	2014-09-10 20:43:19.518979-04:30	AA	\N
-186	\N	2014-11-27 10:33:14.375998-04:30	2014-11-27 10:33:14.375998-04:30	lic. en gestión social del desarrollo local	\N
 \.
 
 
@@ -5969,6 +5888,7 @@ COPY recurso_perfil (id, usuario_id, fecha_registro, fecha_modificado, recurso_i
 1167	\N	2015-09-08 21:50:52.683887-04:30	2015-09-08 21:50:52.683887-04:30	3	2
 1168	\N	2015-09-08 21:50:52.683887-04:30	2015-09-08 21:50:52.683887-04:30	3	5
 1169	\N	2015-09-08 21:50:52.683887-04:30	2015-09-08 21:50:52.683887-04:30	3	3
+1170	\N	2015-11-19 23:06:42.324769-04:30	2015-11-19 23:06:42.324769-04:30	2	9
 \.
 
 
@@ -5976,7 +5896,22 @@ COPY recurso_perfil (id, usuario_id, fecha_registro, fecha_modificado, recurso_i
 -- Name: recurso_perfil_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('recurso_perfil_id_seq', 1169, true);
+SELECT pg_catalog.setval('recurso_perfil_id_seq', 1170, true);
+
+
+--
+-- Data for Name: requisicio; Type: TABLE DATA; Schema: public; Owner: arrozalba
+--
+
+COPY requisicio (id, fecha_elaboracio, incidecia_id, prioridad, trabajo_requerido, tipo, unidad_solicitante) FROM stdin;
+\.
+
+
+--
+-- Name: requisicio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
+--
+
+SELECT pg_catalog.setval('requisicio_id_seq', 1, false);
 
 
 --
@@ -6048,6 +5983,7 @@ COPY usuario (id, usuario_id, fecha_registro, fecha_modificado, fecha_desactivac
 8	\N	2015-07-10 12:50:12.499781-04:30	2015-07-10 12:50:12.499781-04:30	\N	\N	PRUEBA	2	\N	default	1	30	1	\N	PRUEBA2	PRUEBRA3
 9	\N	2015-07-10 12:53:28.264245-04:30	2015-07-10 12:53:28.264245-04:30	\N	\N	RONDON	3	RONADON@GMAI.COM	default	1	\N	1	\N	ALEXANDER	RONDON
 3	\N	2015-06-04 16:02:45.784156-04:30	2015-06-04 16:02:45.784156-04:30	\N	\N	ROAEDGAR	2	edgarroa@gmail.com	default	1	30	0	\N	edgar	roas
+10	\N	2015-11-19 23:22:41.179125-04:30	2015-11-19 23:22:41.179125-04:30	\N	5	SIMONCITO	9	SIMONBOLIVAR@GMAIL.COM	default	1	30	1	\N	SIMON	BOLIVAR
 \.
 
 
@@ -6064,6 +6000,7 @@ COPY usuario_clave (id, usuario_id, fecha_registro, fecha_modificado, password, 
 7	7	2015-07-10 11:01:17.376406-04:30	2015-07-10 11:01:17.376406-04:30	6462e8c65ed86cd21fe9e79de19af430	2015-07-10	2015-07-11
 8	8	2015-07-10 12:50:12.499781-04:30	2015-07-10 12:50:12.499781-04:30	308cb2652c13417832c3b6f684628ba8	2015-07-10	2015-07-11
 9	9	2015-07-10 12:53:28.264245-04:30	2015-07-10 12:53:28.264245-04:30	a5ccfb4fa0929a050562fcbe8db19048	2015-07-10	2015-07-11
+10	10	2015-11-19 23:22:41.179125-04:30	2015-11-19 23:22:41.179125-04:30	d93a5def7511da3d0f2d171d9c344e91	2015-11-19	2015-11-20
 \.
 
 
@@ -6071,14 +6008,14 @@ COPY usuario_clave (id, usuario_id, fecha_registro, fecha_modificado, password, 
 -- Name: usuario_clave_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('usuario_clave_id_seq', 9, true);
+SELECT pg_catalog.setval('usuario_clave_id_seq', 10, true);
 
 
 --
 -- Name: usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: arrozalba
 --
 
-SELECT pg_catalog.setval('usuario_id_seq', 9, true);
+SELECT pg_catalog.setval('usuario_id_seq', 10, true);
 
 
 --
@@ -6097,7 +6034,15 @@ SELECT pg_catalog.setval('usuario_pregunta_id_seq', 1, false);
 
 
 --
--- Name: acceso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: PK_requisicion; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY requisicio
+    ADD CONSTRAINT "PK_requisicion" PRIMARY KEY (id);
+
+
+--
+-- Name: acceso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY acceso
@@ -6105,7 +6050,7 @@ ALTER TABLE ONLY acceso
 
 
 --
--- Name: backup_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: backup_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY backup
@@ -6113,7 +6058,7 @@ ALTER TABLE ONLY backup
 
 
 --
--- Name: cargo_nombre_key; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: cargo_nombre_key; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY cargo
@@ -6121,7 +6066,7 @@ ALTER TABLE ONLY cargo
 
 
 --
--- Name: cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY cargo
@@ -6129,7 +6074,7 @@ ALTER TABLE ONLY cargo
 
 
 --
--- Name: configuracion_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: configuracion_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY configuracion
@@ -6137,7 +6082,7 @@ ALTER TABLE ONLY configuracion
 
 
 --
--- Name: dartamento_unique_ukey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: dartamento_unique_ukey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY departamento
@@ -6145,7 +6090,7 @@ ALTER TABLE ONLY departamento
 
 
 --
--- Name: departamento_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: departamento_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY departamento
@@ -6153,7 +6098,7 @@ ALTER TABLE ONLY departamento
 
 
 --
--- Name: empresa_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: empresa_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY empresa
@@ -6161,7 +6106,7 @@ ALTER TABLE ONLY empresa
 
 
 --
--- Name: equipo_herramienta_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: equipo_herramienta_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY equipo_herramienta
@@ -6169,7 +6114,7 @@ ALTER TABLE ONLY equipo_herramienta
 
 
 --
--- Name: equipo_parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: equipo_parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY equipo_parte
@@ -6177,7 +6122,7 @@ ALTER TABLE ONLY equipo_parte
 
 
 --
--- Name: equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: equipo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY equipo
@@ -6185,7 +6130,7 @@ ALTER TABLE ONLY equipo
 
 
 --
--- Name: estado_codigo_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: estado_codigo_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY estado
@@ -6193,7 +6138,7 @@ ALTER TABLE ONLY estado
 
 
 --
--- Name: estado_nombre_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: estado_nombre_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY estado
@@ -6201,7 +6146,7 @@ ALTER TABLE ONLY estado
 
 
 --
--- Name: estado_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: estado_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY estado
@@ -6209,7 +6154,7 @@ ALTER TABLE ONLY estado
 
 
 --
--- Name: estado_usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: estado_usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY estado_usuario
@@ -6217,7 +6162,7 @@ ALTER TABLE ONLY estado_usuario
 
 
 --
--- Name: fabricante_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: fabricante_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY fabricante
@@ -6225,7 +6170,7 @@ ALTER TABLE ONLY fabricante
 
 
 --
--- Name: falla_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: falla_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY falla
@@ -6233,7 +6178,7 @@ ALTER TABLE ONLY falla
 
 
 --
--- Name: incidencias_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: incidencias_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY incidencia
@@ -6241,7 +6186,7 @@ ALTER TABLE ONLY incidencia
 
 
 --
--- Name: mano_obra_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mano_obra_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY mano_obra
@@ -6249,7 +6194,7 @@ ALTER TABLE ONLY mano_obra
 
 
 --
--- Name: mantenimiento_equipo_herramienta_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_equipo_herramienta_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY mantenimiento_equipo_herramienta
@@ -6257,7 +6202,7 @@ ALTER TABLE ONLY mantenimiento_equipo_herramienta
 
 
 --
--- Name: mantenimiento_mano_obra_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_mano_obra_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY mantenimiento_mano_obra
@@ -6265,7 +6210,7 @@ ALTER TABLE ONLY mantenimiento_mano_obra
 
 
 --
--- Name: mantenimiento_material_recurso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_material_recurso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY mantenimiento_material_recurso
@@ -6273,7 +6218,7 @@ ALTER TABLE ONLY mantenimiento_material_recurso
 
 
 --
--- Name: mantenimiento_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY mantenimiento
@@ -6281,7 +6226,7 @@ ALTER TABLE ONLY mantenimiento
 
 
 --
--- Name: mantenimiento_tipo_trabajo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: mantenimiento_tipo_trabajo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY mantenimiento_tipo_trabajo
@@ -6289,7 +6234,7 @@ ALTER TABLE ONLY mantenimiento_tipo_trabajo
 
 
 --
--- Name: marca_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: marca_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY marca
@@ -6297,7 +6242,7 @@ ALTER TABLE ONLY marca
 
 
 --
--- Name: material_recurso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: material_recurso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY material_recurso
@@ -6305,7 +6250,7 @@ ALTER TABLE ONLY material_recurso
 
 
 --
--- Name: menu_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: menu_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY menu
@@ -6313,7 +6258,7 @@ ALTER TABLE ONLY menu
 
 
 --
--- Name: modelo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: modelo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY modelo
@@ -6321,7 +6266,7 @@ ALTER TABLE ONLY modelo
 
 
 --
--- Name: motivo_parada_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: motivo_parada_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY motivo_parada
@@ -6329,7 +6274,7 @@ ALTER TABLE ONLY motivo_parada
 
 
 --
--- Name: municipio_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: municipio_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY municipio
@@ -6337,7 +6282,7 @@ ALTER TABLE ONLY municipio
 
 
 --
--- Name: nombre; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: nombre; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY profesion
@@ -6345,7 +6290,7 @@ ALTER TABLE ONLY profesion
 
 
 --
--- Name: pais_codigo_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: pais_codigo_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY pais
@@ -6353,7 +6298,7 @@ ALTER TABLE ONLY pais
 
 
 --
--- Name: pais_nombre_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: pais_nombre_unico; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY pais
@@ -6361,7 +6306,7 @@ ALTER TABLE ONLY pais
 
 
 --
--- Name: pais_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: pais_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY pais
@@ -6369,7 +6314,7 @@ ALTER TABLE ONLY pais
 
 
 --
--- Name: parroquia_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: parroquia_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY parroquia
@@ -6377,7 +6322,7 @@ ALTER TABLE ONLY parroquia
 
 
 --
--- Name: parte_categoria_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: parte_categoria_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY parte_categoria
@@ -6385,7 +6330,7 @@ ALTER TABLE ONLY parte_categoria
 
 
 --
--- Name: parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: parte_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY parte
@@ -6393,7 +6338,7 @@ ALTER TABLE ONLY parte
 
 
 --
--- Name: perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY perfil
@@ -6401,7 +6346,15 @@ ALTER TABLE ONLY perfil
 
 
 --
--- Name: profesion_nombre_key; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: pk_detalle_requisicion; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_requisicion
+    ADD CONSTRAINT pk_detalle_requisicion PRIMARY KEY (id);
+
+
+--
+-- Name: profesion_nombre_key; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY profesion
@@ -6409,7 +6362,7 @@ ALTER TABLE ONLY profesion
 
 
 --
--- Name: profesion_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: profesion_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY profesion
@@ -6417,7 +6370,7 @@ ALTER TABLE ONLY profesion
 
 
 --
--- Name: proveedor_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: proveedor_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY proveedor
@@ -6425,7 +6378,7 @@ ALTER TABLE ONLY proveedor
 
 
 --
--- Name: recurso_perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: recurso_perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY recurso_perfil
@@ -6433,7 +6386,7 @@ ALTER TABLE ONLY recurso_perfil
 
 
 --
--- Name: recurso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: recurso_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY recurso
@@ -6441,7 +6394,7 @@ ALTER TABLE ONLY recurso
 
 
 --
--- Name: sector_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: sector_pk; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY sector
@@ -6449,7 +6402,7 @@ ALTER TABLE ONLY sector
 
 
 --
--- Name: sucursal_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: sucursal_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY sucursal
@@ -6457,7 +6410,7 @@ ALTER TABLE ONLY sucursal
 
 
 --
--- Name: tipo_trabajo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: tipo_trabajo_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY tipo_trabajo
@@ -6465,7 +6418,7 @@ ALTER TABLE ONLY tipo_trabajo
 
 
 --
--- Name: usuario_clave_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_clave_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY usuario_clave
@@ -6473,7 +6426,7 @@ ALTER TABLE ONLY usuario_clave
 
 
 --
--- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY usuario
@@ -6481,7 +6434,7 @@ ALTER TABLE ONLY usuario
 
 
 --
--- Name: usuario_pregunta_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_pregunta_pkey; Type: CONSTRAINT; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 ALTER TABLE ONLY usuario_pregunta
@@ -6489,17 +6442,25 @@ ALTER TABLE ONLY usuario_pregunta
 
 
 --
--- Name: usuario_perfil_idx; Type: INDEX; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_perfil_idx; Type: INDEX; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE INDEX usuario_perfil_idx ON usuario USING btree (perfil_id);
 
 
 --
--- Name: usuario_sucursal_idx; Type: INDEX; Schema: public; Owner: arrozalba; Tablespace:
+-- Name: usuario_sucursal_idx; Type: INDEX; Schema: public; Owner: arrozalba; Tablespace: 
 --
 
 CREATE INDEX usuario_sucursal_idx ON usuario USING btree (sucursal_id);
+
+
+--
+-- Name: FK_incidencia; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY requisicio
+    ADD CONSTRAINT "FK_incidencia" FOREIGN KEY (id) REFERENCES incidencia(id);
 
 
 --
@@ -6612,6 +6573,14 @@ ALTER TABLE ONLY estado
 
 ALTER TABLE ONLY estado_usuario
     ADD CONSTRAINT estado_usuario_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: fk_incidecia; Type: FK CONSTRAINT; Schema: public; Owner: arrozalba
+--
+
+ALTER TABLE ONLY detalle_requisicion
+    ADD CONSTRAINT fk_incidecia FOREIGN KEY (requisicion_id) REFERENCES incidencia(id);
 
 
 --
@@ -6907,3 +6876,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
