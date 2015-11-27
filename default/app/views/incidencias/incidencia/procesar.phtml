@@ -16,9 +16,9 @@
         </div>
     </div>
     <div class="row-fluid">
-        <div class="span8">
-            <h4>Materiales y piezas</h4>
-            <table id="items">
+        <div class="span6">
+            <h4>Materiales</h4>
+            <table>
                 <tr>
                     <th> Nombre</th>
                     <th> Descripcion</th>
@@ -29,14 +29,29 @@
                         <div class="delete-wpr"><input type="text" name="nombre[]" class="input-medium"><a
                                 class="delete" href="javascript:;" title="Remove row">X</a></div>
                     </td>
-                    <td><input type="text" name="descripcion[]" class="qty input-medium mask-num"></td>
-                    <td><input type="text" name="cantidad[]" class="qty input-medium mask-num"></td>
+                    <td><input type="text" name="descripcion[]" class=" input-medium"></td>
+                    <td><input type="text" name="cantidad[]" class="input-medium mask-num"></td>
                 </tr>
                 <tr id="hiderow">
                     <td colspan="6"><a id="addrow" href="javascript:;" title="Add a row">Agregar Material</a></td>
                 </tr>
             </table>
         </div>
+        <div class="span6">
+            <table>
+                <h4> Piezas </h4>
+                <tr>
+                    <th><?php echo DwForm::text('incidencia.partes', array('class'=>'input-large mask-alphanum  input-required'), NULL, 'Parte'); ?>
+                        <?php echo DwForm::text('incidencia.parte_id', NULL, ''); ?> </th>
+                        <?php echo DwForm::text('incidencia.caracteristicas', NULL, ''); ?> </th>
+                </tr>
+
+                <?= $inci->equipo_id; ?>
+            </table>
+
+        </div>
+
+
     </div>
     <hr>
     <div class="row-fluid">
@@ -68,7 +83,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('input#incidencia_responsable_reparacion').autocomplete({
+        $('input#incidencia_partes').autocomplete({
             minLength: 2, //le indicamos que busque a partir de haber escrito dos o mas caracteres en el input
             /*focus: function( event, ui ) {
              $( "input#equipo_parte_caracteristica" ).val( ui.item.caracteristica );
@@ -76,7 +91,7 @@
              },*/
             source: function (request, response) {
                 $.ajax({
-                    url: "<?php echo PUBLIC_PATH ?>sistema/usuario/autocomplete",
+                    url: "<?php echo PUBLIC_PATH ?>config/parte/autocomplete_equipo/<?= $inci->equipo_id; ?>",
                     data: {'busqueda': request.term},
                     dataType: "json",
                     type: "POST",
@@ -86,8 +101,8 @@
                 });
             },
             select: function (event, ui) {
-                $('input#incidencia_responsable_id').val(ui.item.id);// Asignacion de Id en Campo
-                $('input#incidencia_responsable_reparacion').val(ui.item.nombre_completo);// Asignacion de Id en Campo
+                $('input#incidencia_parte_id').val(ui.item.id);// Asignacion de Id en Campo
+                $('input#incidencia_caracteristicas').val(ui.item.value);// Asignacion de Id en Campo
                 // $('textarea#solicitud_servicio_observacion').val(ui.item.id);// Asignacion de Id en Campo
             }
         });

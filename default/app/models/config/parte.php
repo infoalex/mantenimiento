@@ -24,13 +24,16 @@ class Parte extends ActiveRecord {
      *  Obtener las piezas de un equipo en especifico
      */
 
-    public function obtener_partes_incidencia($partes) {
+    public function obtener_partes_x_equipo($partes, $equipo) {
         if ($partes != '') {
             $partes = stripcslashes($partes);
             $partes = strtoupper($partes);
-            $res = $this->find('columns: nombre, caracteristica, id', "nombre like '%{$partes}%' or caracteristica like '%{$partes}%'");
+            //$res = $this->find_by_sql('columns: nombre, caracteristica, id', "(nombre like '%{$partes}%' or caracteristica like '%{$partes}%') and (equipo_id = '$equipo) ");
+
+            $res = $this->find_by_sql("select P.* from equipo_parte E INNER JOIN parte P on P.id = E.parte_id WHERE ( P.nombre like '%{$partes}%' or P.caracteristica like '%{$partes}%') and (E.equipo_id = '$equipo') ");
+
             if ($res) {
-                foreach ($res as $partes) {
+                foreach ($this->res as $partes) {
                     $partess[] = array('id'=>$partes->id,'value'=>$partes->nombre." ".$partes->caracteristica,'caracteristicas'=>$partes->caracteristica);
                 }
                 return $partess;

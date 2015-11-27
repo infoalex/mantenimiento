@@ -244,6 +244,7 @@ class IncidenciaController extends BackendController {
             }
 
         }
+        $this->inci = $detalle_incidencia;
         $this->page_title = 'Procesar solicitud ( Registro de los materiales ) ';
    }
 

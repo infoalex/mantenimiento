@@ -76,7 +76,21 @@ class ParteController extends BackendController {
             die(json_encode($partes)); // solo devolvemos los datos, sin template ni vista
             //json_encode nos devolverá el array en formato json ["aragua","carabobo","..."]
         }
-    }        
+    }
+
+    /**
+     * accion que busca en las partes de un equipo determinado y devuelve el json con los datos
+     * */
+    public function autocomplete_equipo($equipo) {
+        View::template(NULL);
+        View::select(NULL);
+        if (Input::isAjax()) { //solo devolvemos los estados si se accede desde ajax
+            $busqueda = Input::post('busqueda');
+            $partes = Load::model('config/parte')->obtener_partes_x_equipo($busqueda, $equipo);
+            die(json_encode($partes)); // solo devolvemos los datos, sin template ni vista
+            //json_encode nos devolverá el array en formato json ["aragua","carabobo","..."]
+        }
+    }
     /**
      * Método para editar
      */
