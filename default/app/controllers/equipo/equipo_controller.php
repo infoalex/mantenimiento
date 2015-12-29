@@ -64,9 +64,6 @@ class EquipoController extends BackendController {
         $this->modelo = $equipo_reporte->modelo;
         $this->marca = $equipo_reporte->marca;
 
-
-
-
     }    
 
 

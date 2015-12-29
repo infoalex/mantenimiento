@@ -1,0 +1,45 @@
+<?php
+// LImpia el bufer (evita los errores de: Some data has already been output ) 
+//ob_end_clean(); 
+Load::lib('pdf_cabecera_solicitud');
+Load::lib('modelo_pdf');
+//require_once("modelo_pdf.php");
+	$fpdf = new MyFpdf ();
+	$fpdf->AddPage('P','Letter');
+	$fpdf->SetFont('times','B','12');
+	$fpdf->SetFillColor(138,180,196);
+	$fpdf->Cell(0,5,"INCIDENCIA",1,1,'C','true');
+	$fpdf->SetFont('times','','10');
+	//
+
+	$fpdf->Cell(85,10,"FECHA Y HORA DE LA SOLICITUD:",'LR',0,'');
+	$fpdf->Cell(111,10,"SOLICITADO POR:",'R',1,'');
+	//
+	$fpdf->Cell(85,7,$fecha,'LRB',0,'');
+	$fpdf->Cell(111,7,utf8_decode($responsable),'RB',1,'');
+	//
+	$fpdf->Cell(45,7,"CODIGO DEL EQUIPO: ",'LB',0,'');
+	$fpdf->Cell(40,7,$codigo_equipo,'B',0,'');
+	$fpdf->Cell(40,7,"NOMBRE DEL EQUIPO: ",'LB',0,'');
+	$fpdf->SetFont('times','B','10');
+	$fpdf->Cell(71,7, $nombre_equipo ,'BR',1,'');
+	$fpdf->SetFont('times','','10');
+
+	//Informacion de localizacion
+	$fpdf->Cell(45,10,"SUCURSAL: ",'LB',0,'');
+	$fpdf->Cell(40,10,$sucursal,'B',0,'');
+	$fpdf->Cell(40,10,"SECTOR: ",'LB',0,'');
+	$fpdf->SetFont('times','B','10');
+	$fpdf->Cell(71,10, $sector ,'BR',1,'');
+	$fpdf->SetFont('times','','10');
+
+    //Informacion de paradas
+    $fpdf->Cell(33,10,"FALLA: ",'LB',0,'');
+    $fpdf->Cell(33,10, $falla, 'B',0,'');
+    $fpdf->Cell(33,10,"PARADA SECTOR: ",'LB',0,'');
+    $fpdf->Cell(33,10, $parada_sector ,'BR',0,'');
+    $fpdf->Cell(33,10,"PARADA PLANTA: ",'LB',0,'');
+    $fpdf->Cell(31,10, $parada_planta ,'BR',1,'');
+
+
+	$fpdf->Output();

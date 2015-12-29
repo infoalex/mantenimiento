@@ -294,7 +294,6 @@ class IncidenciaController extends BackendController {
                 ActiveRecord::rollbackTrans();
                 DwMessage::error("Problemas actualizando la incidencia");
             }
-
         }
         $this->page_title = 'Asignando solicitud';
     }
@@ -360,6 +359,57 @@ class IncidenciaController extends BackendController {
         $this->falla  = $mantenimiento->falla;
         
     }
+
+    /**
+     * Mostrar detalles de incidencia desde el menu de listar
+     * Método para formar el reporte en pdf
+     */
+    public function print_parcial($key) {
+        View::template(NULL);
+        if(!$id = DwSecurity::isValidKey($key, 'prs_incidencia', 'int')) {
+            return DwRedirect::toAction('listar');
+        }
+
+        $objIncidencia = new Incidencia();
+        if(!$incidencia = $objIncidencia->getInformacionIncidencia($id) ) {
+            DwMessage::get('id_no_found');
+        }
+
+        $this->nro_orden  = $incidencia->nro_orden;
+        $this->hora_inicio  = $incidencia->hora_inicio;
+        $this->fecha  = $incidencia->fecha;
+        $this->turno  = $incidencia->turno;
+        $this->falla  = $incidencia->falla;
+        $this->nombre_equipo  = $incidencia->nombre_equipo;
+        $this->sucursal  = $incidencia->sucursal;
+        $this->sector  = $incidencia->sector;
+        $this->estatus  = $incidencia->estatus;
+        $this->responsable  = $incidencia->nombres." ".$incidencia->apellidos;
+        $this->falla  = $incidencia->falla;
+        $this->nombre_equipo = $incidencia->nombre_equipo;
+        $this->codigo_equipo = $incidencia->codigo_equipo;
+
+        // obteniendo la palabra si o no
+        $this->parada_sector = $this->getSiOrNo($incidencia->parada_sector);
+        $this->parada_planta = $this->getSiOrNo($incidencia->parada_planta);
+
+    }
+
+    /**
+     *  Evalua verdadero o falso y devuelve string SI o NO
+     * @param $object
+     * @return string
+     */
+    public function getSiOrNo($object)
+    {
+        if($object!='f'){
+            $response = "SI";
+        } else {
+            $response = "NO";
+        }
+        return $response;
+    }
+
     /*
      Método para editar solicitudes que estan registradas solamente (ya que el metodo de modificar es para afectar aquellas que fueron rechazads 
      y se van a actualizar)

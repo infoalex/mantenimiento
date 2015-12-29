@@ -31,11 +31,12 @@ class Incidencia extends ActiveRecord {
      */
     public function getInformacionIncidencia($id, $isSlug=false) {
         $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
-        $columnas = 'a.id as idincidencia, a.fecha, a.sucursal_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, a.estatus, d.id as idfalla, d.descripcion, e.id as idequipo, e.nombre, e.codigo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal  ';
+        $columnas = 'a.id as idincidencia,  a.fecha, a.sucursal_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, a.estatus, d.id as idfalla, d.descripcion falla, e.id as idequipo, e.nombre nombre_equipo, e.codigo codigo_equipo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal, U.nombres, U.apellidos ';
         $join = ' as a INNER JOIN falla as d ON (a.falla_id = d.id) ';
         $join.= 'INNER JOIN equipo as e ON (a.equipo_id = e.id) ';
         $join.= 'INNER JOIN sector as g ON (a.sector_id = g.id) ';
         $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
+        $join.= 'INNER JOIN usuario as U ON (a.responsable_id = U.id) ';
         $conditions = "a.id = '$id'";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $conditions");
     }
