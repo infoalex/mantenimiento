@@ -1,21 +1,31 @@
 <?php
+
 /**
- * Dailyscript - Web | App | Media
  *
- * Descripcion: Controlador para el panel principal de los usuarios logueados
- *
- * @category    
- * @package     Controllers 
- * @author      Iván D. Meléndez (ivan.melendez@dailycript.com.co)
- * @copyright   Copyright (c) 2013 Dailyscript Team (http://www.dailyscript.com.co) 
+ * Class IndexController
  */
+Load::model('incidencias/incidencia');
+
 class IndexController extends BackendController {
-    
+
     public $page_title = 'Escritorio';
-    
+
     public $page_module = 'Escritorio';
-    
+
     public function index() {
-    
+        $id = Session::get('id');
+        $objIncidencia = new Incidencia();
+        $this->incidencias = $objIncidencia->getIncidenciasByUser($id);
+
+        //Obtener el hostorico de incidencias de un usuario
+        $this->historico_incidencias = $objIncidencia->getIncidenciasHistoryByUser($id);
+
+        /*
+         * Contar todass las soliciutes ejecutas por ese tecnico
+        */
+
+
+        $total = $objIncidencia->getTotalSolicitudByUser($id);
+        $this->total_solicitudes = $total->total;
     }
 }

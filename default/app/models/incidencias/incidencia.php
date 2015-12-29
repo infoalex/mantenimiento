@@ -1,19 +1,15 @@
 <?php
 /**
- * 
+ *
  * @category
  * @package     Models Incidencia
  * @subpackage
- * @author      
+ * @author
  * @copyright   Copyright (c) 2015 UPTP - (PNFI Team) (https://github.com/ArrozAlba/mantenimiento)
  *
  */
 class Incidencia extends ActiveRecord {
-    
-    /**
-     * Constante para definir el id de la oficina principal
-     */
-    const OFICINA_PRINCIPAL = 1;
+
 
     /**
      * Método para definir las relaciones y validaciones
@@ -23,11 +19,11 @@ class Incidencia extends ActiveRecord {
         $this->has_one('falla');
         $this->has_one('equipo');
         $this->has_one('sector');
-    }  
+    }
     /**
-     * Método para ver 
+     * Método para ver
      * @param int|string $id
-     * @return 
+     * @return
      */
     public function getInformacionIncidencia($id, $isSlug=false) {
         $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
@@ -40,13 +36,13 @@ class Incidencia extends ActiveRecord {
         $conditions = "a.id = '$id'";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $conditions");
     }
-     /**
-     * Método para traer basico de incidencia 
+    /**
+     * Método para traer basico de incidencia
      * @param int|string $id
-     * @return 
+     * @return
      */
     public function getBasicoIncidencia($id, $isSlug=false) {
-       // $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
+        // $id = ($isSlug) ? Filter::get($id, 'string') : Filter::get($id, 'numeric');
         $columnas = '*';
         $conditions = "id = '$id'";
         return $this->find_first("columns: $columnas", "conditions: $conditions");
@@ -67,11 +63,11 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN medico as h ON (a.medico_id = h.id) ';
         $condicion = "a.id = '$id' ";
         return $this->find_first("columns: $columnas", "join: $join", "conditions: $condicion");
-    } 
+    }
     /**
      * Método que devuelve las sucursales
      * @param string $order
-     * @param int $page 
+     * @param int $page
      * @return ActiveRecord
      */
     public function getListadoRegistroIncidencia($order='order.descripcion.asc', $page='',$tps, $empresa=null) {
@@ -83,18 +79,18 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "g.id = '$tps' and a.estado_solicitud = 'R' or a.estado_solicitud= 'E' ";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.descripcion ASC, incidencia.tipo_incidencia ASC',
-                                                                              'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         }
     }
-   /**
+    /**
      * Método que devuelve las sucursales
      * @param string $order
-     * @param int $page 
+     * @param int $page
      * @return ActiveRecord
      */
     public function getListadoRegistroIncidenciaEscritorio($order='order.descripcion.asc', $page='', $empresa=null) {
@@ -106,19 +102,19 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "a.estado_solicitud = 'R' or a.estado_solicitud= 'E' ";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.descripcion ASC, incidencia.tipo_incidencia ASC',
-                                                                              'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         }
     }
-    
+
     /**
      * Método que devuelve las sucursales
      * @param string $order
-     * @param int $page 
+     * @param int $page
      * @return ActiveRecord
      */
     public function getListadoAprobacionIncidencia($order='order.descripcion.asc', $page='',$tps,$empresa=null) {
@@ -130,18 +126,18 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "g.id = '$tps' and (a.estado_solicitud = 'R' or a.estado_solicitud = 'A') ";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.descripcion ASC, incidencia.tipo_incidencia ASC',
-                                                                              'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         }
     }
     /**
      * Método que devuelve las sucursales
      * @param string $order
-     * @param int $page 
+     * @param int $page
      * @return ActiveRecord
      */
     public function getListadoContabilizarIncidencia($order='order.descripcion.asc', $page='',$tps,$empresa=null) {
@@ -153,12 +149,12 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "g.id = '$tps' and a.estado_solicitud = 'A' or a.estado_solicitud = 'C' ";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.descripcion ASC, incidencia.tipo_incidencia ASC',
-                                                                              'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         }
     }
     /*
@@ -173,12 +169,12 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "g.id = '$tps' and  (a.estado_solicitud = 'S' or a.estado_solicitud = 'G') ";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.descripcion ASC, incidencia.tipo_incidencia ASC',
-                                                                              'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         }
     }
     /*
@@ -193,19 +189,19 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "g.id = '$tps' and  (a.estado_solicitud = 'F' or a.estado_solicitud = 'G') ";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.descripcion ASC, incidencia.tipo_incidencia ASC',
-                                                                              'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.descripcion DESC, incidencia.tipo_incidencia ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
         }
     }
 
     /**
      * Método que devuelve las sucursales
      * @param string $order
-     * @param int $page 
+     * @param int $page
      * @return ActiveRecord
      */
     public function getListadoIncidencia($order='order.descripcion.asc', $page='', $empresa=null) {
@@ -216,12 +212,12 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
         $conditions = "";
         $order = $this->get_order($order, 'a', array('incidencia'=>array('ASC'=>'incidencia.departamento ASC, incidencia.sector ASC',
-                                                                              'DESC'=>'incidencia.departamento DESC, incidencia.sector ASC',
-                                                                              )));
-        if($page) {                
+            'DESC'=>'incidencia.departamento DESC, incidencia.sector ASC',
+        )));
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "order: $order", "page: $page");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "order: $order", "page: $page");            
+            return $this->find("columns: $columnas", "join: $join", "order: $order", "page: $page");
         }
     }
     // REPORTE FILTRADO PARA EL REEMBOLSO 
@@ -233,23 +229,23 @@ class Incidencia extends ActiveRecord {
         $join.= 'INNER JOIN tiposolicitud as g ON (a.tiposolicitud_id = g.id) ';
         $join.= 'INNER JOIN beneficiario as h ON (a.beneficiario_id = h.id) ';
         $conditions = "a.tiposolicitud_id='8' and titular.cedula=$titular";
-        if($page) {                
+        if($page) {
             return $this->paginated("columns: $columnas", "join: $join", "page: $page", "conditions: $conditions");
         } else {
-            return $this->find("columns: $columnas", "join: $join", "page: $page", "conditions: $conditions");            
+            return $this->find("columns: $columnas", "join: $join", "page: $page", "conditions: $conditions");
         }
 
     }
     //reporte de la dataq de historico 
 
-     public function getListadoHReembolso($order='order.descripcion.asc', $page='', $empresa=null){
-        if($page) {                
+    public function getListadoHReembolso($order='order.descripcion.asc', $page='', $empresa=null){
+        if($page) {
             return $this->paginated_by_sql("SELECT * FROM hreembolso order by $order ");
         } else {
-            return $this->find_by_sq("SELECT * FROM hreembolso");            
+            return $this->find_by_sq("SELECT * FROM hreembolso");
         }
     }
-    
+
 
 
     /**
@@ -273,7 +269,7 @@ class Incidencia extends ActiveRecord {
 
 
     /**
-     * Método que se ejecuta antes de guardar y/o modificar     
+     * Método que se ejecuta antes de guardar y/o modificar
      */
     public function before_save(){
         $this->observacion = strtoupper($this->observacion);
@@ -282,27 +278,60 @@ class Incidencia extends ActiveRecord {
         $this->analisis_falla = strtoupper($this->analisis_falla);
         $this->fecha = date("Y-m-d");
         $this->hora_inicio = date("H:i:s");
-
-
     }
-    
+
     /**
      * Callback que se ejecuta antes de eliminar
      */
     public function before_delete() {
-      
-    }
-    //MIE3NTARAS
-     public  function getInformacionIncidenciaPatologia($id, $order='incidencia_patologia.id') {
-        $id = Filter::get($id, 'numeric');
-        $columnas = 'incidencia_patologia.* , P.* , P.id as idpatologia ';
-        $join= 'INNER JOIN incidencia_patologia ON (incidencia_patologia.incidencia_id = incidencia.id) ';
-        $join.= 'INNER JOIN patologia as P ON (P.id = incidencia_patologia.patologia_id) ';
-        
-        $condicion = "incidencia_patologia.incidencia_id = '$id'"; 
 
-        // return $this->find("columns: $columnas", "join: $join", "conditions: $condicion", "order: $order");
-        return $this->find("columns: $columnas", "conditions: $condicion", "join: $join", "order: $order");
-    } 
-    
+    }
+
+    /**
+     *  Método para ver  inicidencias por usuarios asignados
+     * @param $id
+     * @param bool $isSlug
+     * @return ActiveRecord
+     */
+    public function getIncidenciasByUser($id) {
+        $columnas = 'a.id as idincidencia,  a.fecha, a.sucursal_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, a.estatus, d.id as idfalla, d.descripcion falla, e.id as idequipo, e.nombre nombre_equipo, e.codigo codigo_equipo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal, U.nombres, U.apellidos ';
+        $join = ' as a INNER JOIN falla as d ON (a.falla_id = d.id) ';
+        $join.= 'INNER JOIN equipo as e ON (a.equipo_id = e.id) ';
+        $join.= 'INNER JOIN sector as g ON (a.sector_id = g.id) ';
+        $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
+        $join.= 'INNER JOIN usuario as U ON (a.responsable_id = U.id) ';
+        $conditions = "a.responsable_id = '$id' and a.estatus = 'A' ";
+        return $this->find("columns: $columnas", "join: $join", "conditions: $conditions");
+    }
+
+
+    /**
+     *  Método para ver el historico de inicidencias por usuarios asignados
+     * @param $id
+     * @param bool
+     * @return ActiveRecord
+     */
+    public function getIncidenciasHistoryByUser($id) {
+        $columnas = 'a.id as idincidencia,  a.fecha, a.sucursal_id, a.hora_inicio, a.hora_fin, a.turno, a.falla_id, a.equipo_id, a.sector_id, a.parada_sector, a.parada_planta, a.analisis_falla, a.accion_correctiva, a.fecha_reparacion, a.responsable_reparacion, a.perdida_tn, a.persistencia_falla, a.observaciones, a.estatus, d.id as idfalla, d.descripcion falla, e.id as idequipo, e.nombre nombre_equipo, e.codigo codigo_equipo, g.id as idsector, g.sector, h.id as idsucursal, h.sucursal, U.nombres, U.apellidos ';
+        $join = ' as a INNER JOIN falla as d ON (a.falla_id = d.id) ';
+        $join.= 'INNER JOIN equipo as e ON (a.equipo_id = e.id) ';
+        $join.= 'INNER JOIN sector as g ON (a.sector_id = g.id) ';
+        $join.= 'INNER JOIN sucursal as h ON (a.sucursal_id = h.id) ';
+        $join.= 'INNER JOIN usuario as U ON (a.responsable_id = U.id) ';
+        $conditions = "a.responsable_id = '$id' and a.estatus = 'C'  ORDER BY a.id DESC LIMIT 10 ";
+        return $this->find("columns: $columnas", "join: $join", "conditions: $conditions");
+    }
+
+    /**
+     *  Método para contar todas las solicitudes procesadas por un tecnico
+     * @param $id
+     * @param bool
+     * @return ActiveRecord
+     */
+    public function getTotalSolicitudByUser($id) {
+        $sql = "select count(*) total from incidencia where estatus = 'C' and responsable_id = '$id'";
+        return $this->find_by_sql($sql);
+    }
+
+
 }
